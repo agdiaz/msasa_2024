@@ -1,13 +1,52 @@
-nextflow.enable.dsl=2
+// nextflow.enable.dsl=2
 
 // Define parameters
-params.input_dir = "$baseDir/examples"  // default input directory
+params.input_dir = "$baseDir/datasets/BB11004"  // default input directory
 params.msasa_script = "$baseDir/src/msasa_cli.py"
 params.results_dir = "$baseDir/msasa_predictions_results"
 
+params.match_score = 1
+params.mismatch_score = 0
+params.gap_score = -1
+
+include {
+    computeMumsaOverlapScore;
+
+    computeCoreIndex as computeReferenceCoreIndex;
+    computeCoreIndex as computeCoincidencesCoreIndex;
+    computeCoreIndex as computeIdentityCoreIndex;
+    computeCoreIndex as computeSimilarityBlosum62CoreIndex;
+    computeCoreIndex as computeSimilarityPam250CoreIndex;
+    computeCoreIndex as computeGlobalCoreIndex;
+    computeCoreIndex as computeLocalCoreIndex;
+
+    computeTransitiveConsistencyScore as computeReferenceTransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeCoincidencesTransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeIdentityTransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeSimilarityBlosum62TransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeSimilarityPam250TransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeGlobalTransitiveConsistencyScore;
+    computeTransitiveConsistencyScore as computeLocalTransitiveConsistencyScore;
+
+    computeBaliScore as computeCoincidencesBaliScore;
+    computeBaliScore as computeIdentityBaliScore;
+    computeBaliScore as computeSimilarityBlosum62BaliScore;
+    computeBaliScore as computeSimilarityPam250BaliScore;
+    computeBaliScore as computeGlobalBaliScore;
+    computeBaliScore as computeLocalBaliScore;
+
+} from "./modules/scores.nf"
+
 workflow {
-    // Find all *.tfa files in the specified directory and subdirectories
-    fasta_files = Channel.fromPath("${params.input_dir}/**/*.tfa", checkIfExists: true)
+    fasta_files = Channel.fromPath("${params.input_dir}/*.tfa", checkIfExists: true)
+    reference_fasta_files = Channel.fromPath("${params.input_dir}/*.reference.fasta", checkIfExists: true)
+    bali_base_xml_files = Channel.fromPath("${params.input_dir}/*.xml", checkIfExists: true)
+
+    clustal_fasta_files = Channel.fromPath("${params.input_dir}/*_clustal.fasta", checkIfExists: true)
+    kaling_fasta_files = Channel.fromPath("${params.input_dir}/*_kalign.fasta", checkIfExists: true)
+    mafft_fasta_files = Channel.fromPath("${params.input_dir}/*_mafft.fasta", checkIfExists: true)
+    muscle_fasta_files = Channel.fromPath("${params.input_dir}/*_muscle.fasta", checkIfExists: true)
+    t_coffee_fasta_files = Channel.fromPath("${params.input_dir}/*_tCoffee.fasta", checkIfExists: true)
 
     alignCoincidences(fasta_files)
     alignIdentity(fasta_files)
@@ -16,13 +55,51 @@ workflow {
     alignGlobal(fasta_files)
     alignLocal(fasta_files)
 
-    computeBaliScore()
+    computeMumsaOverlapScore(
+        reference_fasta_files,
+        muscle_fasta_files,
+        clustal_fasta_files,
+        mafft_fasta_files,
+        t_coffee_fasta_files,
+        kaling_fasta_files,
+        alignCoincidences.out.alnFasta,
+        alignIdentity.out.alnFasta,
+        alignSimilarityBlosum62.out.alnFasta,
+        alignSimilarityPam250.out.alnFasta,
+        alignGlobal.out.alnFasta,
+        alignLocal.out.alnFasta
+    )
+
+    plotMumsaOverlap(computeMumsaOverlapScore.out)
+
+    computeReferenceCoreIndex(reference_fasta_files, "reference")
+    computeCoincidencesCoreIndex(alignCoincidences.out.alnFasta, "coincidences")
+    computeIdentityCoreIndex(alignIdentity.out.alnFasta, "identity")
+    computeSimilarityBlosum62CoreIndex(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    computeSimilarityPam250CoreIndex(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    computeGlobalCoreIndex(alignGlobal.out.alnFasta, "global")
+    computeLocalCoreIndex(alignLocal.out.alnFasta, "local")
+
+    computeReferenceTransitiveConsistencyScore(reference_fasta_files, "reference")
+    computeCoincidencesTransitiveConsistencyScore(alignCoincidences.out.alnFasta, "coincidences")
+    computeIdentityTransitiveConsistencyScore(alignIdentity.out.alnFasta, "identity")
+    computeSimilarityBlosum62TransitiveConsistencyScore(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    computeSimilarityPam250TransitiveConsistencyScore(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    computeGlobalTransitiveConsistencyScore(alignGlobal.out.alnFasta, "global")
+    computeLocalTransitiveConsistencyScore(alignLocal.out.alnFasta, "local")
+
+    computeCoincidencesBaliScore(bali_base_xml_files, alignCoincidences.out.alnFasta, "coincidences")
+    computeIdentityBaliScore(bali_base_xml_files, alignIdentity.out.alnFasta, "identity")
+    computeSimilarityBlosum62BaliScore(bali_base_xml_files, alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    computeSimilarityPam250BaliScore(bali_base_xml_files, alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    computeGlobalBaliScore(bali_base_xml_files, alignGlobal.out.alnFasta, "global")
+    computeLocalBaliScore(bali_base_xml_files, alignLocal.out.alnFasta, "local")
 }
 
 process alignCoincidences {
     label 'msasa'
-    tag "${fasta_file.simpleName} ✅"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    tag "${fasta_file.simpleName}"
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -38,18 +115,20 @@ process alignCoincidences {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.coincidences.aln \
         --log_file ${fasta_file}.msasa.coincidences.log \
         --extend \
-        --temp 1 \
+        --match_score 1.0 \
+        --gap_score -2.0 \
+        --temp 5 \
         --cooling_rate 0.999 \
-        --min_temp 0.001 \
-        --max_no_changes 10000 \
+        --min_temp 0.000001 \
+        --max_no_changes 15000 \
         --quality_function coincidences
     """
 }
 
 process alignIdentity {
     label 'msasa'
-    tag "${fasta_file.simpleName} ✅"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    tag "${fasta_file.simpleName}"
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -65,10 +144,13 @@ process alignIdentity {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.identity.aln \
         --log_file ${fasta_file}.msasa.identity.log \
         --extend \
+        --match_score 1.0 \
+        --mismatch_score -1.0 \
+        --gap_score -1.0 \
         --temp 1 \
-        --cooling_rate 0.999 \
-        --min_temp 0.0001 \
-        --max_no_changes 25000 \
+        --cooling_rate 0.9995 \
+        --min_temp 0.00001 \
+        --max_no_changes 10000 \
         --quality_function identity
     """
 }
@@ -76,7 +158,7 @@ process alignIdentity {
 process alignSimilarityBlosum62 {
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -92,10 +174,11 @@ process alignSimilarityBlosum62 {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.aln \
         --log_file ${fasta_file}.msasa.similarity_blosum62.log \
         --extend \
-        --temp 5 \
-        --cooling_rate 0.99 \
-        --min_temp 0.001 \
-        --max_no_changes 5000 \
+        --gap_score -10.0 \
+        --temp 0.5 \
+        --cooling_rate 0.9995 \
+        --min_temp 0.0000001 \
+        --max_no_changes 20000 \
         --quality_function similarity_blosum62
     """
 }
@@ -103,7 +186,7 @@ process alignSimilarityBlosum62 {
 process alignSimilarityPam250 {
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -119,18 +202,19 @@ process alignSimilarityPam250 {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.aln \
         --log_file ${fasta_file}.msasa.similarity_pam250.log \
         --extend \
-        --temp 5 \
-        --cooling_rate 0.99 \
-        --min_temp 0.001 \
-        --max_no_changes 5000 \
+        --gap_score -10.0 \
+        --temp 0.50 \
+        --cooling_rate 0.9995 \
+        --min_temp 0.0000001 \
+        --max_no_changes 20000 \
         --quality_function similarity_pam250
     """
 }
 
 process alignGlobal {
     label 'msasa'
-    tag "${fasta_file.simpleName} ✅"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    tag "${fasta_file.simpleName}"
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -146,18 +230,21 @@ process alignGlobal {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.aln \
         --log_file ${fasta_file}.msasa.global.log \
         --extend \
-        --temp 1.5 \
-        --cooling_rate 0.999 \
-        --min_temp 0.001 \
-        --max_no_changes 5000 \
+        --match_score 4.0 \
+        --mismatch_score -1.0 \
+        --gap_score -10.0 \
+        --temp 1 \
+        --cooling_rate 0.9995 \
+        --min_temp 0.0000001 \
+        --max_no_changes 20000 \
         --quality_function global
     """
 }
 
 process alignLocal {
     label 'msasa'
-    tag "${fasta_file.simpleName} ✅"
-    publishDir params.results_dir + "/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    tag "${fasta_file.simpleName}"
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path(fasta_file)
@@ -173,66 +260,62 @@ process alignLocal {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.aln \
         --log_file ${fasta_file}.msasa.local.log \
         --extend \
+        --match_score 4.0 \
+        --mismatch_score 0.0 \
+        --gap_score -8.0 \
         --temp 1 \
-        --cooling_rate 0.999 \
-        --min_temp 0.001 \
-        --max_no_changes 10000 \
+        --cooling_rate 0.9995 \
+        --min_temp 0.0000001 \
+        --max_no_changes 20000 \
         --quality_function local
     """
 }
 
-process computeBaliScore {
-    tag "${alignment.simpleName}"
-    publishDir "$baseDir/tesis_results/${reference.simpleName}", mode: 'copy'
-    errorStrategy 'ignore'
+process plotMumsaOverlap {
+    label 'msasa'
+    tag "${file_path.simpleName}"
+    publishDir params.results_dir + "/plots/${file_path.simpleName}", overwrite: true, mode: 'copy'
 
     input:
-        val predictorName
-        path alignment
-
+        path(file_path)
     output:
-        path "${reference.simpleName}_baliscore_${predictorName}.txt", emit: score
-
-    shell:
-    """
-    /software/bali-score/target/release/bali-score -t ${alignment} \
-        -r ${reference} \
-        -o ${reference.simpleName}_baliscore_${predictorName}.txt
-    """
-}
-
-process computeCoreIndex {
-    tag "${alignment.simpleName}"
-    publishDir "$baseDir/tesis_results/${reference.simpleName}", mode: 'copy'
-    errorStrategy 'ignore'
-
-    input:
-        val predictorName
-        path alignment
-
-    output:
-        path "${reference.simpleName}_coreindex_${predictorName}.txt"
+        path("${file_path.simpleName}_plot.png")
 
     script:
     """
-    t_coffee -infile='$alignment' -output=score_ascii -score -outfile='${reference.simpleName}_coreindex_${predictorName}.txt'
-    """
-}
+    #!/Users/adrian/miniconda3/envs/msasa_2024/bin/python
 
-process computeTransitiveConsistencyScore {
-    tag "${alignment.simpleName}"
-    publishDir "$baseDir/tesis_results/${reference.simpleName}", mode: 'copy'
-    errorStrategy 'ignore'
+    import matplotlib as mpl
+    mpl.use("Agg")
+    import matplotlib.pyplot as plt
 
-    input:
-        val predictorName
-        path alignment
+    with open('${file_path}', 'r') as file:
+        lines = file.readlines()[1:]  # Skip the header line
 
-    output:
-        path "${reference.simpleName}_tcs_${predictorName}.txt"
+    # Parsing the data into lists
+    alignments = []
+    scores = []
 
-    script:
-    """
-    t_coffee -infile '$alignment' -evaluate -output=score_ascii -outfile='${reference.simpleName}_tcs_${predictorName}.txt'
+    for line in lines:
+        parts = line.rsplit(maxsplit=1)
+        alignments.append(parts[0].strip())
+        scores.append(float(parts[1]))
+
+    # Plotting the data
+    plt.figure(figsize=(10, 8))
+    bars = plt.barh(alignments, scores, color='skyblue')
+    plt.xlabel('Overlap Score')
+    plt.title('Overlap Scores to the reference alignment')
+    plt.gca().invert_yaxis()
+    plt.grid(axis='x', linestyle='--', alpha=0.6)
+
+    plt.tight_layout()
+
+    # Optional: Add labels directly on the bars for clarity
+    for bar in bars:
+        plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
+                       va='center', ha='left', color='black', fontsize=9)
+
+    plt.savefig('${file_path.simpleName}_plot.png', dpi=300)
     """
 }

@@ -1,6 +1,7 @@
 from functools import partial
 from collections import Counter
 import numpy as np
+from itertools import combinations
 
 # https://github.com/Cantalapiedra/msa_conservation_index?tab=readme-ov-file
 # https://www.biostars.org/p/5067/#5076
@@ -26,58 +27,66 @@ def calculate_score(residue_a, residue_b, match_score, mismatch_score):
 #     return coincidences
 
 # Checked !
-def coincidences_per_column_with_ties_and_gap_penalty(state, gap_penalty=-1):
-    """
-    Counts the number of coincidences per column across all sequences in a numpy matrix of characters,
-    including all characters that are tied for most common in their counts, and applies a gap penalty.
+def partial_coincidences(match_score=1.0, gap_penalty=-1.0):
+    def coincidences_per_column_with_ties_and_gap_penalty(state):
+        """
+        Counts the number of coincidences per column across all sequences in a numpy matrix of characters,
+        including all characters that are tied for most common in their counts, and applies a gap penalty.
 
-    Parameters:
-    - state (np.ndarray): The state, a 2D numpy array of characters, including gaps.
-    - gap_penalty (int): The penalty applied for each gap in a column.
+        Parameters:
+        - state (np.ndarray): The state, a 2D numpy array of characters, including gaps.
+        - gap_penalty (int): The penalty applied for each gap in a column.
 
-    Returns:
-    - int: The total coincidences score adjusted for gap penalties.
-    """
-    coincidences = 0
-    for col in range(state.shape[1]):
-        column = state[:, col]
-        char_counts = Counter(column)
+        Returns:
+        - int: The total coincidences score adjusted for gap penalties.
+        """
+        coincidences = 0
+        for col in range(state.shape[1]):
+            column = state[:, col]
+            char_counts = Counter(column)
 
-        # Find the highest frequency of characters in this column
-        highest_count = max(char_counts.values())
+            # Find the highest frequency of characters in this column
+            highest_count = max(char_counts.values())
 
-        # Check if the most common character is a gap
-        if char_counts.most_common(1)[0][0] == "-":
-            # Apply the gap penalty for each gap in the column instead of adding coincidences
-            coincidences += gap_penalty * highest_count
-        else:
-            # Count how many characters have this highest frequency, excluding gaps
-            tied_chars_count = sum(count == highest_count for char, count in char_counts.items() if char != "-")
+            # Check if the most common character is a gap
+            if char_counts.most_common(1)[0][0] == "-":
+                # Apply the gap penalty for each gap in the column instead of adding coincidences
+                coincidences += gap_penalty * highest_count
+            else:
+                # Count how many characters have this highest frequency, excluding gaps
+                tied_chars_count = sum(count == highest_count for char, count in char_counts.items() if char != "-")
 
-            # Add the highest count times the number of tied characters to the total coincidences
-            coincidences += highest_count * tied_chars_count
+                # Add the highest count times the number of tied characters to the total coincidences
+                coincidences += match_score * highest_count * tied_chars_count
 
-    return coincidences
+        return coincidences
+
+    return partial(coincidences_per_column_with_ties_and_gap_penalty)
 
 # Checked !
-def identity(state, gap_penalty=-1):
-    # Initialize counters
-    identical_columns = 0
-    total_columns = state.shape[1]
+def partial_identity(match_score=1, mismatch_score=0, gap_penalty=-1):
+    def identity(state):
+        # Initialize counters
+        identical_columns = 0
+        total_columns = state.shape[1]
 
-    # Iterate over each column
-    for col in range(total_columns):
-        column = state[:, col]
-        # Check if all elements in the column are identical
-        if np.all(column == "-"):
-            identical_columns += gap_penalty
-        elif np.all(column == column[0]):
-            identical_columns += 1
+        # Iterate over each column
+        for col in range(total_columns):
+            column = state[:, col]
+            # Check if all elements in the column are identical
+            if np.all(column == "-"):
+                identical_columns += gap_penalty
+            elif np.all(column == column[0]):
+                identical_columns += match_score
+            else:
+                identical_columns += mismatch_score
 
-    # Calculate identity percentage
-    identity_percentage = (identical_columns / total_columns) * 100
+        # Calculate identity percentage
+        identity_percentage = (identical_columns / total_columns) * 100
 
-    return identity_percentage
+        return identity_percentage
+
+    return partial(identity)
 
 
 # def identity_with_gap_penalty(state, gap_penalty=-1):
@@ -111,23 +120,30 @@ def identity(state, gap_penalty=-1):
 #     return identity_percentage
 
 
-def partial_similarity(similarity_matrix, gap_penalty=-4):
+def partial_similarity(similarity_matrix, gap_penalty=-4, multiplier=1.0):
 
     def similarity(state):
         similarity_score = 0
 
         for col in range(state.shape[1]):
             column = state[:, col]
-            # Compare each pair of residues in the column
-            for i in range(len(column)):
-                for j in range(i + 1, len(column)):
-                    if column[i] == "-" or column[j] == "-":
-                        similarity_score += gap_penalty
-                    else:
-                        pair = (column[i], column[j])
-                        similarity_score += similarity_matrix[
-                            pair
-                        ]  # Directly access the score
+            for res1, res2 in combinations(column, 2):
+                if res1 == '-' or res2 == '-':
+                    similarity_score += gap_penalty
+                    continue
+
+                similarity_score += (multiplier * similarity_matrix[(res1, res2)])
+
+            # # Compare each pair of residues in the column
+            # for i in range(len(column)):
+            #     for j in range(i + 1, len(column)):
+            #         if column[i] == "-" or column[j] == "-":
+            #             similarity_score += gap_penalty
+            #         else:
+            #             pair = (column[i], column[j])
+            #             similarity_score += similarity_matrix[
+            #                 pair
+            #             ]  # Directly access the score
 
         return similarity_score
 

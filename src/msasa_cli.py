@@ -96,7 +96,10 @@ def parse_arguments():
     parser.add_argument('--temperature', type=float, default=10.0, help='Initial temperature for simulated annealing')
     parser.add_argument('--cooling_rate', type=float, default=0.999, help='Cooling rate for simulated annealing')
     parser.add_argument('--min_temperature', type=float, default=0.01, help='Minimal temperature of the system')
-    parser.add_argument('--max_no_changes', type=float, default=100, help='Max consecutive no change events before early stopping')
+    parser.add_argument('--max_no_changes', type=int, default=100, help='Max consecutive no change events before early stopping')
+    parser.add_argument('--match_score', type=float, default=1.0, help='')
+    parser.add_argument('--mismatch_score', type=float, default=0.0, help='')
+    parser.add_argument('--gap_score', type=float, default=-1.0, help='')
 
     return parser.parse_args()
 
@@ -126,7 +129,7 @@ def plot_title(args):
     return title
 
 
-def plot_charts_from_log(log_file_path, plot_title):
+def plot_charts_from_log(log_file_path, plot_title, max_no_change_events):
     # Load the data
     data = pd.read_csv(log_file_path, sep="\t")
     data['Timestamp'] = pd.to_datetime(data['Timestamp'])
@@ -139,16 +142,26 @@ def plot_charts_from_log(log_file_path, plot_title):
 
     # Cooling Schedule Visualization
     axs[0, 0].plot(data["Iteration"], data["Temperature"], label="Temperature")
-    axs[0, 0].set_title('Temperature over Iteration: Cooling Schedule Visualization')
+    axs[0, 0].set_title('Temperature over Iteration')
     axs[0, 0].set_xlabel('Iteration')
     axs[0, 0].set_ylabel('Temperature')
+    ax2 = axs[0, 0].twinx()
+
+    ax2.plot(data["Iteration"], data["Total_Accepted"], label="Total Accepted", color='green')
+    ax2.plot(data["Iteration"], data["Total_Rejected"], label="Total Rejected", color='red')
+    ax2.set_ylabel('Counts', color='green')  # Set the label for the second y-axis
+    lines, labels = axs[0, 0].get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax2.legend(lines + lines2, labels + labels2, loc="best")
+    axs[0, 0].tick_params(axis='y', colors='blue')  # Set y-axis tick color to blue
+    ax2.tick_params(axis='y', colors='green')  # Set secondary y-axis tick color to green
     axs[0, 0].grid(True)
 
     # Score over Temperature
     axs[0, 1].plot(data['Temperature'], data['Current_Score'], label='Current Score')
     axs[0, 1].plot(data['Temperature'], data['Best_Score'], label='Best Score', color='green')
     axs[0, 1].invert_xaxis()  # Inverting the X-axis
-    axs[0, 1].set_title('Score over Temperature')
+    axs[0, 1].set_title('Scores over Temperature')
     axs[0, 1].set_xlabel('Temperature')
     axs[0, 1].set_ylabel('Scores')
     axs[0, 1].grid(True)
@@ -157,48 +170,51 @@ def plot_charts_from_log(log_file_path, plot_title):
     # Score over Iteration
     axs[0, 2].plot(data["Iteration"], data["Current_Score"], label="Current Score")
     axs[0, 2].plot(data["Iteration"], data["Best_Score"], label="Best Score", color='green')
-    axs[0, 2].set_title('Score over Iteration')
+    axs[0, 2].set_title('Scores over Iteration')
     axs[0, 2].set_xlabel('Iteration')
     axs[0, 2].set_ylabel('Scores')
     axs[0, 2].grid(True)
     axs[0, 2].legend(loc="best")
 
-    # Best Score Over Iterations
-    axs[1, 0].plot(data['Iteration'], data['Best_Score'], label='Best Score', color='green')
-    axs[1, 0].set_title('Best Score over Iteration')
+    axs[1, 0].plot(data['Iteration'], data['Historical_Score_Improvement'], label='Historical Score Improvement', color='blue')
+    axs[1, 0].set_title('Total improvement over Iteration')
     axs[1, 0].set_xlabel('Iteration')
-    axs[1, 0].set_ylabel('Best Score')
+    axs[1, 0].set_ylabel("Score diff")
     axs[1, 0].grid(True)
 
-    # State Change Magnitude Over Iterations
-    axs[1, 1].plot(data['Iteration'], data['State_Change_Magnitude'], label='State Change Magnitude')
-    axs[1, 1].set_title('State Change Magnitude over Iteration')
+    axs[1, 1].plot(data['Temperature'], data['Historical_Score_Improvement'], label='Historical Score Improvement', color='blue')
+    axs[1, 1].set_title("Total improvement over Temperature")
+    axs[1, 1].invert_xaxis()  # Inverting the X-axis
     axs[1, 1].set_xlabel('Iteration')
-    axs[1, 1].set_ylabel('State Change Magnitude')
+    axs[1, 1].set_ylabel('Score diff')
     axs[1, 1].grid(True)
 
-    # Histogram of Score Changes
-    axs[1, 2].hist(data['Score_Change'], bins=30, color='blue', edgecolor='black')
-    axs[1, 2].set_title('Histogram of Score Changes')
-    axs[1, 2].set_xlabel('Score Change')
-    axs[1, 2].set_ylabel('Frequency')
+    # Score Over Time
+    axs[1, 2].plot(data["Timestamp"], data["Historical_Score_Improvement"], label="Historical Score Improvement", color='blue')
+    axs[1, 2].set_title("Total improvement over Timestamp")
+    axs[1, 2].set_xlabel("Timestamp")
+    axs[1, 2].set_ylabel("Score diff")
+    axs[1, 2].xaxis.set_major_formatter(FuncFormatter(ms_formatter))
     axs[1, 2].grid(True)
 
     # Acceptance Rate Over Iterations
     axs[2, 0].plot(data['Iteration'], data['Acceptance_Rate'], label='Acceptance Rate', color='black')
     axs[2, 0].set_title('Acceptance Rate over Iteration')
-    axs[2, 0].set_xlabel('Iteration')
-    axs[2, 0].set_ylabel('Acceptance Rate')
+    axs[2, 2].set_xlabel("Iteration")
+    axs[2, 0].set_ylabel('Rate %')
     axs[2, 0].grid(True)
 
-    # Score Over Time
-    axs[2, 1].plot(data['Timestamp'], data['Current_Score'], label='Score')
-    axs[2, 1].set_title('Score over Time')
-    axs[2, 1].set_xlabel('Timestamp')
-    axs[2, 1].set_ylabel('Score')
-    axs[2, 1].xaxis.set_major_formatter(FuncFormatter(ms_formatter))
+    # Histogram of Score Changes
+    # Creating the histogram with different colors for different ranges
+    data_score_change = data["Score_Change"]
+    bins = np.histogram_bin_edges(data_score_change, bins=30)
+
+    axs[2, 1].hist(data_score_change[data_score_change < 0], bins=bins, color="red", edgecolor="black")
+    axs[2, 1].hist(data_score_change[data_score_change >= 0], bins=bins, color="green", edgecolor="black")
+    axs[2, 1].set_title("Histogram of Score Changes")
+    axs[2, 1].set_xlabel("Score Change")
+    axs[2, 1].set_ylabel("Frequency")
     axs[2, 1].grid(True)
-    fig.autofmt_xdate()
 
     # Iteration Over Timestamp
     axs[2, 2].plot(data["Timestamp"], data["Iteration"], label="Iteration")
@@ -206,6 +222,7 @@ def plot_charts_from_log(log_file_path, plot_title):
     axs[2, 2].set_title('Iteration Over Timestamp')
     axs[2, 2].set_xlabel('Timestamp')
     axs[2, 2].set_ylabel('Iteration')
+    axs[2, 2].axhline(y=max_no_change_events, color="red", linestyle="--", label=f"Threshold {max_no_change_events}")
     axs[2, 2].xaxis.set_major_formatter(FuncFormatter(ms_formatter))
     axs[2, 2].grid(True)
     axs[2, 2].legend(loc="best")
@@ -226,19 +243,16 @@ def plot_charts_from_log(log_file_path, plot_title):
     axs[3, 1].plot(data["Temperature"], data["New_Score"], label="New Score")
     axs[3, 1].plot(data["Temperature"], data["Best_Score"], label="Best Score", color='green')
     axs[3, 1].invert_xaxis()  # Inverting the X-axis
-    axs[3, 1].set_title('Score over Time')
+    axs[3, 1].set_title('Score over Temperature')
     axs[3, 1].set_xlabel("Temperature")
     axs[3, 1].set_ylabel('Scores')
-    axs[3, 1].xaxis.set_major_formatter(FuncFormatter(ms_formatter))
     axs[3, 1].grid(True)
     axs[3, 1].legend(loc="best")
-    fig.autofmt_xdate()
 
-    #
     axs[3, 2].plot(data["Timestamp"], data["Iteration_Score"], label="Iteration Score")
     axs[3, 2].plot(data["Timestamp"], data["New_Score"], label="New Score")
     axs[3, 2].plot(data["Timestamp"], data["Best_Score"], label="Best Score", color='green')
-    axs[3, 2].set_title('Iteration Over Timestamp')
+    axs[3, 2].set_title('Score over Timestamp')
     axs[3, 2].set_xlabel('Timestamp')
     axs[3, 2].set_ylabel('Scores')
     axs[3, 2].xaxis.set_major_formatter(FuncFormatter(ms_formatter))
@@ -269,7 +283,7 @@ def log_header():
 
     # Log the header
     logging.info(
-        "Timestamp\tIteration\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tBest_Score\tTotal_Accepted\tScore_Change\tState_Change_Magnitude\tAccepted\tNo_Changes"
+        "Timestamp\tIteration\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tScore_Change\tBest_Score\tHistorical_Score_Improvement\tTotal_Accepted\tTotal_Rejected\tAccepted\tNo_Changes"
     )
 
     # Revert the formatter to include timestamps for subsequent log entries
@@ -326,6 +340,9 @@ def main():
         quality_function=args.quality_function,
         min_temp=args.min_temperature,
         no_changes_limit=args.max_no_changes,
+        match_score=args.match_score,
+        mismatch_score=args.mismatch_score,
+        gap_score=args.gap_score,
     )
 
     sa.anneal()
@@ -339,7 +356,7 @@ def main():
     assert_sequences(original_sequences, aligned_sequences)
 
     # Create plots
-    plot_charts_from_log(args.log_file, plot_title(args))
+    plot_charts_from_log(args.log_file, plot_title(args), args.max_no_changes)
 
     # Read the alignment from the aligned FASTA file
     alignment = AlignIO.read(args.aligned_fasta_file, "fasta")
