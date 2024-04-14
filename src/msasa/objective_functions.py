@@ -1,205 +1,115 @@
-from functools import partial
 from collections import Counter
+from typing import Dict, Tuple
 import numpy as np
 from itertools import combinations
+# from functools import lru_cache
+from methodtools import lru_cache
+from abc import ABC, abstractmethod
 
 # https://github.com/Cantalapiedra/msa_conservation_index?tab=readme-ov-file
 # https://www.biostars.org/p/5067/#5076
 # https://www.majordifferences.com/2014/02/difference-between-pam-and-blosum-matrix_1.html
 
-def calculate_score(residue_a, residue_b, match_score, mismatch_score):
-    if residue_a == residue_b:
-        return match_score
-    else:
-        return mismatch_score
+
+class ObjectiveFunction(ABC):
+    GAP_SYMBOL = b'-'
+    GAP_CHAR = '-'
+    GAP_CHAR_NP_ARRAY = np.array(["-"], dtype="S1")
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    @abstractmethod
+    @lru_cache(maxsize=128)
+    def compute_column(self, column_hash) -> float:
+        pass
+
+    def divider(self, _sequences) -> float:
+        return 1.0
+
+    def energy(self, sequences) -> float:
+        results = [self.compute_column(column.tobytes()) for column in sequences.transpose()]
+
+        return sum(results) / self.divider(sequences)
 
 
-# def coincidences_per_column(state):
-#     """
-#     Counts the number of coincidences per column across all sequences.
-#     """
-#     coincidences = 0
-#     for col in range(state.shape[1]):
-#         column = state[:, col]
-#         most_common = np.bincount(column).argmax()
-#         coincidences += (column == most_common).sum()
+class Coincidences(ObjectiveFunction):
 
-#     return coincidences
+    def __init__(self, match_score: float = 1.0, mismatch_score:float = -0.0, gap_penalty: float = -1.0):
+        self.match_score = match_score
+        self.mismatch_score = mismatch_score
+        self.gap_penalty = gap_penalty
 
-# Checked !
-def partial_coincidences(match_score=1.0, gap_penalty=-1.0):
-    def coincidences_per_column_with_ties_and_gap_penalty(state):
-        """
-        Counts the number of coincidences per column across all sequences in a numpy matrix of characters,
-        including all characters that are tied for most common in their counts, and applies a gap penalty.
+    @lru_cache(maxsize=128)
+    def compute_column(self, column_hash) -> float:
+        column = np.frombuffer(column_hash, dtype="|S1")
 
-        Parameters:
-        - state (np.ndarray): The state, a 2D numpy array of characters, including gaps.
-        - gap_penalty (int): The penalty applied for each gap in a column.
+        char_counts = Counter(column)
 
-        Returns:
-        - int: The total coincidences score adjusted for gap penalties.
-        """
-        coincidences = 0
-        for col in range(state.shape[1]):
-            column = state[:, col]
-            char_counts = Counter(column)
+        highest_count = max(char_counts.values())
+        if highest_count == 1:
+            return self.mismatch_score
 
-            # Find the highest frequency of characters in this column
-            highest_count = max(char_counts.values())
+        score = 0
 
-            # Check if the most common character is a gap
-            if char_counts.most_common(1)[0][0] == "-":
-                # Apply the gap penalty for each gap in the column instead of adding coincidences
-                coincidences += gap_penalty * highest_count
-            else:
-                # Count how many characters have this highest frequency, excluding gaps
-                tied_chars_count = sum(count == highest_count for char, count in char_counts.items() if char != "-")
+        for max_group_char, max_group_repetitions in char_counts.items():
+            if max_group_repetitions == highest_count:
+                if max_group_char == ObjectiveFunction.GAP_SYMBOL:
+                    score += self.gap_penalty * highest_count
+                else:
+                    score += self.match_score * highest_count
 
-                # Add the highest count times the number of tied characters to the total coincidences
-                coincidences += match_score * highest_count * tied_chars_count
-
-        return coincidences
-
-    return partial(coincidences_per_column_with_ties_and_gap_penalty)
-
-# Checked !
-def partial_identity(match_score=1, mismatch_score=0, gap_penalty=-1):
-    def identity(state):
-        # Initialize counters
-        identical_columns = 0
-        total_columns = state.shape[1]
-
-        # Iterate over each column
-        for col in range(total_columns):
-            column = state[:, col]
-            # Check if all elements in the column are identical
-            if np.all(column == "-"):
-                identical_columns += gap_penalty
-            elif np.all(column == column[0]):
-                identical_columns += match_score
-            else:
-                identical_columns += mismatch_score
-
-        # Calculate identity percentage
-        identity_percentage = (identical_columns / total_columns) * 100
-
-        return identity_percentage
-
-    return partial(identity)
+        return score / len(column)
 
 
-# def identity_with_gap_penalty(state, gap_penalty=-1):
-#     # Initialize counters
-#     identical_columns = 0
-#     gap_columns = 0
-#     total_columns = state.shape[1]
+class Identity(ObjectiveFunction):
+    def __init__(self, match_score=1, mismatch_score=0, gap_penalty=-1):
+        self.match_score = match_score
+        self.mismatch_score = mismatch_score
+        self.gap_penalty = gap_penalty
 
-#     # Iterate over each column
-#     for col in range(total_columns):
-#         column = state[:, col]
+    def divider(self, sequences) -> float:
+        return len(sequences)
 
-#         # Check for columns with gaps
-#         if "-" in column:
-#             gap_columns += 1
-#             # Additional condition to check if all are gaps, which could be treated differently
-#             if np.all(column == "-"):
-#                 continue  # or apply a different penalty
+    @lru_cache(maxsize=128)
+    def compute_column(self, column_hash) -> float:
+        column = np.frombuffer(column_hash, dtype="|S1")
 
-#         # Check if all non-gap elements in the column are identical
-#         non_gap_elements = column[column != "-"]
-#         if len(non_gap_elements) > 0 and np.all(non_gap_elements == non_gap_elements[0]):
-#             identical_columns += 1
-
-#     # Adjust identity calculation
-#     adjusted_identical_columns = identical_columns + (gap_penalty * gap_columns)
-
-#     # Calculate identity percentage
-#     identity_percentage = (adjusted_identical_columns / total_columns) * 100
-
-#     return identity_percentage
+        if np.all(column == ObjectiveFunction.GAP_SYMBOL):
+            return self.gap_penalty
+        elif np.all(column == column[0]):
+            return self.match_score
+        else:
+            return self.mismatch_score
 
 
-def partial_similarity(similarity_matrix, gap_penalty=-4, multiplier=1.0):
+class Similarity(ObjectiveFunction):
+    def __init__(self, similarity_matrix: Dict[Tuple[str, str], float], gap_penalty:float=-4.0, multiplier:float=1.0) -> None:
+        self.similarity_matrix = similarity_matrix
+        self.gap_penalty = gap_penalty
+        self.multiplier = multiplier
 
-    def similarity(state):
-        similarity_score = 0
+    @lru_cache(maxsize=128)
+    def score(self, res1: bytes, res2: bytes) -> float:
+        if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
+            return self.gap_penalty * 2
+        elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
+            return self.gap_penalty
+        else:
+            return self.multiplier * self.similarity_matrix[(chr(ord(res1)), chr(ord(res2)))]
 
-        for col in range(state.shape[1]):
-            column = state[:, col]
-            for res1, res2 in combinations(column, 2):
-                if res1 == '-' or res2 == '-':
-                    similarity_score += gap_penalty
-                    continue
+    @lru_cache(maxsize=128)
+    def compute_column(self, column_hash) -> float:
+        column = np.frombuffer(column_hash, dtype="|S1")
 
-                similarity_score += (multiplier * similarity_matrix[(res1, res2)])
-
-            # # Compare each pair of residues in the column
-            # for i in range(len(column)):
-            #     for j in range(i + 1, len(column)):
-            #         if column[i] == "-" or column[j] == "-":
-            #             similarity_score += gap_penalty
-            #         else:
-            #             pair = (column[i], column[j])
-            #             similarity_score += similarity_matrix[
-            #                 pair
-            #             ]  # Directly access the score
-
-        return similarity_score
-
-    return partial(similarity)
+        return sum([self.score(res1, res2) for res1, res2 in combinations(column, 2)])
 
 
-def partial_global_alignment_quality(gap_penalty, match_score, mismatch_score):
+class GlobalLocalAlignmentQuality(ObjectiveFunction):
+    def __init__(self, score_matrix: Dict[Tuple[str, str], float]) -> None:
+        self.matrix = score_matrix
 
-    def global_alignment_quality(state):
-        quality_score = 0
-
-        for col in range(state.shape[1]):
-            column_scores = 0
-
-            column = state[:, col]
-            for i in range(len(column)):
-                for j in range(i + 1, len(column)):
-                    if "-" in (column[i], column[j]):
-                        score = gap_penalty
-                    else:
-                        score = calculate_score(column[i], column[j], match_score, mismatch_score)
-
-                    quality_score += score
-
-            quality_score += column_scores
-
-        return quality_score
-
-    return partial(global_alignment_quality)
-
-
-def partial_local_alignment_quality(match_score, mismatch_score, gap_penalty):
-
-    def local_alignment_quality(state):
-        quality_score = 0
-
-        for col in range(state.shape[1]):
-            column_scores = 0  # Collect positive scores for this column
-
-            column = state[:, col]
-            if np.all(column == "-"):
-                quality_score += gap_penalty
-                continue
-
-            for i in range(len(column)):
-                for j in range(i + 1, len(column)):
-                    if "-" in (column[i], column[j]):
-                        score = gap_penalty
-                    else:
-                        score = calculate_score(column[i], column[j], match_score, mismatch_score)
-
-                    column_scores += score
-
-            if column_scores > 0:
-                quality_score += column_scores
-
-        return quality_score
-
-    return partial(local_alignment_quality)
+    @lru_cache(maxsize=128)
+    def compute_column(self, column_hash) -> float:
+        column = np.frombuffer(column_hash, dtype="|S1")
+        return sum([self.matrix[(res1, res2)] for res1, res2 in combinations(column, 2)])

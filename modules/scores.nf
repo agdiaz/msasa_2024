@@ -46,7 +46,7 @@ process computeMumsaOverlapScore {
 // t_coffee -infile='$fasta_file' -output=score_ascii -score -outfile='${fasta_file.simpleName}_coreindex_${predictorName}.txt'
 process computeCoreIndex {
     label 'msasa'
-
+    errorStrategy 'ignore'
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
     // errorStrategy 'ignore'
@@ -66,7 +66,7 @@ process computeCoreIndex {
 // t_coffee -infile '$fasta_file' -evaluate -output=score_ascii -outfile='${fasta_file.simpleName}_tcs_${predictorName}.txt'
 process computeTransitiveConsistencyScore {
     label 'msasa'
-
+    errorStrategy 'ignore'
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
     // errorStrategy 'ignore'
@@ -86,7 +86,7 @@ process computeTransitiveConsistencyScore {
 
 process computeBaliScore {
     label "container"
-
+    errorStrategy 'ignore'
     tag "${fasta_file.simpleName} ${predictorName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
     // errorStrategy 'ignore'

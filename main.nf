@@ -120,7 +120,7 @@ process alignCoincidences {
         --temp 5 \
         --cooling_rate 0.999 \
         --min_temp 0.000001 \
-        --max_no_changes 15000 \
+        --max_no_changes 5000 \
         --quality_function coincidences
     """
 }
@@ -145,17 +145,18 @@ process alignIdentity {
         --log_file ${fasta_file}.msasa.identity.log \
         --extend \
         --match_score 1.0 \
-        --mismatch_score -1.0 \
+        --mismatch_score -2.0 \
         --gap_score -1.0 \
         --temp 1 \
-        --cooling_rate 0.9995 \
-        --min_temp 0.00001 \
-        --max_no_changes 10000 \
+        --cooling_rate 0.999 \
+        --min_temp 0.0001 \
+        --max_no_changes 5000 \
         --quality_function identity
     """
 }
 
 process alignSimilarityBlosum62 {
+    cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
@@ -174,16 +175,17 @@ process alignSimilarityBlosum62 {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.aln \
         --log_file ${fasta_file}.msasa.similarity_blosum62.log \
         --extend \
-        --gap_score -10.0 \
-        --temp 0.5 \
-        --cooling_rate 0.9995 \
+        --gap_score -25.0 \
+        --temp 1.0 \
+        --cooling_rate 0.999 \
         --min_temp 0.0000001 \
-        --max_no_changes 20000 \
+        --max_no_changes 50000 \
         --quality_function similarity_blosum62
     """
 }
 
 process alignSimilarityPam250 {
+    cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
@@ -202,11 +204,11 @@ process alignSimilarityPam250 {
     python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.aln \
         --log_file ${fasta_file}.msasa.similarity_pam250.log \
         --extend \
-        --gap_score -10.0 \
-        --temp 0.50 \
-        --cooling_rate 0.9995 \
+        --gap_score -25.0 \
+        --temp 1.0 \
+        --cooling_rate 0.999 \
         --min_temp 0.0000001 \
-        --max_no_changes 20000 \
+        --max_no_changes 50000 \
         --quality_function similarity_pam250
     """
 }
@@ -234,7 +236,7 @@ process alignGlobal {
         --mismatch_score -1.0 \
         --gap_score -10.0 \
         --temp 1 \
-        --cooling_rate 0.9995 \
+        --cooling_rate 0.999 \
         --min_temp 0.0000001 \
         --max_no_changes 20000 \
         --quality_function global
@@ -264,7 +266,7 @@ process alignLocal {
         --mismatch_score 0.0 \
         --gap_score -8.0 \
         --temp 1 \
-        --cooling_rate 0.9995 \
+        --cooling_rate 0.999 \
         --min_temp 0.0000001 \
         --max_no_changes 20000 \
         --quality_function local
@@ -272,6 +274,7 @@ process alignLocal {
 }
 
 process plotMumsaOverlap {
+    cache false
     label 'msasa'
     tag "${file_path.simpleName}"
     publishDir params.results_dir + "/plots/${file_path.simpleName}", overwrite: true, mode: 'copy'
@@ -309,13 +312,17 @@ process plotMumsaOverlap {
     plt.gca().invert_yaxis()
     plt.grid(axis='x', linestyle='--', alpha=0.6)
 
+    for bar, alignment in zip(bars, alignments):
+        if '.msasa.' in alignment:
+            # Highlight label background if it contains '.msasa.'
+            plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
+                        va='center', ha='left', color='black', fontsize=9, backgroundcolor='yellow')
+        else:
+            # Regular label without highlighting
+            plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
+                        va='center', ha='left', color='black', fontsize=9)
+
     plt.tight_layout()
-
-    # Optional: Add labels directly on the bars for clarity
-    for bar in bars:
-        plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
-                       va='center', ha='left', color='black', fontsize=9)
-
     plt.savefig('${file_path.simpleName}_plot.png', dpi=300)
     """
 }
