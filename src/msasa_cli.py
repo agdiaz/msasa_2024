@@ -54,7 +54,7 @@ def log_header(logger):
 
     # Log the header
     logging.info(
-        "Timestamp\tIteration\tMax_Length\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tScore_Change\tScore_Change_Perc\tBest_Score\tHistorical_Score_Improvement\tScore_Improvement_Perc\tTotal_Accepted\tTotal_Rejected\tAccepted\tNo_Changes\tAcceptance"
+        "Timestamp\tIteration\tMax_Length\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tScore_Change\tScore_Change_Perc\tBest_Score\tHistorical_Score_Improvement\tScore_Improvement_Perc\tTotal_Accepted\tTotal_Rejected\tAccepted\tNo_Changes\tAcceptance\tSequences_Score_Hits\tColumn_Score_Hits"
     )
 
     # Revert the formatter to include timestamps for subsequent log entries

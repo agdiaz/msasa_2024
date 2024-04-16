@@ -17,6 +17,8 @@ class ObjectiveFunction(ABC):
 
     def __init__(self) -> None:
         super().__init__()
+        self.sequence_energy_hits = 0
+        self.column_energy_hits = 0
 
     @abstractmethod
     @lru_cache(maxsize=1024)
@@ -26,8 +28,10 @@ class ObjectiveFunction(ABC):
     def divider(self, rows, columns) -> float:
         return 1.0
 
-    @lru_cache(maxsize=1024)
+    @lru_cache(maxsize=2048)
     def energy(self, columns_bytes, sequences, residues) -> float:
+        self.sequence_energy_hits += 1
+
         columns = np.reshape(np.frombuffer(columns_bytes, dtype="|S1"), (residues, sequences))
         results = np.sum([self.compute_column(column.tobytes()) for column in columns])
 
@@ -47,6 +51,7 @@ class Coincidences(ObjectiveFunction):
 
     @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
+        self.column_energy_hits += 1
         column = np.frombuffer(column_hash, dtype="|S1")
 
         char_counts = Counter(column)
@@ -77,6 +82,7 @@ class Identity(ObjectiveFunction):
 
     @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
+        self.column_energy_hits += 1
         column = np.frombuffer(column_hash, dtype="|S1")
 
         if np.all(column == ObjectiveFunction.GAP_SYMBOL):
@@ -94,6 +100,7 @@ class Similarity(ObjectiveFunction):
 
     @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
+        self.column_energy_hits += 1
         column = np.frombuffer(column_hash, dtype="|S1")
 
         return np.array([self.similarity_matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()
@@ -109,6 +116,7 @@ class GlobalLocalAlignmentQuality(ObjectiveFunction):
 
     @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
+        self.column_energy_hits += 1
         column = np.frombuffer(column_hash, dtype="|S1")
 
         return np.array([self.matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()

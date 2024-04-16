@@ -124,7 +124,7 @@ class SimulatedAnnealing:
     def log_async(
         self,
         iteration: int,
-        temp:float,
+        temp: float,
         sequence_length: int,
         current_score: float,
         iteration_score: float,
@@ -136,6 +136,8 @@ class SimulatedAnnealing:
         total_rejected: int,
         accepted: bool,
         no_changes: int,
+        sequence_energy_hits: int,
+        column_energy_hits: int,
     ):
         try:
             historical_score_improvement: float = best_score - initial_score
@@ -148,7 +150,7 @@ class SimulatedAnnealing:
                 historical_improvement_percentage: float = 0
                 current_improvement_percentage: float = 0
 
-            row_values = f"{iteration}\t{sequence_length}\t{temp:.7f}\t{current_score:+.7f}\t{iteration_score:+.7f}\t{new_score:+.7f}\t{score_change:+.7f}\t{current_improvement_percentage:+.4f}\t{best_score:+.7f}\t{historical_score_improvement:+.7f}\t{historical_improvement_percentage:+.4f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance}"
+            row_values = f"{iteration}\t{sequence_length}\t{temp:.7f}\t{current_score:+.7f}\t{iteration_score:+.7f}\t{new_score:+.7f}\t{score_change:+.7f}\t{current_improvement_percentage:+.4f}\t{best_score:+.7f}\t{historical_score_improvement:+.7f}\t{historical_improvement_percentage:+.4f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance}\t{sequence_energy_hits}\t{column_energy_hits}"
             self.logger.info(row_values)
         except:
             pass
@@ -202,7 +204,24 @@ class SimulatedAnnealing:
                 else:
                     no_changes = 0
 
-                executor.submit(self.log_async, iteration, current_temp, self.sequences.shape[1], self.current_score, iteration_score, new_score, score_change, initial_score, best_score, total_accepted, total_rejected, accepted, no_changes,)
+                executor.submit(
+                    self.log_async,
+                    iteration,
+                    current_temp,
+                    self.sequences.shape[1],
+                    self.current_score,
+                    iteration_score,
+                    new_score,
+                    score_change,
+                    initial_score,
+                    best_score,
+                    total_accepted,
+                    total_rejected,
+                    accepted,
+                    no_changes,
+                    self.quality_function_instance.sequence_energy_hits,
+                    self.quality_function_instance.column_energy_hits,
+                )
 
                 iteration += 1
 
