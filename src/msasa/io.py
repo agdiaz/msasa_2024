@@ -16,9 +16,12 @@ def load_fasta(fasta_file):
         sequence_ids.append(record.id)
 
     max_length = max(len(seq) for seq in sequences)
-    padded_sequences = [seq.ljust(max_length, "-") for seq in sequences]
+    if np.random.rand() > 0.5:
+        padded_sequences = [seq.ljust(max_length, "-") for seq in sequences]
+    else:
+        padded_sequences = [seq.rjust(max_length, "-") for seq in sequences]
 
-    sequences_matrix = np.array([list(seq) for seq in padded_sequences], dtype='S1')
+    sequences_matrix = np.array([list(seq) for seq in padded_sequences], dtype="|S1")
 
     return sequence_ids, sequences_matrix
 

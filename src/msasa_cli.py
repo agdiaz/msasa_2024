@@ -39,7 +39,9 @@ def parse_arguments():
     parser.add_argument('--max_no_changes', type=int, default=15000, help='Max consecutive no change events before early stopping')
     parser.add_argument('--match_score', type=float, default=1.0, help='')
     parser.add_argument('--mismatch_score', type=float, default=-1.0, help='')
-    parser.add_argument('--gap_score', type=float, default=-10.0, help='')
+    parser.add_argument("--gap_score", type=float, default=-10.0, help="")
+    parser.add_argument("--changes", type=int, default=1, help="")
+    parser.add_argument("--iteration_neighbors", type=int, default=1, help="")
 
     return parser.parse_args()
 
@@ -64,16 +66,22 @@ def assert_sequences(original_sequences, aligned_sequences):
     aligned_lengths = [len(seq) for seq in aligned_sequences.values()]
 
     assert (len(set(aligned_lengths)) == 1), "Not all aligned sequences have the same length."
+    if not len(set(aligned_lengths)) == 1:
+        exit(1)
 
     # Assert that the length of each original sequence matches its aligned version, ignoring gaps
     for seq_id, original_seq in original_sequences.items():
         aligned_seq = aligned_sequences.get(seq_id)
         assert aligned_seq is not None, f"Aligned sequence for {seq_id} not found."
+        if aligned_seq is None:
+            exit(2)
 
         original_length = len(original_seq)
         aligned_length  = len(aligned_seq.replace("-", ""))
 
         assert (original_length == aligned_length), f"Length mismatch for {seq_id}: original ({original_length}) vs aligned ({aligned_length})"
+        if original_length != aligned_length:
+            exit(3)
 
 
 def main():
@@ -105,6 +113,8 @@ def main():
         match_score=args.match_score,
         mismatch_score=args.mismatch_score,
         gap_penalty=args.gap_score,
+        changes=args.changes,
+        iteration_neighbors=args.iteration_neighbors,
     )
 
     sa.anneal()

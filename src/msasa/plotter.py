@@ -65,11 +65,11 @@ def plot_charts_from_log(log_file_path, plot_title, max_no_change_events):
 
     ax2.plot(
         data["Iteration"],
-        data["Score_Improvement_Perc"],
-        label="Improvement %",
+        data["Max_Length"],
+        label="length",
         color="green",
     )
-    ax2.set_ylabel("Improvement %")  # Set the label for the second y-axis
+    ax2.set_ylabel("Length")  # Set the label for the second y-axis
     lines, labels = axs[0, 0].get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines + lines2, labels + labels2, loc="best")

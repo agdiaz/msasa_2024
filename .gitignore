@@ -1,4 +1,6 @@
 msasa_predictions_results/
+report-*.html
+timeline-*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

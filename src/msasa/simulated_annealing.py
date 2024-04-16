@@ -32,6 +32,8 @@ class SimulatedAnnealing:
         match_score = 1.0,
         mismatch_score = 0.0,
         gap_penalty = -1.0,
+        changes = 1,
+        iteration_neighbors = 1,
     ):
         self.sequences = sequences
         self.extend_sequences = extend
@@ -44,15 +46,30 @@ class SimulatedAnnealing:
         self.gap_penalty = gap_penalty
         self.quality_function = quality_function
         self.logger = logger
+        self.gap_char = ObjectiveFunction.GAP_CHAR_NP_ARRAY
+        self.changes = changes
+        self.iteration_neighbors = iteration_neighbors
+        self.padding = {
+            0: lambda seq, pad_length: np.pad(
+                seq,
+                (0, pad_length - len(seq)),
+                constant_values=ObjectiveFunction.GAP_CHAR_NP_ARRAY,
+            ),
+            1: lambda seq, pad_length: np.pad(
+                seq,
+                (pad_length - len(seq), 0),
+                constant_values=ObjectiveFunction.GAP_CHAR_NP_ARRAY,
+            ),
+        }
 
     def build_matrix(self) -> Dict[Tuple[str, str], float]:
         matches_dict = {}
-        for res1_char, res2_char in combinations_with_replacement("-ABCDEFGHIJKLMNOPQRSTUVWXYZ", r=2):
+        for res1_char, res2_char in combinations_with_replacement("-ARNDCQEGHILKMFPSTWYVBZX*", r=2):
             res1 = res1_char.encode()
             res2 = res2_char.encode()
 
             if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
-                matches_dict[(res1, res2)] = self.gap_penalty * 2
+                matches_dict[(res1, res2)] = self.gap_penalty
                 matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
             elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
                 matches_dict[(res1, res2)] = self.gap_penalty
@@ -66,6 +83,24 @@ class SimulatedAnnealing:
 
         return matches_dict
 
+    def build_substitution_matrix(self, score_matrix, multiplier=1.0) -> Dict[Tuple[str, str], float]:
+        matches_dict = {}
+        for res1_char, res2_char in combinations_with_replacement("-ARNDCQEGHILKMFPSTWYVBZX*", r=2):
+            res1 = res1_char.encode()
+            res2 = res2_char.encode()
+
+            if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
+                matches_dict[(res1, res2)] = self.gap_penalty
+                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+            elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
+                matches_dict[(res1, res2)] = self.gap_penalty
+                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+            else:
+                matches_dict[(res1, res2)] = multiplier * score_matrix[(chr(ord(res1)), chr(ord(res2)))]
+                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+
+        return matches_dict
+
     def create_quality_instance(self):
         if self.quality_function == "identity":
             return Identity(match_score=self.match_score, mismatch_score=self.mismatch_score, gap_penalty=self.gap_penalty)
@@ -73,10 +108,10 @@ class SimulatedAnnealing:
             return Coincidences(match_score=self.match_score, mismatch_score=self.mismatch_score, gap_penalty=self.gap_penalty)
         elif self.quality_function == "similarity_blosum62":
             blosum62 = substitution_matrices.load("BLOSUM62")
-            return Similarity(blosum62, gap_penalty=self.gap_penalty)
+            return Similarity(self.build_substitution_matrix(blosum62))
         elif self.quality_function == "similarity_pam250":
             pam250 = substitution_matrices.load("PAM250")
-            return Similarity(pam250, gap_penalty=self.gap_penalty, multiplier=-1.0)
+            return Similarity(self.build_substitution_matrix(pam250, -1.0))
         elif self.quality_function == "global":
             matches_matrix = self.build_matrix()
             return GlobalLocalAlignmentQuality(matches_matrix)
@@ -102,49 +137,60 @@ class SimulatedAnnealing:
         accepted: bool,
         no_changes: int,
     ):
-        historical_score_improvement: float = best_score - initial_score
-        acceptance = math.exp(current_score / temp)
+        try:
+            historical_score_improvement: float = best_score - initial_score
+            acceptance = np.exp(score_change / temp)
 
-        if initial_score != 0.0:
-            historical_improvement_percentage: float = (historical_score_improvement / abs(initial_score)) * 100
-            current_improvement_percentage: float = (score_change / abs(initial_score)) * 100
-        else:
-            historical_improvement_percentage: float = 0
-            current_improvement_percentage: float = 0
+            if initial_score != 0.0:
+                historical_improvement_percentage: float = (historical_score_improvement / abs(initial_score)) * 100
+                current_improvement_percentage: float = (score_change / abs(initial_score)) * 100
+            else:
+                historical_improvement_percentage: float = 0
+                current_improvement_percentage: float = 0
 
-        row_values = f"{iteration}\t{sequence_length}\t{temp:.10f}\t{current_score:.10f}\t{iteration_score:.10f}\t{new_score:.10f}\t{score_change:.10f}\t{current_improvement_percentage:.6f}\t{best_score:.10f}\t{historical_score_improvement:.10f}\t{historical_improvement_percentage:.6f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance:.10f}"
-        self.logger.info(row_values)
+            row_values = f"{iteration}\t{sequence_length}\t{temp:.7f}\t{current_score:+.7f}\t{iteration_score:+.7f}\t{new_score:+.7f}\t{score_change:+.7f}\t{current_improvement_percentage:+.4f}\t{best_score:+.7f}\t{historical_score_improvement:+.7f}\t{historical_improvement_percentage:+.4f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance}"
+            self.logger.info(row_values)
+        except:
+            pass
 
     def anneal(self):
-#         print("""
-# MSASA - Simulated Annealing for MSA (Adrián Díaz, Gabriela Minetti)
-# Initial temperature = {temp}; Cooling rate = {cooling_rate}
-# Match score = {match}; Mismatch score = {mismatch}; GAP score = {gap}
-# Consecutive No-Change limit = {no_change};
-# Energy function = {energy_func}
-#               """.format(temp=self.temp, cooling_rate=self.cooling_rate, match=self.match_score, mismatch=self.mismatch_score, gap=self.gap_penalty, no_change=self.no_changes_limit, energy_func=self.quality_function))
-
         self.quality_function_instance = self.create_quality_instance()
 
-        iteration, no_changes, total_accepted, total_rejected = 0, 0, 0, 0
+        current_temp, iteration, no_changes, total_accepted, total_rejected = self.temp, 0, 0, 0, 0
 
-        self.current_score: float = self.quality_function_instance.energy(self.sequences)
+        current_score_columns = self.sequences.transpose()
+
+        self.current_score: float = self.quality_function_instance.energy(current_score_columns.tobytes(), self.sequences.shape[0], self.sequences.shape[1])
+
         initial_score, best_score = self.current_score, self.current_score
 
         with ThreadPoolExecutor(max_workers=1) as executor:  # Using one worker for logging
-            while self.temp > self.min_temp:
+            while (current_temp := current_temp * self.cooling_rate) > self.min_temp and no_changes < self.no_changes_limit:
                 iteration_score: float = self.current_score
 
-                new_state = self.generate_new_state_nf()
-                new_score: float = self.quality_function_instance.energy(new_state)
+                # Find the best new sequences:
+                neighbors_best_score = None
+                for i in np.arange(self.iteration_neighbors):
+                    new_sequences_i_j = self.sequences.view()
 
-                score_change: float = new_score - self.current_score
+                    for j in np.arange(np.random.randint(1, self.changes)):
+                        new_sequences_i_j = self.generate_new_sequences(new_sequences_i_j, addition_deletion_prob=0.4)
 
-                accepted = self.should_accept(score_change)
-                if accepted:
-                    self.sequences = new_state.copy()
+                    new_sequences_columns = new_sequences_i_j.transpose()
+                    new_score_i_j: float = self.quality_function_instance.energy(new_sequences_columns.tobytes(), new_sequences_i_j.shape[0], new_sequences_i_j.shape[1])
+
+                    if (neighbors_best_score is None) or (new_score_i_j > neighbors_best_score):
+                        new_sequences = new_sequences_i_j
+                        new_score = new_score_i_j
+
+                # Once the best new state is found, we proceed with the regular SA flow
+
+                score_change = new_score - iteration_score
+
+                if (accepted := self.should_accept(score_change, current_temp)):
+                    self.sequences     = new_sequences
                     self.current_score = new_score
-                    total_accepted += 1
+                    total_accepted     += 1
 
                     if new_score > best_score:
                         best_score = new_score
@@ -156,60 +202,42 @@ class SimulatedAnnealing:
                 else:
                     no_changes = 0
 
-                executor.submit(self.log_async, iteration, self.temp, self.sequences.shape[1], self.current_score, iteration_score, new_score, score_change, initial_score, best_score, total_accepted, total_rejected, accepted, no_changes,)
+                executor.submit(self.log_async, iteration, current_temp, self.sequences.shape[1], self.current_score, iteration_score, new_score, score_change, initial_score, best_score, total_accepted, total_rejected, accepted, no_changes,)
 
-                self.temp *= self.cooling_rate
                 iteration += 1
 
-                if no_changes > self.no_changes_limit:
-                    break
+    def should_accept(self, delta, current_temp) -> bool:
+        return (delta > 0) or (np.random.rand() < np.exp(delta / current_temp))
 
-    def should_accept(self, delta) -> bool:
-        return delta > 0 or random.random() < math.exp(delta / self.temp)
+    def generate_new_sequences(self, sequences, addition_deletion_prob=0.5):
+        direction = np.random.randint(0, 2)
+        gap_positions = np.argwhere(sequences == self.gap_char)
 
+        if np.random.rand() < addition_deletion_prob or len(gap_positions) == 0:
+            seq_index = np.random.randint(len(sequences))
+            col_index = np.random.randint(0, sequences[seq_index].size - 1)
 
-    def generate_new_state_nf(self):
-        new_state = self.sequences
+            new_sequences_list = [
+                np.insert(seq, col_index, self.gap_char)
+                if current_seq_index == seq_index
+                else self.padding[direction](seq.copy(), len(seq) + 1)
+                for current_seq_index, seq in enumerate(sequences)
+            ]
+        else:
+            seq_index, col_index = random.choice(gap_positions)
 
-        gap_char = ObjectiveFunction.GAP_CHAR_NP_ARRAY
-        gap_positions = np.argwhere(new_state == gap_char)
+            new_sequences_list = [
+                self.padding[direction](np.delete(seq, col_index), len(seq))
+                if current_seq_index == seq_index else seq.copy()
+                for current_seq_index, seq in enumerate(sequences)
+            ]
 
-        action = 0 if random.random() > 0.5 else 1
-        direction = 0 if random.random() > 0.5 else 1
-        padding = {
-            0: lambda seq, pad_length: np.pad(seq, (0, pad_length - len(seq)), constant_values=gap_char),
-            1: lambda seq, pad_length: np.pad(seq, (pad_length - len(seq), 0), constant_values=gap_char),
-        }
+        new_sequences = np.array(new_sequences_list, dtype="|S1")
 
-        if action == 0 or len(gap_positions) == 0:
-            seq_index = random.randint(0, len(new_state) - 1)
-            col_index = random.randint(0, new_state[seq_index].size - 1)
+        while np.all(new_sequences[:, 0] == self.gap_char) or np.all(new_sequences[:, -1] == self.gap_char):
+            if np.all(new_sequences[:, 0] == self.gap_char):
+                new_sequences = new_sequences[:, 1:]
+            if np.all(new_sequences[:, -1] == self.gap_char):
+                new_sequences = new_sequences[:, :-1]
 
-            new_sequences_list = []
-            for seq_index_iterator in range(len(new_state)):
-                if seq_index_iterator == seq_index:
-                    new_sequences_list.append(np.insert(new_state[seq_index].copy(), col_index, gap_char))
-                else:
-                    new_sequences_list.append(padding[direction](new_state[seq_index_iterator].copy(), len(new_state[seq_index_iterator]) + 1))
-
-            new_state = np.array(new_sequences_list)
-
-        elif action == 1 and len(gap_positions) > 0:
-            seq_index, col_index = random.choice([(s, c) for s, c in gap_positions if c < (new_state.shape[1] - 1)])
-
-            new_sequences_list = []
-            for seq_index_iterator in range(len(new_state)):
-                if seq_index_iterator == seq_index:
-                    new_sequences_list.append(padding[direction](np.delete(new_state[seq_index_iterator].copy(), col_index), len(new_state[seq_index])))
-                else:
-                    new_sequences_list.append(new_state[seq_index_iterator].copy())
-
-            new_state = np.array(new_sequences_list)
-
-        while np.all(new_state[:, 0] == gap_char) or np.all(new_state[:, -1] == gap_char):
-            if np.all(new_state[:, 0] == gap_char):
-                new_state = new_state[:, 1:]
-            if np.all(new_state[:, -1] == gap_char):
-                new_state = new_state[:, :-1]
-
-        return new_state
+        return new_sequences

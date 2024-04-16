@@ -72,34 +72,35 @@ workflow {
 
     plotMumsaOverlap(computeMumsaOverlapScore.out)
 
-    computeReferenceCoreIndex(reference_fasta_files, "reference")
-    computeCoincidencesCoreIndex(alignCoincidences.out.alnFasta, "coincidences")
-    computeIdentityCoreIndex(alignIdentity.out.alnFasta, "identity")
-    computeSimilarityBlosum62CoreIndex(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
-    computeSimilarityPam250CoreIndex(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
-    computeGlobalCoreIndex(alignGlobal.out.alnFasta, "global")
-    computeLocalCoreIndex(alignLocal.out.alnFasta, "local")
+    // computeReferenceCoreIndex(reference_fasta_files, "reference")
+    // computeCoincidencesCoreIndex(alignCoincidences.out.alnFasta, "coincidences")
+    // computeIdentityCoreIndex(alignIdentity.out.alnFasta, "identity")
+    // computeSimilarityBlosum62CoreIndex(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    // computeSimilarityPam250CoreIndex(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    // computeGlobalCoreIndex(alignGlobal.out.alnFasta, "global")
+    // computeLocalCoreIndex(alignLocal.out.alnFasta, "local")
 
-    computeReferenceTransitiveConsistencyScore(reference_fasta_files, "reference")
-    computeCoincidencesTransitiveConsistencyScore(alignCoincidences.out.alnFasta, "coincidences")
-    computeIdentityTransitiveConsistencyScore(alignIdentity.out.alnFasta, "identity")
-    computeSimilarityBlosum62TransitiveConsistencyScore(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
-    computeSimilarityPam250TransitiveConsistencyScore(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
-    computeGlobalTransitiveConsistencyScore(alignGlobal.out.alnFasta, "global")
-    computeLocalTransitiveConsistencyScore(alignLocal.out.alnFasta, "local")
+    // computeReferenceTransitiveConsistencyScore(reference_fasta_files, "reference")
+    // computeCoincidencesTransitiveConsistencyScore(alignCoincidences.out.alnFasta, "coincidences")
+    // computeIdentityTransitiveConsistencyScore(alignIdentity.out.alnFasta, "identity")
+    // computeSimilarityBlosum62TransitiveConsistencyScore(alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    // computeSimilarityPam250TransitiveConsistencyScore(alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    // computeGlobalTransitiveConsistencyScore(alignGlobal.out.alnFasta, "global")
+    // computeLocalTransitiveConsistencyScore(alignLocal.out.alnFasta, "local")
 
-    computeCoincidencesBaliScore(bali_base_xml_files, alignCoincidences.out.alnFasta, "coincidences")
-    computeIdentityBaliScore(bali_base_xml_files, alignIdentity.out.alnFasta, "identity")
-    computeSimilarityBlosum62BaliScore(bali_base_xml_files, alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
-    computeSimilarityPam250BaliScore(bali_base_xml_files, alignSimilarityPam250.out.alnFasta, "similarity_pam250")
-    computeGlobalBaliScore(bali_base_xml_files, alignGlobal.out.alnFasta, "global")
-    computeLocalBaliScore(bali_base_xml_files, alignLocal.out.alnFasta, "local")
+    // computeCoincidencesBaliScore(bali_base_xml_files, alignCoincidences.out.alnFasta, "coincidences")
+    // computeIdentityBaliScore(bali_base_xml_files, alignIdentity.out.alnFasta, "identity")
+    // computeSimilarityBlosum62BaliScore(bali_base_xml_files, alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    // computeSimilarityPam250BaliScore(bali_base_xml_files, alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    // computeGlobalBaliScore(bali_base_xml_files, alignGlobal.out.alnFasta, "global")
+    // computeLocalBaliScore(bali_base_xml_files, alignLocal.out.alnFasta, "local")
 }
 
 process alignCoincidences {
+    // cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -112,23 +113,27 @@ process alignCoincidences {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.coincidences.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.coincidences.aln \
         --log_file ${fasta_file}.msasa.coincidences.log \
         --extend \
-        --match_score 1.0 \
-        --gap_score -2.0 \
-        --temp 5 \
-        --cooling_rate 0.999 \
+        --match_score 10 \
+        --mismatch_score 0.0 \
+        --gap_score 0 \
+        --temp 0.1 \
+        --cooling_rate 0.995 \
         --min_temp 0.000001 \
-        --max_no_changes 5000 \
+        --max_no_changes 7500 \
+        --changes 5 \
+        --iteration_neighbors 50 \
         --quality_function coincidences
     """
 }
 
 process alignIdentity {
+    // cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -141,25 +146,27 @@ process alignIdentity {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.identity.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.identity.aln \
         --log_file ${fasta_file}.msasa.identity.log \
         --extend \
-        --match_score 1.0 \
-        --mismatch_score -2.0 \
-        --gap_score -1.0 \
-        --temp 1 \
-        --cooling_rate 0.999 \
-        --min_temp 0.0001 \
-        --max_no_changes 5000 \
+        --match_score 10 \
+        --mismatch_score 0 \
+        --gap_score 0\
+        --temp 0.1 \
+        --cooling_rate 0.995 \
+        --min_temp 0.000001 \
+        --max_no_changes 7500 \
+        --changes 5 \
+        --iteration_neighbors 50 \
         --quality_function identity
     """
 }
 
 process alignSimilarityBlosum62 {
-    cache false
+    // cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -172,23 +179,25 @@ process alignSimilarityBlosum62 {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.aln \
         --log_file ${fasta_file}.msasa.similarity_blosum62.log \
         --extend \
-        --gap_score -25.0 \
-        --temp 1.0 \
-        --cooling_rate 0.999 \
-        --min_temp 0.0000001 \
-        --max_no_changes 50000 \
+        --gap_score -8.0 \
+        --temp 0.50 \
+        --cooling_rate 0.995 \
+        --min_temp 0.00001 \
+        --max_no_changes 2500 \
+        --changes 20 \
+        --iteration_neighbors 25 \
         --quality_function similarity_blosum62
     """
 }
 
 process alignSimilarityPam250 {
-    cache false
+    // cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -201,22 +210,25 @@ process alignSimilarityPam250 {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.aln \
         --log_file ${fasta_file}.msasa.similarity_pam250.log \
         --extend \
-        --gap_score -25.0 \
+        --gap_score -2.0 \
         --temp 1.0 \
         --cooling_rate 0.999 \
-        --min_temp 0.0000001 \
-        --max_no_changes 50000 \
+        --min_temp 0.00001 \
+        --max_no_changes 2500 \
+        --changes 10 \
+        --iteration_neighbors 25 \
         --quality_function similarity_pam250
     """
 }
 
 process alignGlobal {
+    cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -229,24 +241,27 @@ process alignGlobal {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.aln \
         --log_file ${fasta_file}.msasa.global.log \
         --extend \
-        --match_score 4.0 \
-        --mismatch_score -1.0 \
-        --gap_score -10.0 \
-        --temp 1 \
-        --cooling_rate 0.999 \
-        --min_temp 0.0000001 \
-        --max_no_changes 20000 \
+        --match_score 5.0 \
+        --mismatch_score 0.0 \
+        --gap_score 0.0 \
+        --temp 0.1 \
+        --cooling_rate 0.992 \
+        --min_temp 0.00001 \
+        --max_no_changes 5000 \
+        --changes 25 \
+        --iteration_neighbors 50 \
         --quality_function global
     """
 }
 
 process alignLocal {
+    cache false
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -259,25 +274,27 @@ process alignLocal {
 
     script:
     """
-    python ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.aln \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.aln \
         --log_file ${fasta_file}.msasa.local.log \
         --extend \
-        --match_score 4.0 \
-        --mismatch_score 0.0 \
-        --gap_score -8.0 \
-        --temp 1 \
-        --cooling_rate 0.999 \
-        --min_temp 0.0000001 \
-        --max_no_changes 20000 \
+        --match_score 10.0 \
+        --mismatch_score 1.0 \
+        --gap_score 0.0 \
+        --temp 0.1 \
+        --cooling_rate 0.995 \
+        --min_temp 0.00001 \
+        --max_no_changes 5000 \
+        --changes 25 \
+        --iteration_neighbors 50 \
         --quality_function local
     """
 }
 
 process plotMumsaOverlap {
-    cache false
     label 'msasa'
+    cache false
     tag "${file_path.simpleName}"
-    publishDir params.results_dir + "/plots/${file_path.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/plots/${file_path.simpleName}", overwrite: true, mode: 'link'
 
     input:
         path(file_path)

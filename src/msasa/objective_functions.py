@@ -2,7 +2,6 @@ from collections import Counter
 from typing import Dict, Tuple
 import numpy as np
 from itertools import combinations
-# from functools import lru_cache
 from methodtools import lru_cache
 from abc import ABC, abstractmethod
 
@@ -14,23 +13,25 @@ from abc import ABC, abstractmethod
 class ObjectiveFunction(ABC):
     GAP_SYMBOL = b'-'
     GAP_CHAR = '-'
-    GAP_CHAR_NP_ARRAY = np.array(["-"], dtype="S1")
+    GAP_CHAR_NP_ARRAY = np.array(["-"], dtype="|S1")
 
     def __init__(self) -> None:
         super().__init__()
 
     @abstractmethod
-    @lru_cache(maxsize=128)
+    @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
         pass
 
-    def divider(self, _sequences) -> float:
+    def divider(self, rows, columns) -> float:
         return 1.0
 
-    def energy(self, sequences) -> float:
-        results = [self.compute_column(column.tobytes()) for column in sequences.transpose()]
+    @lru_cache(maxsize=1024)
+    def energy(self, columns_bytes, sequences, residues) -> float:
+        columns = np.reshape(np.frombuffer(columns_bytes, dtype="|S1"), (residues, sequences))
+        results = np.sum([self.compute_column(column.tobytes()) for column in columns])
 
-        return sum(results) / self.divider(sequences)
+        return results / self.divider(sequences, residues)
 
 
 class Coincidences(ObjectiveFunction):
@@ -39,8 +40,12 @@ class Coincidences(ObjectiveFunction):
         self.match_score = match_score
         self.mismatch_score = mismatch_score
         self.gap_penalty = gap_penalty
+        super().__init__()
 
-    @lru_cache(maxsize=128)
+    def divider(self, rows, columns) -> float:
+        return columns
+
+    @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
         column = np.frombuffer(column_hash, dtype="|S1")
 
@@ -50,16 +55,14 @@ class Coincidences(ObjectiveFunction):
         if highest_count == 1:
             return self.mismatch_score
 
-        score = 0
+        scores = np.array(
+        [
+            self.gap_penalty if max_group_char == ObjectiveFunction.GAP_SYMBOL else self.match_score
+            for max_group_char, max_group_repetitions in char_counts.items()
+            if max_group_repetitions == highest_count
+        ])
 
-        for max_group_char, max_group_repetitions in char_counts.items():
-            if max_group_repetitions == highest_count:
-                if max_group_char == ObjectiveFunction.GAP_SYMBOL:
-                    score += self.gap_penalty * highest_count
-                else:
-                    score += self.match_score * highest_count
-
-        return score / len(column)
+        return (scores * highest_count).sum() / len(column)
 
 
 class Identity(ObjectiveFunction):
@@ -67,11 +70,12 @@ class Identity(ObjectiveFunction):
         self.match_score = match_score
         self.mismatch_score = mismatch_score
         self.gap_penalty = gap_penalty
+        super().__init__()
 
-    def divider(self, sequences) -> float:
-        return len(sequences)
+    def divider(self, rows, columns) -> float:
+        return columns
 
-    @lru_cache(maxsize=128)
+    @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
         column = np.frombuffer(column_hash, dtype="|S1")
 
@@ -84,32 +88,27 @@ class Identity(ObjectiveFunction):
 
 
 class Similarity(ObjectiveFunction):
-    def __init__(self, similarity_matrix: Dict[Tuple[str, str], float], gap_penalty:float=-4.0, multiplier:float=1.0) -> None:
+    def __init__(self, similarity_matrix) -> None:
         self.similarity_matrix = similarity_matrix
-        self.gap_penalty = gap_penalty
-        self.multiplier = multiplier
+        super().__init__()
 
-    @lru_cache(maxsize=128)
-    def score(self, res1: bytes, res2: bytes) -> float:
-        if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
-            return self.gap_penalty * 2
-        elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
-            return self.gap_penalty
-        else:
-            return self.multiplier * self.similarity_matrix[(chr(ord(res1)), chr(ord(res2)))]
-
-    @lru_cache(maxsize=128)
+    @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
         column = np.frombuffer(column_hash, dtype="|S1")
 
-        return sum([self.score(res1, res2) for res1, res2 in combinations(column, 2)])
+        return np.array([self.similarity_matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()
 
 
 class GlobalLocalAlignmentQuality(ObjectiveFunction):
-    def __init__(self, score_matrix: Dict[Tuple[str, str], float]) -> None:
+    def __init__(self, score_matrix) -> None:
         self.matrix = score_matrix
+        super().__init__()
 
-    @lru_cache(maxsize=128)
+    def divider(self, rows, columns) -> float:
+        return columns
+
+    @lru_cache(maxsize=1024)
     def compute_column(self, column_hash) -> float:
         column = np.frombuffer(column_hash, dtype="|S1")
-        return sum([self.matrix[(res1, res2)] for res1, res2 in combinations(column, 2)])
+
+        return np.array([self.matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()

@@ -47,9 +47,9 @@ process computeMumsaOverlapScore {
 process computeCoreIndex {
     label 'msasa'
     errorStrategy 'ignore'
+
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
-    // errorStrategy 'ignore'
 
     input:
         path fasta_file
@@ -69,7 +69,6 @@ process computeTransitiveConsistencyScore {
     errorStrategy 'ignore'
     tag "${fasta_file.simpleName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
-    // errorStrategy 'ignore'
 
     input:
         path fasta_file
@@ -85,11 +84,10 @@ process computeTransitiveConsistencyScore {
 }
 
 process computeBaliScore {
-    label "container"
     errorStrategy 'ignore'
+
     tag "${fasta_file.simpleName} ${predictorName}"
     publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
-    // errorStrategy 'ignore'
 
     input:
         path reference
