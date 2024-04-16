@@ -138,6 +138,7 @@ class SimulatedAnnealing:
         no_changes: int,
         sequence_energy_hits: int,
         column_energy_hits: int,
+        sequences_energy_cached: int
     ):
         try:
             historical_score_improvement: float = best_score - initial_score
@@ -150,7 +151,7 @@ class SimulatedAnnealing:
                 historical_improvement_percentage: float = 0
                 current_improvement_percentage: float = 0
 
-            row_values = f"{iteration}\t{sequence_length}\t{temp:.7f}\t{current_score:+.7f}\t{iteration_score:+.7f}\t{new_score:+.7f}\t{score_change:+.7f}\t{current_improvement_percentage:+.4f}\t{best_score:+.7f}\t{historical_score_improvement:+.7f}\t{historical_improvement_percentage:+.4f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance}\t{sequence_energy_hits}\t{column_energy_hits}"
+            row_values = f"{iteration}\t{sequence_length}\t{temp:.7f}\t{current_score:+.7f}\t{iteration_score:+.7f}\t{new_score:+.7f}\t{score_change:+.7f}\t{current_improvement_percentage:+.4f}\t{best_score:+.7f}\t{historical_score_improvement:+.7f}\t{historical_improvement_percentage:+.4f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance}\t{sequence_energy_hits}\t{sequences_energy_cached}\t{column_energy_hits}"
             self.logger.info(row_values)
         except:
             pass
@@ -158,10 +159,9 @@ class SimulatedAnnealing:
     def anneal(self):
         self.quality_function_instance = self.create_quality_instance()
 
-        current_temp, iteration, no_changes, total_accepted, total_rejected = self.temp, 0, 0, 0, 0
+        current_temp, iteration, no_changes, total_accepted, total_rejected, sequences_energy_cached, column_energy_cached = self.temp, 0, 0, 0, 0, 0, 0
 
-        current_score_columns = self.sequences.transpose()
-
+        current_score_columns = np.sort(self.sequences.transpose(), axis=1)
         self.current_score: float = self.quality_function_instance.energy(current_score_columns.tobytes(), self.sequences.shape[0], self.sequences.shape[1])
 
         initial_score, best_score = self.current_score, self.current_score
@@ -178,15 +178,17 @@ class SimulatedAnnealing:
                     for j in np.arange(np.random.randint(1, self.changes)):
                         new_sequences_i_j = self.generate_new_sequences(new_sequences_i_j, addition_deletion_prob=0.4)
 
-                    new_sequences_columns = new_sequences_i_j.transpose()
+                    new_sequences_columns = np.sort(new_sequences_i_j.transpose(), axis=1)
+                    before = self.quality_function_instance.sequence_energy_hits
                     new_score_i_j: float = self.quality_function_instance.energy(new_sequences_columns.tobytes(), new_sequences_i_j.shape[0], new_sequences_i_j.shape[1])
+                    if before == self.quality_function_instance.sequence_energy_hits:
+                        sequences_energy_cached += 1
 
                     if (neighbors_best_score is None) or (new_score_i_j > neighbors_best_score):
                         new_sequences = new_sequences_i_j
                         new_score = new_score_i_j
 
                 # Once the best new state is found, we proceed with the regular SA flow
-
                 score_change = new_score - iteration_score
 
                 if (accepted := self.should_accept(score_change, current_temp)):
@@ -221,6 +223,7 @@ class SimulatedAnnealing:
                     no_changes,
                     self.quality_function_instance.sequence_energy_hits,
                     self.quality_function_instance.column_energy_hits,
+                    sequences_energy_cached,
                 )
 
                 iteration += 1
