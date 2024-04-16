@@ -162,7 +162,11 @@ class SimulatedAnnealing:
         current_temp, iteration, no_changes, total_accepted, total_rejected, sequences_energy_cached, column_energy_cached = self.temp, 0, 0, 0, 0, 0, 0
 
         current_score_columns = np.sort(self.sequences.transpose(), axis=1)
+
+        before = self.quality_function_instance.sequence_energy_hits
         self.current_score: float = self.quality_function_instance.energy(current_score_columns.tobytes(), self.sequences.shape[0], self.sequences.shape[1])
+        if before == self.quality_function_instance.sequence_energy_hits:
+            sequences_energy_cached += 1
 
         initial_score, best_score = self.current_score, self.current_score
 
@@ -176,7 +180,7 @@ class SimulatedAnnealing:
                     new_sequences_i_j = self.sequences.view()
 
                     for j in np.arange(np.random.randint(1, self.changes)):
-                        new_sequences_i_j = self.generate_new_sequences(new_sequences_i_j, addition_deletion_prob=0.4)
+                        new_sequences_i_j = self.generate_new_sequences(new_sequences_i_j, addition_deletion_prob=0.5)
 
                     new_sequences_columns = np.sort(new_sequences_i_j.transpose(), axis=1)
                     before = self.quality_function_instance.sequence_energy_hits
