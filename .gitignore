@@ -1,6 +1,8 @@
 msasa_predictions_results/
 report-*.html
 timeline-*.html
+thesis_results/
+workflow.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

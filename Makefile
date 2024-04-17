@@ -1,31 +1,35 @@
-run-all-experiments-1:
+run-all-experiments-1a:
 	nextflow run main.nf --input_dir ./datasets/BB11004 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BB11013 -with-docker
 	# nextflow run main.nf --input_dir ./datasets/BB30003 -with-docker
+run-all-experiments-1b:
 	nextflow run main.nf --input_dir ./datasets/BB40010 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BB40014 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBA0011 -with-docker
 
-run-all-experiments-2:
+run-all-experiments-2a:
 	nextflow run main.nf --input_dir ./datasets/BBA0030 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBA0065 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBA0117 -with-docker
+run-all-experiments-2b:
 	nextflow run main.nf --input_dir ./datasets/BBA0142 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBA0192 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS12014 -with-docker
 
-run-all-experiments-3:
+run-all-experiments-3a:
 	nextflow run main.nf --input_dir ./datasets/BBS20002 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS20007 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS20009 -with-docker
+run-all-experiments-3b:
 	nextflow run main.nf --input_dir ./datasets/BBS30001 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS30003 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS30015 -with-docker
 
-run-all-experiments-4:
+run-all-experiments-4a:
 	nextflow run main.nf --input_dir ./datasets/BBS30016 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS30017 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BBS50005 -with-docker
+run-all-experiments-4b:
 	nextflow run main.nf --input_dir ./datasets/BOX122 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BOX132 -with-docker
 	nextflow run main.nf --input_dir ./datasets/BOX212 -with-docker

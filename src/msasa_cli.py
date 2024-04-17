@@ -22,7 +22,7 @@ def parse_arguments():
     parser.add_argument(
         "--quality_function",
         type=str,
-        choices=["coincidences", "identity", "similarity_blosum62", "similarity_pam250", "global", "local"],
+        choices=["coincidences", "identity", "similarity_blosum62", "similarity_pam250", "similarity_gonnet", "global", "local"],
         default="global",
         help="Quality function to evaluate alignments",
     )

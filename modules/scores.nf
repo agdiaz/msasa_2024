@@ -6,7 +6,7 @@
 process computeMumsaOverlapScore {
     tag "${referenceAlignment.simpleName}"
 
-    publishDir params.results_dir + "/scores/${referenceAlignment.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${referenceAlignment.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
 
     input:
     path referenceAlignment
@@ -19,11 +19,12 @@ process computeMumsaOverlapScore {
     path msasaIdentityAlignment
     path msasaSimilarityBlosum62Alignment
     path msasaSimilarityPam250Alignment
+    path msasaSimilarityGonnet92
     path msasaGlobalAlignment
     path msasaLocalAlignment
 
     output:
-        path "${referenceAlignment.name}_mumsa.txt"
+        path "${referenceAlignment.name}_${params.execution_index}.mumsa.txt"
 
     script:
     """
@@ -38,8 +39,9 @@ process computeMumsaOverlapScore {
         ${msasaIdentityAlignment} \
         ${msasaSimilarityBlosum62Alignment} \
         ${msasaSimilarityPam250Alignment} \
+        ${msasaSimilarityGonnet92} \
         ${msasaGlobalAlignment} \
-        ${msasaLocalAlignment} > ${referenceAlignment.name}_mumsa.txt
+        ${msasaLocalAlignment} > ${referenceAlignment.name}_${params.execution_index}.mumsa.txt
     """
 }
 
@@ -49,7 +51,7 @@ process computeCoreIndex {
     errorStrategy 'ignore'
 
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
 
     input:
         path fasta_file
@@ -68,7 +70,7 @@ process computeTransitiveConsistencyScore {
     label 'msasa'
     errorStrategy 'ignore'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
 
     input:
         path fasta_file
@@ -87,7 +89,7 @@ process computeBaliScore {
     errorStrategy 'ignore'
 
     tag "${fasta_file.simpleName} ${predictorName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
 
     input:
         path reference

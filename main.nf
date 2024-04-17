@@ -3,11 +3,9 @@
 // Define parameters
 params.input_dir = "$baseDir/datasets/BB11004"  // default input directory
 params.msasa_script = "$baseDir/src/msasa_cli.py"
-params.results_dir = "$baseDir/msasa_predictions_results"
-
-params.match_score = 1
-params.mismatch_score = 0
-params.gap_score = -1
+params.mumsa_script = "$baseDir/src/mumsa_plot.py"
+params.results_dir = "$baseDir/thesis_results"
+params.execution_index = 1
 
 include {
     computeMumsaOverlapScore;
@@ -32,6 +30,7 @@ include {
     computeBaliScore as computeIdentityBaliScore;
     computeBaliScore as computeSimilarityBlosum62BaliScore;
     computeBaliScore as computeSimilarityPam250BaliScore;
+    computeBaliScore as computeSimilarityGonnet92BaliScore;
     computeBaliScore as computeGlobalBaliScore;
     computeBaliScore as computeLocalBaliScore;
 
@@ -48,10 +47,11 @@ workflow {
     muscle_fasta_files = Channel.fromPath("${params.input_dir}/*_muscle.fasta", checkIfExists: true)
     t_coffee_fasta_files = Channel.fromPath("${params.input_dir}/*_tCoffee.fasta", checkIfExists: true)
 
-    alignCoincidences(fasta_files)
     alignIdentity(fasta_files)
+    alignCoincidences(fasta_files)
     alignSimilarityBlosum62(fasta_files)
     alignSimilarityPam250(fasta_files)
+    alignGonnet92(fasta_files)
     alignGlobal(fasta_files)
     alignLocal(fasta_files)
 
@@ -66,6 +66,7 @@ workflow {
         alignIdentity.out.alnFasta,
         alignSimilarityBlosum62.out.alnFasta,
         alignSimilarityPam250.out.alnFasta,
+        alignGonnet92.out.alnFasta,
         alignGlobal.out.alnFasta,
         alignLocal.out.alnFasta
     )
@@ -88,19 +89,20 @@ workflow {
     // computeGlobalTransitiveConsistencyScore(alignGlobal.out.alnFasta, "global")
     // computeLocalTransitiveConsistencyScore(alignLocal.out.alnFasta, "local")
 
-    // computeCoincidencesBaliScore(bali_base_xml_files, alignCoincidences.out.alnFasta, "coincidences")
-    // computeIdentityBaliScore(bali_base_xml_files, alignIdentity.out.alnFasta, "identity")
-    // computeSimilarityBlosum62BaliScore(bali_base_xml_files, alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
-    // computeSimilarityPam250BaliScore(bali_base_xml_files, alignSimilarityPam250.out.alnFasta, "similarity_pam250")
-    // computeGlobalBaliScore(bali_base_xml_files, alignGlobal.out.alnFasta, "global")
-    // computeLocalBaliScore(bali_base_xml_files, alignLocal.out.alnFasta, "local")
+    computeCoincidencesBaliScore(bali_base_xml_files, alignCoincidences.out.alnFasta, "coincidences")
+    computeIdentityBaliScore(bali_base_xml_files, alignIdentity.out.alnFasta, "identity")
+    computeSimilarityBlosum62BaliScore(bali_base_xml_files, alignSimilarityBlosum62.out.alnFasta, "similarity_blosum62")
+    computeSimilarityPam250BaliScore(bali_base_xml_files, alignSimilarityPam250.out.alnFasta, "similarity_pam250")
+    computeSimilarityGonnet92BaliScore(bali_base_xml_files, alignGonnet92.out.alnFasta, "similarity_gonnet92")
+    computeGlobalBaliScore(bali_base_xml_files, alignGlobal.out.alnFasta, "global")
+    computeLocalBaliScore(bali_base_xml_files, alignLocal.out.alnFasta, "local")
 }
 
 process alignCoincidences {
-    // cache false
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -122,7 +124,7 @@ process alignCoincidences {
         --temp 0.1 \
         --cooling_rate 0.995 \
         --min_temp 0.000001 \
-        --max_no_changes 7500 \
+        --max_no_changes 2000 \
         --changes 5 \
         --iteration_neighbors 50 \
         --quality_function coincidences
@@ -130,10 +132,10 @@ process alignCoincidences {
 }
 
 process alignIdentity {
-    // cache false
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -155,7 +157,7 @@ process alignIdentity {
         --temp 0.1 \
         --cooling_rate 0.995 \
         --min_temp 0.000001 \
-        --max_no_changes 7500 \
+        --max_no_changes 1500 \
         --changes 5 \
         --iteration_neighbors 50 \
         --quality_function identity
@@ -163,10 +165,10 @@ process alignIdentity {
 }
 
 process alignSimilarityBlosum62 {
-    // cache false
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -183,6 +185,7 @@ process alignSimilarityBlosum62 {
         --log_file ${fasta_file}.msasa.similarity_blosum62.log \
         --extend \
         --gap_score -8.0 \
+        --mismatch_score -5.0 \
         --temp 0.50 \
         --cooling_rate 0.995 \
         --min_temp 0.00001 \
@@ -194,10 +197,10 @@ process alignSimilarityBlosum62 {
 }
 
 process alignSimilarityPam250 {
-    // cache false
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -214,6 +217,7 @@ process alignSimilarityPam250 {
         --log_file ${fasta_file}.msasa.similarity_pam250.log \
         --extend \
         --gap_score -2.0 \
+        --mismatch_score -0.5 \
         --temp 1.0 \
         --cooling_rate 0.999 \
         --min_temp 0.00001 \
@@ -224,11 +228,43 @@ process alignSimilarityPam250 {
     """
 }
 
-process alignGlobal {
-    cache false
+process alignGonnet92 {
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
+
+    input:
+        path(fasta_file)
+
+    output:
+        path("${fasta_file}.msasa.similarity_gonnet92.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.similarity_gonnet92.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.similarity_gonnet92.log"), emit: log
+        path("${fasta_file}.msasa.similarity_gonnet92.log.png"), emit: plot
+
+    script:
+    """
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_gonnet92.aln \
+        --log_file ${fasta_file}.msasa.similarity_gonnet92.log \
+        --extend \
+        --gap_score -2.0 \
+        --mismatch_score -0.5 \
+        --temp 1.0 \
+        --cooling_rate 0.999 \
+        --min_temp 0.00001 \
+        --max_no_changes 2500 \
+        --changes 10 \
+        --iteration_neighbors 25 \
+        --quality_function similarity_gonnet
+    """
+}
+
+process alignGlobal {
+    debug true
+    label 'msasa'
+    tag "${fasta_file.simpleName}"
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -244,24 +280,24 @@ process alignGlobal {
     python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.aln \
         --log_file ${fasta_file}.msasa.global.log \
         --extend \
-        --match_score 5.0 \
-        --mismatch_score 0.0 \
-        --gap_score 0.0 \
+        --match_score 10.0 \
+        --mismatch_score -1.0 \
+        --gap_score -2.5 \
         --temp 0.1 \
         --cooling_rate 0.992 \
         --min_temp 0.00001 \
-        --max_no_changes 5000 \
-        --changes 25 \
-        --iteration_neighbors 50 \
+        --max_no_changes 2500 \
+        --changes 100 \
+        --iteration_neighbors 100 \
         --quality_function global
     """
 }
 
 process alignLocal {
-    cache false
+    debug true
     label 'msasa'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/predictions/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(fasta_file)
@@ -277,15 +313,15 @@ process alignLocal {
     python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.aln \
         --log_file ${fasta_file}.msasa.local.log \
         --extend \
-        --match_score 10.0 \
+        --match_score 5.0 \
         --mismatch_score 1.0 \
-        --gap_score 0.0 \
+        --gap_score -2.0 \
         --temp 0.1 \
-        --cooling_rate 0.995 \
+        --cooling_rate 0.992 \
         --min_temp 0.00001 \
-        --max_no_changes 5000 \
-        --changes 25 \
-        --iteration_neighbors 50 \
+        --max_no_changes 2500 \
+        --changes 100 \
+        --iteration_neighbors 100 \
         --quality_function local
     """
 }
@@ -294,7 +330,7 @@ process plotMumsaOverlap {
     label 'msasa'
     cache false
     tag "${file_path.simpleName}"
-    publishDir params.results_dir + "/plots/${file_path.simpleName}", overwrite: true, mode: 'link'
+    publishDir params.results_dir + "/plots/${file_path.simpleName}/${params.execution_index}", overwrite: true, mode: 'link'
 
     input:
         path(file_path)
@@ -303,43 +339,6 @@ process plotMumsaOverlap {
 
     script:
     """
-    #!/Users/adrian/miniconda3/envs/msasa_2024/bin/python
-
-    import matplotlib as mpl
-    mpl.use("Agg")
-    import matplotlib.pyplot as plt
-
-    with open('${file_path}', 'r') as file:
-        lines = file.readlines()[1:]  # Skip the header line
-
-    # Parsing the data into lists
-    alignments = []
-    scores = []
-
-    for line in lines:
-        parts = line.rsplit(maxsplit=1)
-        alignments.append(parts[0].strip())
-        scores.append(float(parts[1]))
-
-    # Plotting the data
-    plt.figure(figsize=(10, 8))
-    bars = plt.barh(alignments, scores, color='skyblue')
-    plt.xlabel('Overlap Score')
-    plt.title('Overlap Scores to the reference alignment')
-    plt.gca().invert_yaxis()
-    plt.grid(axis='x', linestyle='--', alpha=0.6)
-
-    for bar, alignment in zip(bars, alignments):
-        if '.msasa.' in alignment:
-            # Highlight label background if it contains '.msasa.'
-            plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
-                        va='center', ha='left', color='black', fontsize=9, backgroundcolor='yellow')
-        else:
-            # Regular label without highlighting
-            plt.gca().text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():.2f}',
-                        va='center', ha='left', color='black', fontsize=9)
-
-    plt.tight_layout()
-    plt.savefig('${file_path.simpleName}_plot.png', dpi=300)
+    python ${params.mumsa_script} ${file_path} ${file_path.simpleName}_plot.png
     """
 }

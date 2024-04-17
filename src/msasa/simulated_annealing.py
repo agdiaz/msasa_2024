@@ -3,8 +3,6 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, Tuple
 import numpy as np
 import random
-import math
-import logging
 from Bio.Align import substitution_matrices
 from .objective_functions import (
     ObjectiveFunction,
@@ -64,40 +62,52 @@ class SimulatedAnnealing:
 
     def build_matrix(self) -> Dict[Tuple[str, str], float]:
         matches_dict = {}
+        max_value = max(self.match_score, self.gap_penalty, self.mismatch_score)
+        min_value = min(self.match_score, self.gap_penalty, self.mismatch_score)
+        scale = lambda n: (n - min_value) / (max_value - min_value)
+
         for res1_char, res2_char in combinations_with_replacement("-ARNDCQEGHILKMFPSTWYVBZX*", r=2):
             res1 = res1_char.encode()
             res2 = res2_char.encode()
 
             if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
-                matches_dict[(res1, res2)] = self.gap_penalty
+                matches_dict[(res1, res2)] = scale(self.gap_penalty)
                 matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
             elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
-                matches_dict[(res1, res2)] = self.gap_penalty
+                matches_dict[(res1, res2)] = scale(self.gap_penalty)
                 matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
             elif res1 == res2:
-                matches_dict[(res1, res2)] = self.match_score
+                matches_dict[(res1, res2)] = scale(self.match_score)
                 matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
             else:
-                matches_dict[(res1, res2)] = self.mismatch_score
+                matches_dict[(res1, res2)] = scale(self.mismatch_score)
                 matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
 
         return matches_dict
 
     def build_substitution_matrix(self, score_matrix, multiplier=1.0) -> Dict[Tuple[str, str], float]:
+        max_value = max(self.gap_penalty, self.mismatch_score, score_matrix.max())
+        min_value = min(self.gap_penalty, self.mismatch_score, score_matrix.min())
+        scale = lambda n: (n - min_value) / (max_value - min_value)
+
         matches_dict = {}
+        gap_substitution_value = scale(self.gap_penalty)
+
         for res1_char, res2_char in combinations_with_replacement("-ARNDCQEGHILKMFPSTWYVBZX*", r=2):
             res1 = res1_char.encode()
             res2 = res2_char.encode()
 
             if res1 == ObjectiveFunction.GAP_SYMBOL and res2 == ObjectiveFunction.GAP_SYMBOL:
-                matches_dict[(res1, res2)] = self.gap_penalty
-                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+                matches_dict[(res1, res2)] = gap_substitution_value
+                matches_dict[(res2, res1)] = gap_substitution_value
             elif res1 == ObjectiveFunction.GAP_SYMBOL or res2 == ObjectiveFunction.GAP_SYMBOL:
-                matches_dict[(res1, res2)] = self.gap_penalty
-                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+                matches_dict[(res1, res2)] = gap_substitution_value
+                matches_dict[(res2, res1)] = gap_substitution_value
             else:
-                matches_dict[(res1, res2)] = multiplier * score_matrix[(chr(ord(res1)), chr(ord(res2)))]
-                matches_dict[(res2, res1)] = matches_dict[(res1, res2)]
+                substitution_value = scale(score_matrix.get((chr(ord(res1)), chr(ord(res2))), self.mismatch_score))
+
+                matches_dict[(res1, res2)] = substitution_value
+                matches_dict[(res2, res1)] = substitution_value
 
         return matches_dict
 
@@ -109,9 +119,12 @@ class SimulatedAnnealing:
         elif self.quality_function == "similarity_blosum62":
             blosum62 = substitution_matrices.load("BLOSUM62")
             return Similarity(self.build_substitution_matrix(blosum62))
+        elif self.quality_function == "similarity_gonnet":
+            gonnet92 = substitution_matrices.load("GONNET1992")
+            return Similarity(self.build_substitution_matrix(gonnet92))
         elif self.quality_function == "similarity_pam250":
             pam250 = substitution_matrices.load("PAM250")
-            return Similarity(self.build_substitution_matrix(pam250, -1.0))
+            return Similarity(self.build_substitution_matrix(pam250))
         elif self.quality_function == "global":
             matches_matrix = self.build_matrix()
             return GlobalLocalAlignmentQuality(matches_matrix)
@@ -162,13 +175,9 @@ class SimulatedAnnealing:
         current_temp, iteration, no_changes, total_accepted, total_rejected, sequences_energy_cached, column_energy_cached = self.temp, 0, 0, 0, 0, 0, 0
 
         current_score_columns = np.sort(self.sequences.transpose(), axis=1)
-
-        before = self.quality_function_instance.sequence_energy_hits
         self.current_score: float = self.quality_function_instance.energy(current_score_columns.tobytes(), self.sequences.shape[0], self.sequences.shape[1])
-        if before == self.quality_function_instance.sequence_energy_hits:
-            sequences_energy_cached += 1
 
-        initial_score, best_score = self.current_score, self.current_score
+        historical_initial_score, initial_score, best_score = self.current_score, self.current_score, self.current_score
 
         with ThreadPoolExecutor(max_workers=1) as executor:  # Using one worker for logging
             while (current_temp := current_temp * self.cooling_rate) > self.min_temp and no_changes < self.no_changes_limit:
@@ -183,10 +192,7 @@ class SimulatedAnnealing:
                         new_sequences_i_j = self.generate_new_sequences(new_sequences_i_j, addition_deletion_prob=0.5)
 
                     new_sequences_columns = np.sort(new_sequences_i_j.transpose(), axis=1)
-                    before = self.quality_function_instance.sequence_energy_hits
                     new_score_i_j: float = self.quality_function_instance.energy(new_sequences_columns.tobytes(), new_sequences_i_j.shape[0], new_sequences_i_j.shape[1])
-                    if before == self.quality_function_instance.sequence_energy_hits:
-                        sequences_energy_cached += 1
 
                     if (neighbors_best_score is None) or (new_score_i_j > neighbors_best_score):
                         new_sequences = new_sequences_i_j
@@ -231,6 +237,10 @@ class SimulatedAnnealing:
                 )
 
                 iteration += 1
+
+        print(f"Annealing finished using heuristic {self.quality_function}. Initial score={historical_initial_score}; Final score={self.current_score}; Final temp={current_temp}; Final iteration={iteration-1}. Consecutive no-changes events: {no_changes}")
+        print(self.quality_function_instance.energy.cache_info())
+        print(self.quality_function_instance.get_column_energy.cache_info())
 
     def should_accept(self, delta, current_temp) -> bool:
         return (delta > 0) or (np.random.rand() < np.exp(delta / current_temp))
