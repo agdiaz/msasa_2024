@@ -2,8 +2,8 @@ CLUSTAL X (1.81) multiple sequence alignment
 
 
 SEQ_1                               ABCDE
-SEQ_2                               AB-DE
-SEQ_3                               A-C-E
+SEQ_2                               A-BDE
+SEQ_3                               A--CE
 SEQ_4                               ABCDE
 
 

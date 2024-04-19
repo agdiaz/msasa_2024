@@ -1,4 +1,8 @@
+import time
+from datetime import timedelta
+import os
 import argparse
+import json
 import logging
 from Bio import AlignIO
 
@@ -8,17 +12,19 @@ mpl.use("Agg")
 
 from msasa.simulated_annealing import SimulatedAnnealing
 from msasa import io, plotter
-
+from msasa.objective_functions_builder import Builder
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='MSASA: Simulated Annealing for Multiple Sequence Alignment')
     parser.add_argument('fasta_file', type=str, help='Path to the input FASTA file', default="./data/example.fasta")
+    parser.add_argument('--experiments_log_file', type=str, help='Path to the experiment JSON file', default="./data/example.fasta")
     parser.add_argument(
         "aligned_fasta_file",
         type=str,
         help="Path to the output aligned FASTA file",
         default="./data/aligned_example.fasta",
     )
+    parser.add_argument('--experiments', type=int, default=1, help="Number of repetitions")
     parser.add_argument(
         "--quality_function",
         type=str,
@@ -54,7 +60,7 @@ def log_header(logger):
 
     # Log the header
     logging.info(
-        "Timestamp\tIteration\tMax_Length\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tScore_Change\tScore_Change_Perc\tBest_Score\tHistorical_Score_Improvement\tScore_Improvement_Perc\tTotal_Accepted\tTotal_Rejected\tAccepted\tNo_Changes\tAcceptance\tSequences_Score_Hits\tSequences_Score_Cached\tColumn_Score_Hits"
+        "Timestamp\tIteration\tMax_Length\tTemperature\tCurrent_Score\tIteration_Score\tNew_Score\tScore_Change\tScore_Change_Perc\tBest_Score\tHistorical_Score_Improvement\tScore_Improvement_Perc\tTotal_Accepted\tTotal_Rejected\tAccepted\tNo_Changes\tAcceptance"
     )
 
     # Revert the formatter to include timestamps for subsequent log entries
@@ -87,54 +93,77 @@ def assert_sequences(original_sequences, aligned_sequences):
 def main():
     args = parse_arguments()
 
-    logging.basicConfig(
-        filename=args.log_file,
-        filemode="w",
-        level=logging.INFO,
-        format="%(asctime)s.%(msecs)03d\t%(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-
-    logger = logging.getLogger()
-
-    log_header(logger)
-
     sequence_ids, sequences = io.load_fasta(args.fasta_file)
+    builder = Builder(args.match_score, args.mismatch_score, args.gap_score)
+    quality_function = builder.create_quality_instance(args.quality_function)
 
-    sa = SimulatedAnnealing(
-        sequences,
-        logger,
-        extend=args.extend,
-        temp=args.temperature,
-        cooling_rate=args.cooling_rate,
-        quality_function=args.quality_function,
-        min_temp=args.min_temperature,
-        no_changes_limit=args.max_no_changes,
-        match_score=args.match_score,
-        mismatch_score=args.mismatch_score,
-        gap_penalty=args.gap_score,
-        changes=args.changes,
-        iteration_neighbors=args.iteration_neighbors,
-    )
+    results_list = []
 
-    sa.anneal()
+    for experiment_index in range(args.experiments):
+        log_file = os.path.abspath(args.log_file.replace(".log", f".{experiment_index}.log"))
+        print("Experiment #", experiment_index, log_file)
 
-    io.save_alignment(sequence_ids, sa.sequences, args.aligned_fasta_file)
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
 
-    original_sequences = io.parse_fasta(args.fasta_file)
-    aligned_sequences  = io.parse_fasta(args.aligned_fasta_file)
+        file_handler = logging.FileHandler(log_file, mode="w")
+        formatter = logging.Formatter("%(asctime)s.%(msecs)03d\t%(message)s", "%Y-%m-%d %H:%M:%S")
+        file_handler.setFormatter(formatter)
 
-    assert_sequences(original_sequences, aligned_sequences)
+        logger = logging.getLogger()
+        logger.addHandler(file_handler)
+        logger.setLevel(logging.INFO)
 
-    # Create plots
-    plotter.plot_charts_from_log(args.log_file, plotter.plot_title(args), args.max_no_changes)
+        log_header(logger)
 
-    # Read the alignment from the aligned FASTA file
-    alignment = AlignIO.read(args.aligned_fasta_file, "fasta")
+        sa = SimulatedAnnealing(
+            sequences,
+            logger,
+            extend=args.extend,
+            temp=args.temperature,
+            cooling_rate=args.cooling_rate,
+            quality_function=quality_function,
+            min_temp=args.min_temperature,
+            no_changes_limit=args.max_no_changes,
+            changes=args.changes,
+            iteration_neighbors=args.iteration_neighbors,
+        )
+        start_time = time.time()
+        aligned_sequences, final_temp, initial_score, final_score = sa.anneal()
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        readable_time = str(timedelta(seconds=elapsed_time))
 
-    # Write the alignment to an MSF file
-    AlignIO.write(alignment, args.aligned_fasta_file + ".clustal", "clustal")
+        saved_alignment_file = io.save_alignment(sequence_ids, aligned_sequences, args.aligned_fasta_file, experiment_index)
+        print("Output", saved_alignment_file)
 
+        results_list.append({
+            "experiment_index": experiment_index,
+            "initial_temp": f"{args.temperature:.7f}",
+            "final_temp": f"{final_temp:.7f}",
+            "initial_score": f"{initial_score:.7f}",
+            "final_score": f"{final_score:.7f}",
+            "output_file": saved_alignment_file,
+            "elapsed_time": elapsed_time,
+            "readable_time": readable_time
+        })
+
+        original_sequences = io.parse_fasta(args.fasta_file)
+        aligned_sequences = io.parse_fasta(saved_alignment_file)
+
+        assert_sequences(original_sequences, aligned_sequences)
+
+        # Create plots
+        plotter.plot_charts_from_log(log_file, plotter.plot_title(args), args.max_no_changes)
+
+        # Read the alignment from the aligned FASTA file
+        alignment = AlignIO.read(saved_alignment_file, "fasta")
+
+        # Write the alignment to an MSF file
+        AlignIO.write(alignment, saved_alignment_file + ".clustal", "clustal")
+
+    with open(args.experiments_log_file, "w") as fp:
+        json.dump(results_list, fp, indent=4)
 
 if __name__ == "__main__":
     main()

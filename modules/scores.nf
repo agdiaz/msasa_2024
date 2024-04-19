@@ -6,7 +6,7 @@
 process computeMumsaOverlapScore {
     tag "${referenceAlignment.simpleName}"
 
-    publishDir params.results_dir + "/scores/${referenceAlignment.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${msasaCoincidencesAlignment.simpleName}", overwrite: true, mode: 'copy'
 
     input:
     path referenceAlignment
@@ -24,7 +24,7 @@ process computeMumsaOverlapScore {
     path msasaLocalAlignment
 
     output:
-        path "${referenceAlignment.name}_${params.execution_index}.mumsa.txt"
+        path "${referenceAlignment.name}.mumsa.txt"
 
     script:
     """
@@ -41,7 +41,7 @@ process computeMumsaOverlapScore {
         ${msasaSimilarityPam250Alignment} \
         ${msasaSimilarityGonnet92} \
         ${msasaGlobalAlignment} \
-        ${msasaLocalAlignment} > ${referenceAlignment.name}_${params.execution_index}.mumsa.txt
+        ${msasaLocalAlignment} > ${referenceAlignment.name}.mumsa.txt
     """
 }
 
@@ -51,7 +51,7 @@ process computeCoreIndex {
     errorStrategy 'ignore'
 
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path fasta_file
@@ -70,7 +70,7 @@ process computeTransitiveConsistencyScore {
     label 'msasa'
     errorStrategy 'ignore'
     tag "${fasta_file.simpleName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path fasta_file
@@ -86,10 +86,11 @@ process computeTransitiveConsistencyScore {
 }
 
 process computeBaliScore {
-    errorStrategy 'ignore'
-
     tag "${fasta_file.simpleName} ${predictorName}"
-    publishDir params.results_dir + "/scores/${fasta_file.simpleName}/${params.execution_index}", overwrite: true, mode: 'copy'
+    errorStrategy 'ignore'
+    cache false
+
+    publishDir params.results_dir + "/scores/${fasta_file.simpleName}", overwrite: true, mode: 'copy'
 
     input:
         path reference

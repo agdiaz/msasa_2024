@@ -11,25 +11,20 @@ from abc import ABC, abstractmethod
 
 
 class ObjectiveFunction(ABC):
-    GAP_SYMBOL = b'-'
+    GAP_SYMBOL = ord(b'-')
     GAP_CHAR = '-'
-    GAP_CHAR_NP_ARRAY = np.array(["-"], dtype="|S1")
+    GAP_CHAR_NP_ARRAY = np.array([GAP_SYMBOL], dtype=np.uint8)
 
     def __init__(self) -> None:
         super().__init__()
-        self.sequence_energy_hits = 0
-        self.column_energy_hits = 0
 
     @abstractmethod
-    def compute_column(self, column) -> float :
+    def compute_column(self, column) -> float:
         pass
 
     @lru_cache(maxsize=819200)
     def get_column_energy(self, column_hash) -> float:
-        self.column_energy_hits += 1
-        # print("\tcolumn_energy", column_hash)
-
-        column = np.frombuffer(column_hash, dtype="|S1")
+        column = np.frombuffer(column_hash, dtype=np.uint8)
 
         return self.compute_column(column)
 
@@ -38,13 +33,27 @@ class ObjectiveFunction(ABC):
 
     @lru_cache(maxsize=409600)
     def energy(self, columns_bytes, sequences, residues) -> float:
-        self.sequence_energy_hits += 1
-        # print("energy", columns_bytes)
-
         results = np.sum([self.get_column_energy(columns_bytes[sequences*i:(sequences*i)+sequences]) for i in range(residues)])
 
         return results / self.divider(sequences, residues)
 
+
+def coincidences_calc(char_counts, match_score, mismatch_score, gap_penalty, gap_symbol):
+    highest_count = max([count for ch, count in char_counts])
+    if highest_count == 1:
+        return np.array([mismatch_score] * len(char_counts))
+
+    return np.array(
+        [
+            (
+                highest_count * gap_penalty
+                if max_group_char == gap_symbol
+                else highest_count * match_score
+            )
+            for max_group_char, max_group_repetitions in char_counts
+            if max_group_repetitions == highest_count
+        ]
+    )
 
 class Coincidences(ObjectiveFunction):
 
@@ -58,20 +67,18 @@ class Coincidences(ObjectiveFunction):
         return columns
 
     def compute_column(self, column) -> float:
-        char_counts = Counter(column)
+        scores = coincidences_calc(
+            list(Counter(column).items()),
+            self.match_score,
+            self.mismatch_score,
+            self.gap_penalty,
+            ObjectiveFunction.GAP_SYMBOL,
+        )
 
-        highest_count = max(char_counts.values())
-        if highest_count == 1:
-            return self.mismatch_score
+        return scores.sum() / len(column)
 
-        scores = np.array(
-        [
-            self.gap_penalty if max_group_char == ObjectiveFunction.GAP_SYMBOL else self.match_score
-            for max_group_char, max_group_repetitions in char_counts.items()
-            if max_group_repetitions == highest_count
-        ])
-
-        return (scores * highest_count).sum() / len(column)
+    def __str__(self) -> str:
+        return "Coincidences"
 
 
 class Identity(ObjectiveFunction):
@@ -87,10 +94,15 @@ class Identity(ObjectiveFunction):
     def compute_column(self, column) -> float:
         if np.all(column == ObjectiveFunction.GAP_SYMBOL):
             return self.gap_penalty
-        elif np.all(column == column[0]):
+
+        first_element = column[0]
+        if np.all(column == first_element):
             return self.match_score
-        else:
-            return self.mismatch_score
+
+        return self.mismatch_score
+
+    def __str__(self) -> str:
+        return "Identity"
 
 
 class Similarity(ObjectiveFunction):
@@ -99,7 +111,14 @@ class Similarity(ObjectiveFunction):
         super().__init__()
 
     def compute_column(self, column) -> float:
-        return np.array([self.similarity_matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()
+        pair_counts = Counter(combinations(column, 2))
+
+        score = np.sum(self.similarity_matrix[pair] * count for pair, count in pair_counts.items())
+
+        return score
+
+    def __str__(self) -> str:
+        return "Similarity"
 
 
 class GlobalLocalAlignmentQuality(ObjectiveFunction):
@@ -111,4 +130,10 @@ class GlobalLocalAlignmentQuality(ObjectiveFunction):
         return columns
 
     def compute_column(self, column) -> float:
-        return np.array([self.matrix[(res1, res2)] for res1, res2 in combinations(column, 2)]).sum()
+        pair_counts = Counter(combinations(column, 2))
+        score = np.sum(self.matrix[pair] * count for pair, count in pair_counts.items())
+
+        return score
+
+    def __str__(self) -> str:
+        return "GlobalLocal"
