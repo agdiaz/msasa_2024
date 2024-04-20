@@ -1,3 +1,6 @@
+import time
+from datetime import timedelta
+
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 from methodtools import lru_cache
@@ -64,7 +67,7 @@ class SimulatedAnnealing:
 
             row_values = f"{iteration}\t{sequence_length}\t{temp:.10f}\t{current_score:+.10f}\t{iteration_score:+.10f}\t{new_score:+.10f}\t{score_change:+.10f}\t{current_improvement_percentage:+.3f}\t{best_score:+.10f}\t{historical_score_improvement:+.10f}\t{historical_improvement_percentage:+.3f}\t{total_accepted}\t{total_rejected}\t{accepted}\t{no_changes}\t{acceptance:.10f}"
             self.logger.info(row_values)
-            print(row_values)
+            # print(row_values)
         except:
             pass
 
@@ -88,18 +91,19 @@ class SimulatedAnnealing:
         initial_score, best_score = current_score, current_score
 
         with ThreadPoolExecutor(max_workers=1) as executor:  # Using one worker for logging
-            while (current_temp := current_temp * self.cooling_rate) > self.min_temp and no_changes < self.no_changes_limit:
+            while ((current_temp := current_temp * self.cooling_rate) >= self.min_temp) and (no_changes < self.no_changes_limit):
                 previous_score = current_score
 
                 neighbors_best_score = None
-                for _neighbor_index in np.arange(self.iteration_neighbors):
+                change_counts = np.random.randint(1, self.changes, self.iteration_neighbors)
+
+                for _neighbor_index, change_count in enumerate(change_counts):
                     current_neighbor_sequences = current_sequences.copy()
 
-                    for _change_index in np.arange(np.random.randint(1, self.changes)):
+                    for _change_index in np.arange(change_count):
                         num_sequences, seq_length = current_neighbor_sequences.shape
-
                         current_neighbor_sequences = self.sequence_generator.generate_new_sequences(
-                            current_neighbor_sequences.tobytes(),
+                            current_neighbor_sequences,
                             num_sequences=num_sequences,
                             seq_length=seq_length,
                             addition_deletion_prob=0.5
@@ -158,7 +162,7 @@ class SimulatedAnnealing:
         print("EnergyForSequencesCache:", self.quality_function.energy.cache_info())
         print("EnergyForColumnsCache:", self.quality_function.get_column_energy.cache_info())
 
-        return (current_sequences, current_temp, initial_score, current_score)
+        return (current_sequences, current_temp, initial_score, current_score, iteration)
 
     def should_accept(self, delta, current_temp) -> bool:
         return (delta > 0) or (np.random.rand() < np.exp(delta / current_temp))

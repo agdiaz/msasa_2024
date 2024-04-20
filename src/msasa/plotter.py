@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.dates as mdates
 from matplotlib.ticker import FuncFormatter
-
+import seaborn as sns
 
 def ms_formatter(a, b):
     t = mdates.num2date(a)
@@ -225,4 +225,99 @@ def plot_charts_from_log(log_file_path, plot_title, max_no_change_events):
     plt.subplots_adjust(hspace=0.4, wspace=0.4, top=0.88)
 
     plt.savefig(log_file_path + ".png", dpi=300)
+    plt.savefig(log_file_path + ".pdf", format='pdf', bbox_inches='tight')
+    plt.close()
+
+def plot_seaborn_charts_from_log(log_file_path, plot_title):
+    data = pd.read_csv(log_file_path, sep="\t")
+    data['Timestamp'] = pd.to_datetime(data['Timestamp'])
+
+    # Create a large figure to hold all subplots
+    fig = plt.figure(figsize=(18, 30))  # Adjusted size for readability
+    plt.suptitle(plot_title, fontsize=16, va="bottom")
+
+    # Scatter plot for Score over Iterations
+    ax1 = fig.add_subplot(521)  # 5 rows, 2 columns, 1st subplot
+    ax1.scatter(data['Iteration'], data['Best_Score'], color='blue', label='Best Score')
+    ax1.scatter(data['Iteration'], data['Current_Score'], color='red', alpha=0.5, label='Current Score')
+    ax1.set_title('Score Progression Over Iterations')
+    ax1.set_xlabel('Iteration')
+    ax1.set_ylabel('Score')
+    ax1.legend()
+    ax1.grid(True)
+
+    # Heat map of Temperature over Iterations
+    ax2 = fig.add_subplot(522)  # 5 rows, 2 columns, 2nd subplot
+    temperature_matrix = data.pivot(index='Iteration', columns='Timestamp', values='Temperature')
+    sns.heatmap(temperature_matrix, cmap='coolwarm', ax=ax2)
+    ax2.set_title('Temperature Change Over Iterations')
+    ax2.set_xlabel('Timestamp')
+    ax2.set_ylabel('Iteration')
+    ax2.xaxis.set_major_formatter(FuncFormatter(ms_formatter))
+
+    # Bar plot for Acceptance Rate per Iteration
+    ax3 = fig.add_subplot(523)  # 5 rows, 2 columns, 3rd subplot
+    ax3.bar(data['Iteration'], data['Acceptance'], color='green')
+    ax3.set_title('Acceptance Rate per Iteration')
+    ax3.set_xlabel('Iteration')
+    ax3.set_ylabel('Acceptance Rate')
+
+    # Line plot for Best Score over Time
+    ax4 = fig.add_subplot(524)  # 5 rows, 2 columns, 4th subplot
+    ax4.plot(data['Timestamp'], data['Best_Score'], marker='o', linestyle='-', color='magenta')
+    ax4.set_title('Best Score Over Time')
+    ax4.set_xlabel('Timestamp')
+    ax4.xaxis.set_major_formatter(FuncFormatter(ms_formatter))
+    ax4.set_xticklabels(ax4.get_xticklabels(), rotation=45)
+    ax4.set_ylabel('Best Score')
+    ax4.grid(True)
+
+    # Temperature Decay
+    ax5 = fig.add_subplot(525)  # 5 rows, 2 columns, 5th subplot
+    ax5.plot(data['Iteration'], data['Temperature'], color='cyan')
+    ax5.set_title('Temperature Decay Over Iterations')
+    ax5.set_xlabel('Iteration')
+    ax5.set_ylabel('Temperature')
+    ax5.grid(True)
+
+    # Histogram of Score Changes
+    ax6 = fig.add_subplot(526)  # 5 rows, 2 columns, 6th subplot
+    ax6.hist(data['Score_Change'], bins=30, color='purple', alpha=0.7)
+    ax6.set_title('Histogram of Score Changes')
+    ax6.set_xlabel('Score Change')
+    ax6.set_ylabel('Frequency')
+    ax6.grid(True)
+
+    # Cumulative Count of Acceptances and Rejections
+    ax7 = fig.add_subplot(527)  # 5 rows, 2 columns, 7th subplot
+    ax7.plot(data['Iteration'], data['Total_Accepted'].cumsum(), label='Cumulative Acceptances', color='green')
+    ax7.plot(data['Iteration'], data['Total_Rejected'].cumsum(), label='Cumulative Rejections', color='red')
+    ax7.set_title('Cumulative Acceptances and Rejections Over Iterations')
+    ax7.set_xlabel('Iteration')
+    ax7.set_ylabel('Cumulative Count')
+    ax7.legend()
+    ax7.grid(True)
+
+    # Box Plot for Scores by Iteration Blocks
+    ax8 = fig.add_subplot(528)  # 5 rows, 2 columns, 8th subplot
+    data['Iteration Block'] = pd.cut(data['Iteration'], bins=10)
+    sns.boxplot(x='Iteration Block', y='Current_Score', data=data, ax=ax8)
+    ax8.set_title('Box Plot of Scores by Iteration Blocks')
+    ax8.set_xlabel('Iteration Block')
+    ax8.set_ylabel('Current Score')
+    ax8.set_xticklabels(ax8.get_xticklabels(), rotation=45)
+
+    # Density Plot of Score Improvement Percentage
+    ax9 = fig.add_subplot(529)  # 5 rows, 2 columns, 9th subplot
+    sns.kdeplot(data['Score_Improvement_Perc'], shade=True, color='orange', ax=ax9)
+    ax9.set_title('Density Plot of Score Improvement Percentage')
+    ax9.set_xlabel('Score Improvement Percentage')
+    ax9.set_ylabel('Density')
+
+    # Adjust layout
+    plt.tight_layout(pad=3.0)  # Adjust spacing to prevent overlap
+
+    # Save the figure
+    plt.savefig(log_file_path + ".sns.png", dpi=300)
+    plt.savefig(log_file_path + ".sns.pdf", format='pdf', bbox_inches='tight')
     plt.close()

@@ -98,6 +98,18 @@ def main():
     quality_function = builder.create_quality_instance(args.quality_function)
 
     results_list = []
+    simulated_annealing = SimulatedAnnealing(
+        sequences,
+        logger=None,
+        extend=args.extend,
+        temp=args.temperature,
+        cooling_rate=args.cooling_rate,
+        quality_function=quality_function,
+        min_temp=args.min_temperature,
+        no_changes_limit=args.max_no_changes,
+        changes=args.changes,
+        iteration_neighbors=args.iteration_neighbors,
+    )
 
     for experiment_index in range(args.experiments):
         log_file = os.path.abspath(args.log_file.replace(".log", f".{experiment_index}.log"))
@@ -116,21 +128,12 @@ def main():
 
         log_header(logger)
 
-        sa = SimulatedAnnealing(
-            sequences,
-            logger,
-            extend=args.extend,
-            temp=args.temperature,
-            cooling_rate=args.cooling_rate,
-            quality_function=quality_function,
-            min_temp=args.min_temperature,
-            no_changes_limit=args.max_no_changes,
-            changes=args.changes,
-            iteration_neighbors=args.iteration_neighbors,
-        )
+        simulated_annealing.logger = logger
+
         start_time = time.time()
-        aligned_sequences, final_temp, initial_score, final_score = sa.anneal()
+        aligned_sequences, final_temp, initial_score, final_score, final_iteration = simulated_annealing.anneal()
         end_time = time.time()
+
         elapsed_time = end_time - start_time
         readable_time = str(timedelta(seconds=elapsed_time))
 
@@ -143,6 +146,7 @@ def main():
             "final_temp": f"{final_temp:.7f}",
             "initial_score": f"{initial_score:.7f}",
             "final_score": f"{final_score:.7f}",
+            "final_iteration": final_iteration,
             "output_file": saved_alignment_file,
             "elapsed_time": elapsed_time,
             "readable_time": readable_time
@@ -155,6 +159,7 @@ def main():
 
         # Create plots
         plotter.plot_charts_from_log(log_file, plotter.plot_title(args), args.max_no_changes)
+        plotter.plot_seaborn_charts_from_log(log_file, plotter.plot_title(args))
 
         # Read the alignment from the aligned FASTA file
         alignment = AlignIO.read(saved_alignment_file, "fasta")

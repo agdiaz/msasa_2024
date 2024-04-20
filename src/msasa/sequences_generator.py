@@ -1,9 +1,7 @@
 import numpy as np
-from methodtools import lru_cache
-
 
 class SequenceHandler:
-    def __init__(self, gap_char=45):  # Assuming gap_char is the ASCII '-' (45)
+    def __init__(self, gap_char=45):
         self.gap_char = gap_char
         self.padding = {0: self.pad_left, 1: self.pad_right}
 
@@ -13,9 +11,7 @@ class SequenceHandler:
     def pad_right(self, sequence):
         return np.append(sequence, self.gap_char)
 
-    def generate_new_sequences(self, sequences_bytes, num_sequences, seq_length, addition_deletion_prob=0.5):
-        sequences = np.frombuffer(sequences_bytes, dtype=np.uint8).reshape((num_sequences, seq_length))
-
+    def generate_new_sequences(self, sequences, num_sequences, seq_length, addition_deletion_prob=0.5):
         direction = np.random.randint(0, 2)
         padding_fx = self.padding[direction]
 
