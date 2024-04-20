@@ -210,7 +210,7 @@ process alignGonnet92 {
         --extend \
         --gap_score -6 \
         --mismatch_score -4.0 \
-        --temp 0.50 \
+        --temp 1.0 \
         --cooling_rate 0.995 \
         --min_temp 0.00001 \
         --max_no_changes 2000 \
@@ -256,8 +256,8 @@ process alignGlobal {
         --mismatch_score -1.0 \
         --gap_score -4.0 \
         --temp 1.0 \
-        --cooling_rate 0.99 \
-        --min_temp 0.00009 \
+        --cooling_rate 0.995 \
+        --min_temp 0.00005 \
         --max_no_changes 2000 \
         --changes 20 \
         --iteration_neighbors 5 \
