@@ -3,6 +3,8 @@ report-*.html
 timeline-*.html
 thesis_results/
 workflow.png
+timeline/
+reports/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

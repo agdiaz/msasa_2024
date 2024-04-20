@@ -61,7 +61,7 @@ run-all:
 	NFX_OPTS="-Xms=1g -Xmx=8g" NXF_ANSI_LOG=false nextflow run main.nf --input_dir ./datasets/BOX212 -with-docker
 
 test-run:
-	NFX_OPTS="-Xms=1g -Xmx=8g" NXF_ANSI_LOG=false nextflow run main.nf --input_dir ./datasets/BB11013 -with-docker -with-conda -resume
+	NFX_OPTS="-Xms=1g -Xmx=8g" nextflow run main.nf --input_dir ./datasets/BB11013 -with-docker -with-conda -with-report reports/BB11013.html -with-timeline timeline/BB11013.html
 
 
 run-experiment:

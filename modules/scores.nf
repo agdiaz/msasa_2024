@@ -58,11 +58,11 @@ process computeCoreIndex {
         val predictorName
 
     output:
-        path "${fasta_file.simpleName}_coreindex_${predictorName}.*"
+        path "${fasta_file.simpleName}_coreindex_${predictorName}.txt"
 
     script:
     """
-    t_coffee -infile=${fasta_file} -output=html -score -outfile=${fasta_file.simpleName}_coreindex_${predictorName}.html
+    t_coffee -infile=${fasta_file} -output=score_ascii -score -outfile=${fasta_file.simpleName}_coreindex_${predictorName}.txt
     """
 }
 // t_coffee -infile '$fasta_file' -evaluate -output=score_ascii -outfile='${fasta_file.simpleName}_tcs_${predictorName}.txt'
@@ -77,11 +77,11 @@ process computeTransitiveConsistencyScore {
         val predictorName
 
     output:
-        path "${fasta_file.simpleName}_tcs_${predictorName}.html"
+        path "${fasta_file.simpleName}_tcs_${predictorName}.txt"
 
     script:
     """
-    t_coffee -infile ${fasta_file} -evaluate -output=score_html -outfile=${fasta_file.simpleName}_tcs_${predictorName}.html
+    t_coffee -infile ${fasta_file} -evaluate -output=score_ascii -outfile=${fasta_file.simpleName}_tcs_${predictorName}.txt
     """
 }
 

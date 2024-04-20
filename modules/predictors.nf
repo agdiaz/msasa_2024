@@ -124,7 +124,7 @@ process alignSimilarityBlosum62 {
         --mismatch_score -4.0 \
         --temp 1.0 \
         --cooling_rate 0.995 \
-        --min_temp 0.00009 \
+        --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 10 \
         --iteration_neighbors 10 \
@@ -168,7 +168,7 @@ process alignSimilarityPam250 {
         --mismatch_score -8.0 \
         --temp 1.0 \
         --cooling_rate 0.995 \
-        --min_temp 0.00009 \
+        --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 10 \
         --iteration_neighbors 10 \
@@ -212,7 +212,7 @@ process alignGonnet92 {
         --mismatch_score -4.0 \
         --temp 0.50 \
         --cooling_rate 0.995 \
-        --min_temp 0.00009 \
+        --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 20 \
         --iteration_neighbors 5 \

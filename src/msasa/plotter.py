@@ -231,6 +231,8 @@ def plot_charts_from_log(log_file_path, plot_title, max_no_change_events):
 def plot_seaborn_charts_from_log(log_file_path, plot_title):
     data = pd.read_csv(log_file_path, sep="\t")
     data['Timestamp'] = pd.to_datetime(data['Timestamp'])
+    data["Cumulative_Accepted"] = data["Accepted"].cumsum()
+    data["Acceptance_Rate"] = data["Cumulative_Accepted"] / (data.index + 1)
 
     # Create a large figure to hold all subplots
     fig = plt.figure(figsize=(18, 30))  # Adjusted size for readability
@@ -313,6 +315,14 @@ def plot_seaborn_charts_from_log(log_file_path, plot_title):
     ax9.set_title('Density Plot of Score Improvement Percentage')
     ax9.set_xlabel('Score Improvement Percentage')
     ax9.set_ylabel('Density')
+
+    # New Subplot: Plotting Acceptance Rate over Time
+    ax10 = fig.add_subplot(5, 2, 10)
+    ax10.plot(data['Iteration'], data['Acceptance_Rate'], marker='', linestyle='-', color='darkgreen')
+    ax10.set_title('Acceptance Rate Over Iterations')
+    ax10.set_xlabel('Iteration')
+    ax10.set_ylabel('Acceptance Rate')
+    ax10.grid(True)
 
     # Adjust layout
     plt.tight_layout(pad=3.0)  # Adjust spacing to prevent overlap
