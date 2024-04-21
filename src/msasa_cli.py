@@ -48,6 +48,7 @@ def parse_arguments():
     parser.add_argument("--gap_score", type=float, default=-10.0, help="")
     parser.add_argument("--changes", type=int, default=1, help="")
     parser.add_argument("--iteration_neighbors", type=int, default=1, help="")
+    parser.add_argument("--strict_mode", default=False, action="store_true")
 
     return parser.parse_args()
 
@@ -109,11 +110,12 @@ def main():
         no_changes_limit=args.max_no_changes,
         changes=args.changes,
         iteration_neighbors=args.iteration_neighbors,
+        strict_mode=args.strict_mode
     )
 
     for experiment_index in range(args.experiments):
         log_file = os.path.abspath(args.log_file.replace(".log", f".{experiment_index}.log"))
-        print("Experiment #", experiment_index, log_file)
+        print("Experiment #", experiment_index, log_file, args.strict_mode)
 
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)

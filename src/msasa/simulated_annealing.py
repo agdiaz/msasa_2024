@@ -21,6 +21,7 @@ class SimulatedAnnealing:
         no_changes_limit = 100,
         changes = 1,
         iteration_neighbors = 1,
+        strict_mode = False
     ):
         self.sequences = sequences
         self.extend_sequences = extend
@@ -31,6 +32,7 @@ class SimulatedAnnealing:
         self.logger = logger
         self.changes = changes
         self.iteration_neighbors = iteration_neighbors
+        self.strict_mode = strict_mode
 
         self.quality_function: ObjectiveFunction = quality_function
         self.sequence_generator = SequenceHandler(ObjectiveFunction.GAP_SYMBOL)
@@ -121,7 +123,10 @@ class SimulatedAnnealing:
                         new_sequences = current_neighbor_sequences
 
                 # Once the best new state is found, we proceed with the regular SA flow
-                score_change = new_score - current_score
+                if self.strict_mode:
+                    score_change = new_score - best_score
+                else:
+                    score_change = new_score - current_score
 
                 if (accepted := self.should_accept(score_change, current_temp)):
                     current_sequences = new_sequences

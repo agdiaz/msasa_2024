@@ -6,25 +6,34 @@
 process computeMumsaOverlapScore {
     tag "${referenceAlignment.simpleName}"
 
-    publishDir params.results_dir + "/scores/${msasaCoincidencesAlignment.simpleName}", overwrite: true, mode: 'copy'
+    publishDir params.results_dir + "/scores/${referenceAlignment.simpleName}", overwrite: true, mode: 'copy'
 
     input:
-    path referenceAlignment
-    path muscleAlignment
-    path clustalAlignment
-    path mafftAlignment
-    path tCoffeeAlignment
-    path kalignAlignment
-    path msasaCoincidencesAlignment
-    path msasaIdentityAlignment
-    path msasaSimilarityBlosum62Alignment
-    path msasaSimilarityPam250Alignment
-    path msasaSimilarityGonnet92
-    path msasaGlobalAlignment
-    path msasaLocalAlignment
+        path referenceAlignment
+
+        path muscleAlignment
+        path clustalAlignment
+        path mafftAlignment
+        path tCoffeeAlignment
+        path kalignAlignment
+
+        path msasaCoincidencesAlignmentFree
+        path msasaCoincidencesAlignmentStrict
+        path msasaIdentityAlignmentFree
+        path msasaIdentityAlignmentStrict
+        path msasaSimilarityBlosum62AlignmentFree
+        path msasaSimilarityBlosum62AlignmentStrict
+        path msasaSimilarityPam250AlignmentFree
+        path msasaSimilarityPam250AlignmentStrict
+        path msasaSimilarityGonnet92AlignmentFree
+        path msasaSimilarityGonnet92AlignmentStrict
+        path msasaGlobalAlignmentFree
+        path msasaGlobalAlignmentStrict
+        path msasaLocalAlignmentFree
+        path msasaLocalAlignmentStrict
 
     output:
-        path "${referenceAlignment.name}.mumsa.txt"
+        path "${referenceAlignment.simpleName}.mumsa.txt"
 
     script:
     """
@@ -35,13 +44,20 @@ process computeMumsaOverlapScore {
         ${tCoffeeAlignment} \
         ${tCoffeeAlignment} \
         ${kalignAlignment} \
-        ${msasaCoincidencesAlignment} \
-        ${msasaIdentityAlignment} \
-        ${msasaSimilarityBlosum62Alignment} \
-        ${msasaSimilarityPam250Alignment} \
-        ${msasaSimilarityGonnet92} \
-        ${msasaGlobalAlignment} \
-        ${msasaLocalAlignment} > ${referenceAlignment.name}.mumsa.txt
+        ${msasaCoincidencesAlignmentFree} \
+        ${msasaCoincidencesAlignmentStrict} \
+        ${msasaIdentityAlignmentFree} \
+        ${msasaIdentityAlignmentStrict} \
+        ${msasaSimilarityBlosum62AlignmentFree} \
+        ${msasaSimilarityBlosum62AlignmentStrict} \
+        ${msasaSimilarityPam250AlignmentFree} \
+        ${msasaSimilarityPam250AlignmentStrict} \
+        ${msasaSimilarityGonnet92AlignmentFree} \
+        ${msasaSimilarityGonnet92AlignmentStrict} \
+        ${msasaGlobalAlignmentFree} \
+        ${msasaGlobalAlignmentStrict} \
+        ${msasaGlobalAlignmentFree} \
+        ${msasaLocalAlignmentStrict} > ${referenceAlignment.simpleName}.mumsa.txt
     """
 }
 

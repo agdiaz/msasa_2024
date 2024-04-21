@@ -2,6 +2,7 @@ process alignCoincidences {
     cpus 4
     memory '6 GB'
     time '20h'
+    debug true
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
@@ -13,33 +14,35 @@ process alignCoincidences {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.coincidences.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.coincidences.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.coincidences.*.log"), emit: log
-        path("${fasta_file}.msasa.coincidences.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.coincidences.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.coincidences.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.coincidences.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.coincidences.aln \
-        --log_file ${fasta_file}.msasa.coincidences.log \
-        --experiments_log_file ${fasta_file}.msasa.coincidences.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.coincidences.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --match_score 10 \
-        --mismatch_score 0.5 \
+        --mismatch_score 0.75 \
         --gap_score 0.1 \
-        --temp 1.0 \
+        --temp 0.90 \
         --cooling_rate 0.99 \
-        --min_temp 0.00009 \
+        --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 10 \
         --iteration_neighbors 10 \
         --quality_function coincidences \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -59,33 +62,35 @@ process alignIdentity {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.identity.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.identity.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.identity.*.log"), emit: log
-        path("${fasta_file}.msasa.identity.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.identity.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.identity.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.identity.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.identity.aln \
-        --log_file ${fasta_file}.msasa.identity.log \
-        --experiments_log_file ${fasta_file}.msasa.identity.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.identity.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --match_score 8.0 \
-        --mismatch_score 0.50 \
-        --gap_score 0.25 \
-        --temp 1.0 \
+        --mismatch_score 1.0 \
+        --gap_score 2.0 \
+        --temp 5 \
         --cooling_rate 0.99 \
         --min_temp 0.00009 \
         --max_no_changes 2000 \
         --changes 10 \
-        --iteration_neighbors 10 \
+        --iteration_neighbors 5 \
         --quality_function identity \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -104,32 +109,34 @@ process alignSimilarityBlosum62 {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.similarity_blosum62.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.similarity_blosum62.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.similarity_blosum62.*.log"), emit: log
-        path("${fasta_file}.msasa.similarity_blosum62.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.similarity_blosum62.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_blosum62.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_blosum62.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.aln \
-        --log_file ${fasta_file}.msasa.similarity_blosum62.log \
-        --experiments_log_file ${fasta_file}.msasa.similarity_blosum62.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.similarity_blosum62.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --gap_score -4.0 \
         --mismatch_score -4.0 \
         --temp 1.0 \
-        --cooling_rate 0.995 \
+        --cooling_rate 0.9925 \
         --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 10 \
-        --iteration_neighbors 10 \
+        --iteration_neighbors 5 \
         --quality_function similarity_blosum62 \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -148,32 +155,34 @@ process alignSimilarityPam250 {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.similarity_pam250.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.similarity_pam250.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.similarity_pam250.*.log"), emit: log
-        path("${fasta_file}.msasa.similarity_pam250.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.similarity_pam250.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_pam250.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_pam250.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.aln \
-        --log_file ${fasta_file}.msasa.similarity_pam250.log \
-        --experiments_log_file ${fasta_file}.msasa.similarity_pam250.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.similarity_pam250.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --gap_score -8.0 \
         --mismatch_score -8.0 \
         --temp 1.0 \
-        --cooling_rate 0.995 \
+        --cooling_rate 0.9925 \
         --min_temp 0.00001 \
         --max_no_changes 2000 \
         --changes 10 \
-        --iteration_neighbors 10 \
+        --iteration_neighbors 5 \
         --quality_function similarity_pam250 \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -192,21 +201,22 @@ process alignGonnet92 {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.similarity_gonnet92.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.similarity_gonnet92.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.similarity_gonnet92.*.log"), emit: log
-        path("${fasta_file}.msasa.similarity_gonnet92.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.similarity_gonnet92.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_gonnet92.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_gonnet92.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_gonnet92.aln \
-        --log_file ${fasta_file}.msasa.similarity_gonnet92.log \
-        --experiments_log_file ${fasta_file}.msasa.similarity_gonnet92.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.similarity_gonnet92.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --gap_score -6 \
         --mismatch_score -4.0 \
@@ -214,10 +224,11 @@ process alignGonnet92 {
         --cooling_rate 0.995 \
         --min_temp 0.00001 \
         --max_no_changes 2000 \
-        --changes 20 \
+        --changes 10 \
         --iteration_neighbors 5 \
         --quality_function similarity_gonnet \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -236,33 +247,35 @@ process alignGlobal {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.global.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.global.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.global.*.log"), emit: log
-        path("${fasta_file}.msasa.global.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.global.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.global.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.global.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.aln \
-        --log_file ${fasta_file}.msasa.global.log \
-        --experiments_log_file ${fasta_file}.msasa.global.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.global.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.global.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.global.experiments.${strict ? "strict" : "free" }.log \
         --extend \
         --match_score 10.0 \
         --mismatch_score -1.0 \
         --gap_score -4.0 \
-        --temp 1.0 \
+        --temp 0.80 \
         --cooling_rate 0.995 \
         --min_temp 0.00005 \
         --max_no_changes 2000 \
-        --changes 20 \
+        --changes 10 \
         --iteration_neighbors 5 \
         --quality_function global \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
 
@@ -281,32 +294,34 @@ process alignLocal {
 
     input:
         path(fasta_file)
+        val strict
 
     output:
-        path("${fasta_file}.msasa.local.*.aln"), emit: alnFasta
-        path("${fasta_file}.msasa.local.*.aln.clustal"), emit: alnClustal
-        path("${fasta_file}.msasa.local.*.log"), emit: log
-        path("${fasta_file}.msasa.local.*.log.png"), emit: plot
-        path("${fasta_file}.msasa.local.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.local.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.local.*.log.sns.pdf"), emit: plot_sns_pdf
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.aln"), emit: alnFasta
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.aln.clustal"), emit: alnClustal
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log"), emit: log
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.png"), emit: plot
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
-    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.aln \
-        --log_file ${fasta_file}.msasa.local.log \
-        --experiments_log_file ${fasta_file}.msasa.local.experiments.log \
+    python -W ignore ${params.msasa_script} ${fasta_file} ${fasta_file}.msasa.local.${strict ? "strict" : "free" }.aln \
+        --log_file ${fasta_file}.msasa.local.${strict ? "strict" : "free" }.log \
+        --experiments_log_file ${fasta_file}.msasa.local.experiments.${strict ? "strict" : "free" }.log \
         --extend \
-        --match_score 5.0 \
-        --mismatch_score 0.5 \
+        --match_score 7.0 \
+        --mismatch_score 1.0 \
         --gap_score -3.0 \
-        --temp 1.0 \
-        --cooling_rate 0.99 \
+        --temp 0.80 \
+        --cooling_rate 0.995 \
         --min_temp 0.00009 \
         --max_no_changes 2000 \
-        --changes 20 \
+        --changes 10 \
         --iteration_neighbors 5 \
         --quality_function local \
-        --experiments ${params.experiments}
+        --experiments ${params.experiments} \
+        ${strict ? "--strict_mode" : "" }
     """
 }
