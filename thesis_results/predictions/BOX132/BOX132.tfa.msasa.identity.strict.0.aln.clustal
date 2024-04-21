@@ -1,0 +1,74 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+P27661                              -----------------------------------MSGRGKT-GGKA-RA
+Q7REI8                              --------------------------------------MSAKGK---TGR
+Q24DQ8                              -----------------------------------MS-TTG-KGGK-A--
+Q5CVZ9                              -----------------------------------MSGK--VT-S-S-GG
+Q49JJ2                              -----------------------------------MVKGGRGGGS--KKK
+Q7PZC9                              -----------------------------------M-K--K-I-S-KSSR
+Q16LW9                              -----------------------------------MS---Q-KGSAKAKT
+Q6PH89                              -----------------------------------M-SGR-GK-KVQ-KA
+Q98TZ9                              -----------------------------------MSG--RGK-KIVAAP
+Q54WG6                              -----------------------------------MS-ETKPASSK-PAA
+Q515Q3                              M-----D-----------A----------------TKE---KEVTP-VVE
+Q00UE5                              -----------------------------------MRVF-DSSVTI-Y--
+Q2HH37                              --------------------------------------------------
+
+P27661                              -KA-KSRSSRAG--LQFPVGRVHRLLRKGHYAE-RV-G-AGAPVY-LA--
+Q7REI8                              -KKAVKG-TSNSAKAGL-QF-PV-GRI-GRYLKKGKYAKRVGAGA-PV-Y
+Q24DQ8                              -K-G--KTASSKQV-SR-SAR-AGLQFP-VGRI-SRFLKHGR-YSE-RVG
+Q5CVZ9                              R--GGGKKTTRKT-MSN-SA-KAGLQFPV---GR-V---A-RYL-K-KGR
+Q49JJ2                              AQSKSAK-AGLTF--PV--ARIGRALRT--MRLA-KR-YG-AGGPVYLT-
+Q7PZC9                              -AG-L-TF-SVSRVSST-LKRG-KYAN-R----IGVGSS-VY-MT-AVL-
+Q16LW9                              TKQTKSSRA-GLTFPVGRI--T-T--ALK-RG-KY-A-ERIGTG-A-GIY
+Q6PH89                              A-SG-KSSR-SAKA--G-L--QF-PVGR-IHRLLR-KGNYAA-RIG-SGS
+Q98TZ9                              KT-KSSVSR-SSRAGL-QFPVGRIA-RLLRKG-NYAAR--IGSGAAVYLT
+Q54WG6                              -AAKPKKVI-PRV-SRTGEP-K-S---KPESRSARAGI-TFPVSRVDRLL
+Q515Q3                              -KKATEKKSVEKKPKKVTEKKVKSRDDEGRKNTLS-KK-SGLQFP-VARI
+Q00UE5                              -T-E-HAP--IIY--TPKDG-K-EG-HEPIRQG-W-APVPG-KYATRV-G
+Q2HH37                              --M--RAPHNL-L-Q-FFSIPRL-AGNAAR-DNKKT-RII-PRHL-QL-A
+
+P27661                              AVLE-Y--LT--AEILE-LAG-NAA-R-DNK-KT-RII-PRHL-QLAIRN
+Q7REI8                              -LAA--VL-EY-LCAEI-L-E-LAGNAAR-DN-KKS--R--IT-P----R
+Q24DQ8                              T-GAPVYL-AAVLEYLAAEV--LELA-GNAAKDNK-KT-RI-VP-RH---
+Q5CVZ9                              -YAKRIGA--A-APVY-L-A-AVLEY-LCAELLELAGN--AA-RDAKKTR
+Q49JJ2                              AVIEYM-AAEVLELAGNAC-RDNKKK-R-VTPRHLVL-AVRNDE-EL-N-
+Q7PZC9                              EYL-AAEVLE-LAGNAARDN-H-KSRL-TPR---HIQL-AVRNDE-E-LS
+Q16LW9                              M-AATL-EYLLAEV---L-ELSGN--AAK-DNK-KSRIVPRHIQLAVR-N
+Q6PH89                              -S-IY---LAA-T-LEY-LCAEV-LE-L--AGNAARDN--KK--SRI-MP
+Q98TZ9                              -AV---IEYLCAEVLEL-A-G-NASRDNKKLRIAPRHI-QLAVR-NDEEL
+Q54WG6                              RE-GRFAPRVESTAPVY-LAA--V-LEYLV-FE-IL-ELAHNT-CSIS-K
+Q515Q3                              HAAL--K--KGRYGEHINK-MASVYLTA-VI-EYLVAEVLE-LAGGQAKD
+Q00UE5                              AGAPV-YLAA---VLE-YLAA-E-VLE-LAGNA--SRDN-K-KSRIV-PR
+Q2HH37                              IRN-D-E-ELN-KLLGHV-T-I-AQGGVLPN-I-H--Q-NLL-P-K--K-
+
+P27661                              DEELN-KLL-GGV------TIA-QGGVLP-NIQAVL-LP-KK-S--SATV
+Q7REI8                              H-IQLAVRN------DE---ELNKFLAGV-TFASGGV-LPNIH-N---VL
+Q24DQ8                              -ILL-AIRNDEEL-NKLMA-N---TT-IADG-GV-LP-NI-NPM-L-LPS
+Q5CVZ9                              ITPRQ-IQL-AVRNDE-EL-SKF-LGN-VTIASG-GVLPN-IPTVLLPKK
+Q49JJ2                              K-FL-GGVTIASGGV-L-P---NIHS-V-LLPK-KS-KVAGK-GAS-QEF
+Q7PZC9                              -KL-LQGTT-I----S-Q-GG--VM-PNIHSV----L--LPRK-TGAKAA
+Q16LW9                              --D---DELSKLLSHVSI-S--QGG-VLP-S-----IHS-ALLPKSTLIK
+Q6PH89                              RHIQ-L-AVRND-DELAKL-FEGV-TIADGG-VLPNIQS-AL-L-PKKT-
+Q98TZ9                              -N-T-L-LGGV-TISEG-GVL-PNIQAQLLPKKTKVSRDP-N-T-S-K-E
+Q54WG6                              K-TRITPQHINWAVGND-LELNS--L--FQHVTIAYGGVLPTPQQSTG-E
+Q515Q3                              F--HKTRIT-PRHIQLAVRS-D--LELNDLLKDVTI-SY-GGVFP--NV-
+Q00UE5                              HIQLAIRNDEE-LS-K-LL-GT--VTI--ASG-GVLPNI-HSVL-LPKKG
+Q2HH37                              TG-KTGKTL-SQ--EL----------------------------------
+
+P27661                              GPKAP-AVGK-KASQASQEY--------
+Q7REI8                              LPK-KSQLK-SG-ATANQDY--------
+Q24DQ8                              KSKKTE-S--RGQ--A-SQDL-------
+Q5CVZ9                              SKS--K-Q-GNSQ--EF-----------
+Q49JJ2                              ----------------------------
+Q7PZC9                              GNSSSQ-EKQSQ-EY-------------
+Q16LW9                              ---KASAAG-GDSNPS-QEY--------
+Q6PH89                              VKGSSS-SQEPKVA-ESQ-EF-------
+Q98TZ9                              V-Q-SQ-DF-------------------
+Q54WG6                              KKK-KPS-KKAA--EG-SSQI------Y
+Q515Q3                              PTA-V-NSKGKKK-PAQSQVV-------
+Q00UE5                              KK-S--GSAS--QEY-------------
+Q2HH37                              ----------------------------
+
+

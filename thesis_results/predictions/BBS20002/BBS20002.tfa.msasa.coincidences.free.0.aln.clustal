@@ -1,0 +1,46 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+1awj_                               ---EETLVIALYDYQTNDPQELALR-C-DEEYY-LLDSS-EI--HWWRVQ
+STK_HYDAT                           -----GVTIFVALYDYEARIS-EDLS-FK-KGERLQ-IINTADG-DWWYA
+SRC1_XENLA                          ----GV-TTFV-A-LYDYESRTETDLSFKKGERLQIVNNT--EG-DWWLA
+FGR_HUMAN                           -----GVTLFIALYD--YEARTEDDLTFTKGEKFH-ILNNTEGDW-WE-A
+SR42_DROME                          -N-AKI-FVA-LYDYD--ARTDE-DLSFRKGEH-L-EILN-DTQGDWWLA
+BTK_HUMAN                           ----ELKK-VVALYD-YMPM-NAN-DLQLRKGDEY-FIL-EESNLPWWRA
+STAC_HUMAN                          ---QMNTYVA-LYKFV-PQ-EN-EDLEMRP-G-DIITLLEDSNED-WWKG
+ABL_DROME                           ----D-PQ-LFVALYDFQA-GGENQLSLKKGEQVRILS-YNKSGE-WCEA
+ABL1_CAEEL                          -----SAPLF-VALYDFHGVGE-EQLSLRKGDQVRILGYNKNNEWCEAR-
+PEXD_YEAST                          KLEFAR-ALYDF-VPENPEMEVALKKGDLMAILS-KKDPLG-RDSDWWKV
+PIG1_BOVIN                          -----FKCAVKALFD-YKA-QREDELTFTKSAII-QNVEKQ--EGGWWRG
+NPH1_CANFA                          -----TSKEYIAVGDFTAQQAG-DLTFKKREI-LL-I-IEKKPDGWWIAK
+CC15_SCHPO                          ILG-YVIA-LY-D--YQA-QIPEEISFQK--GDTLMVLRTQEDG-WW-DG
+SS81_YEAST                          ---FIYKAK-ALY--PYDADDDDAYEIS--FEQNEILQ-VSDIEGRWWKA
+ARH6_HUMAN                          ---HQLI-VKARFN---F-KQTNEDELSVCKGD-II-YVTRVEEGGWWEG
+OPHL_HUMAN                          --PFRKAKALY-ACK-AE-HDSEL-S-FTA-GTVF-DNVHPSQEPGW-LE
+SNX9_MOUSE                          MATKARV-MYDFA-AEPGNNELT--V----TEGEIIT-VTNPNVGGG-WL
+1ycs_B                              ----NKGVIYALW-DYEPQNDDELPMK-EGD-CMTIIHREDEDEIEWWWA
+1hjd_A                              PIS--MAVALQ-DYMAPDCRFL-TIHRGQ-VVYVFSKLKGRGRLFW-G-G
+1ihv_A                              ------I-Q-NFRV-YY--RDS--RDPVWKGPAKLLWKGEGAV-VIQ-D-
+
+1awj_                               D-K---
+STK_HYDAT                           RSL---
+SRC1_XENLA                          RSL---
+FGR_HUMAN                           RSL---
+SR42_DROME                          RSK---
+BTK_HUMAN                           RDK---
+STAC_HUMAN                          KI----
+ABL_DROME                           HSD---
+ABL1_CAEEL                          -L-YST
+PEXD_YEAST                          RT---K
+PIG1_BOVIN                          -DYG--
+NPH1_CANFA                          N-A---
+CC15_SCHPO                          EIINV-
+SS81_YEAST                          RRA---
+ARH6_HUMAN                          -TL---
+OPHL_HUMAN                          GTL---
+SNX9_MOUSE                          EGKNN-
+1ycs_B                              RL----
+1hjd_A                              SVQ-GD
+1ihv_A                              NS----
+
+

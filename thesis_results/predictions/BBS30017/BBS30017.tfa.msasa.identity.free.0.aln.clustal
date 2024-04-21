@@ -1,0 +1,132 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+1mrp_                               -----------------------------------------DITVYNG-Q
+FBPA_NEIMA                          ----------------------------------------DITVY-NGQH
+FBPA_SERMA                          ------------------------------------------GIV-IYNA
+1atg_                               --------------------------------------------------
+1wod_                               ------------------------------------------KITVFAAA
+MODA_AZOVI                          --------------------------------------------------
+MODA_RHOCA                          -------------------------------------------------E
+1pot_                               ----------------------------------------TLY-FYNWTE
+POT2_HAEIN                          ----------------------------------------KLY-VYNWTD
+POT1_HAEIN                          -----------------------------------------TVYLYTWTE
+POTF_ECOLI                          T--LH---I--YNW-SD---YI---A--------------PDTVA-NFEK
+1sbp_                               -----------------------------------------QLLN--V-S
+CYSP_ECOLI                          -----------------------------------------E-LL-NS-S
+SUBI_SYNP7                          ------------------------------------------------EV
+SUBI_SYNY3                          ----------------------------------------NL-TL-VSYA
+
+1mrp_                               --H-K-EA-ATAV-AK-AFEQETGI--KVTLNSGKSEQLAGQ-LKEEG-D
+FBPA_NEIMA                          -KEAAQAVADAFT-RAT-GIKVKL-NSA--KGDQLAGQI-KEE-GSRSPA
+FBPA_SERMA                          Q-HEN-LV-KSWV--DGFTKD-T-GIKVTLRNGG-DS-ELGN-QLVQ-EG
+1atg_                               ------E-LKVV--TA-TNFLGTLEQLAGQ-FAK-Q-TGHA-V-V-ISSG
+1wod_                               SL-TNAMQDIA-TQFKKEKGVDV-VS-SFASSSTLARQ--IE-AGA---P
+MODA_AZOVI                          ----EVQVAV-AAN-FTAPM-K--DIAS-QFEK-DTGHKVITSF-G-P--
+MODA_RHOCA                          VIA-AVAAN-FTEPA-KEIGAL--FTEKTGHTVT-YAFGPSGQFY-TQIT
+1pot_                               YVPPGLLE-QFTKETGIKVIYSTYESNETMYAKL-KT-YKD-GAYDLVVP
+POT2_HAEIN                          --YV-PSD-LVA-QFSKETGIEVIYSTFESNEEM-YAKLKLTQNTGSGYD
+POT1_HAEIN                          YVPDGLLDEFTKET-GIK-VIV--SSLES-NETMYAKLKTQGESGGYDVI
+POTF_ECOLI                          ETGIKVVYDVF-DSNE-V-LEGKLMAGSTGFDLVVPSASFLERQ-LTAGV
+1sbp_                               YDPTRELYEQYN--KA-F-SAHWKQE--TG-D-NVVI-DQSHGGSGKQAT
+CYSP_ECOLI                          --YDVSRELFAALNPPFEQQW-AKDNGGDKLTIK-Q-SHAGSS--KQAL-
+SUBI_SYNP7                          TL-VSYAVTQAAYEQ--IIPKFAA-QWKEKTGQE-VRFNQSY-GGSGSQ-
+SUBI_SYNY3                          VTRDAF--EK--IIPKFTEEWKSKTGQDVT-FEQ-SYGGSGSQT-RAVVD
+
+1mrp_                               K--TPAD-VFYTEQTA-TFADLSEA-GLLAPISEQTIQQTAQKGVPLAPK
+FBPA_NEIMA                          DVFYSEQIPALATLS-AANLLEPL-PASTINETRGKG-VPVA-----AKK
+FBPA_SERMA                          SA-SP-ADVFLTENSPAMVLVD-NAKLFAPLDAATLAQVEP-QYRPSHGR
+1atg_                               SS-G-PV-YAQ-IVNGAPYNVFFSA-DEK-SPEKL-DNQG--FALPG-SR
+1wod_                               ADLFISAD-QK-WMDYAVDKKAIDTATRQTLL-GNSLVVVA-PKAS-VQK
+MODA_AZOVI                          TGGF-YSQ-IQ-NGAPFE-V-FLA-A--DDTT---PEKLEKEGGT-VAGS
+MODA_RHOCA                          -QGAPFEV-FLSAD-ASR-PKK--AVEE-G-Y-AVP-GS-DFTY--AV-G
+1pot_                               STYYVDKMRKEGMIQ-KIDKSKLTNFS--NLDPDMLNKPFD-PNNDYSIP
+POT2_HAEIN                          LVFPSSYYVNKMIKE-KMLQPID-QSKL--TNIHQI-PKHLLNKEFDPEN
+POT1_HAEIN                          A-PSNYFVSKMAREGMLKELDHS--KLPVLKELDP-DWL-NK-PY-DKGN
+POTF_ECOLI                          FQ-P-LDKS-KL--PEW-KNLDPELLKL-VA-KHDPDNKFAMPYMWATTG
+1sbp_                               SVI--NGIEADTVTLALAYDV-NAIAERGRIDKNWIKRLPDDSAPYTSTI
+CYSP_ECOLI                          -AIL-Q--GLKADVVTYN-QVTDVQILHDKGKLIPADWQSRLPNNSS-PF
+SUBI_SYNP7                          TRA-VIDGLEADVVA-LALESDINQ---IEKAGLI-QP-GWQQRVPNNG-
+SUBI_SYNY3                          GLEADIVAL-ALSSDVQ-K-IES--AGL--IQPGW-E-QEA-PNG-SIVT
+
+1mrp_                               KD-WIA-LSGRSRVVVYDHTKLSEKD-MEKSVLD-YATPKWKG-KIGYVS
+FBPA_NEIMA                          DW-VA-LSG-R-SRVVV-YDTR-KL--S--EKDLEKSVLNY-ATPKWK-N
+FBPA_SERMA                          WIG---I-AARSTVF-VYNPAKLSDAQLP-KSLLDLAKPEWKGRWAASPS
+1atg_                               -F--TYAIGKLVLWSA-KPGLVD-NQGKVLAG-N--GWRHIAISNPQIAP
+1wod_                               DFTIDS-KTNW-TSLLNGGRLAV--G-D--P-EH-VPAG-I-YAKEALQK
+MODA_AZOVI                          -RFT-YAVGKLVLWSAK-PGY-VDD-QGAVL-KK-NAFKHL-S-IANPKT
+MODA_RHOCA                          KLV-L-WSADPAR--V-DDKGAVLKTDLEH-VAIADPKSAP-YG-AAAIE
+1pot_                               Y-I-WG-ATAIGVNGDAVDPKSVTSWADLWKPEYK-GSLLLTDDAREVFQ
+POT2_HAEIN                          KYSLPYV-YGLTGIEVNADE-IDPKTITSWADLWK-PEF-KGKVL-MTSD
+POT1_HAEIN                          KYSLPQLLGAPGIAFNTNTYKGEQFTSWADLWKPE--F--A-NKV-QL-L
+POTF_ECOLI                          -IGYNVDKVKAVLGENAPVDSWDLILKPE-NLEKLKS--CGVSFL--DAP
+1sbp_                               VFLVRKGNPKQIHDWNDLIKPGVSVIT-PNPKSSGGARWNYLAAW---GY
+CYSP_ECOLI                          Y---STMGFLVR-KGN-PKNIHD-WNDLVRSD-VKLIF-PNPK-TSGNAR
+SUBI_SYNP7                          II-T-NSVVALVTQEGNPKGIKDWTDLTKPGV-RIVTANPKTS--GGARW
+SUBI_SYNY3                          -NSVIAF-VTK-ASDNIKVEKWAD-LA--N-PEV-KV-ITANPKTSG-G-
+
+1mrp_                               T-SG-AFLEQVVALSKMKGDKVALNWL-KG-LKENGKLYAK-NSVALQAV
+FBPA_NEIMA                          RIGYAPTSGAFLE-QVVAIVKLKGEA-AALKWL-KGLKEYG-K-PYAKNS
+FBPA_SERMA                          -GADF-QAIVSALLELKGEKATLAWL-KAMK-TN-FT-AYKGNSTVMKAV
+1atg_                               Y-G-LA-G-T-Q-VLT-HLGL-LDKLTA-QERIVE-ANS-VGQAHSQ-TA
+1wod_                               LG-A-W-DTLSPK-LA-PA-EDVRGAL---ALVERNEA-P-LGI-VYGSD
+MODA_AZOVI                          --A-PYG-A--A-A--VQVLAKLGLTE-A-TKSKL-VEGASIAQAHQFV-
+MODA_RHOCA                          -VMQKLGVYE-TLEP-K-LVT-G-KS--I-SQAYEFAATGNAP-V-GF-V
+1pot_                               MA-L-RK-LGYSGNTTDPKEIEAAYNEL-KK-LMPNVA-A-FNSDNPANP
+POT2_HAEIN                          ARE-VFHVALLLDGKSP-NTTNEEDIK-TAYERLEKLLPNVATFNSD-SP
+POT1_HAEIN                          DDAREVFNI-ALLKIGQDPN----TQDPAIIKQAYEELLKLRPNVLSFNS
+POTF_ECOLI                          E----EVFATVLNYLG-KDPNSTKADDYTGP-ATDLL-LKLRP-NIRYFH
+1sbp_                               AL-H-HNNNDQ-AKAED-FVKA-LF-K-NV-EVLDS-GARGSTNTFVERG
+CYSP_ECOLI                          YTY-LA-AW-GAADKADG-GDKG-KTEQFMTQFLKNVEVFDTGGRG--AT
+SUBI_SYNP7                          NFLGAWGSVTQ-T-GG--TEEQALQFT-TDIYKNVPILAKDAREST-DVF
+SUBI_SYNY3                          ARWN-FLG-IW-GSVTKTGGTEEQAFDFAGK--VL-ANAPVLPK--DA-R
+
+1mrp_                               ENGEVPAALINNYY-WYNLA-KEKGV-ENLKSRL-YFVRHQDP-GALVSY
+FBPA_NEIMA                          VALQAVENGEIDAALINNYY-WHAFAREKGVQNV-H-TRLNFV-RHRDPG
+FBPA_SERMA                          -NAGQVDSGVIYHYYPF-V-DGAKT-GEN-SNNIKLYYFKHQDPGAFVS-
+1atg_                               S-GAADLGFVALAQ--I-IQAAAKIPGSHW-FPPA-NYYEPIV-QQAVIT
+1wod_                               -A--VASKG-V-KVVATFPEDSH-KK--VEY-P-VAVVEGHNN-A-TV-K
+MODA_AZOVI                          AT-GNA-ELGFVA-L-SQVYKDGKL-TGGSG-WN-VPGDLYEPIRQDAVI
+MODA_RHOCA                          AYSQVIGKEGGS-SWMVPQDLYKPI-K-QDAVLLKT-G-A-E-D-AAAK-
+1pot_                               YMEGEV--NLG-MIWNGS-AFVAR-QAGTPIDVVWPKEGGIFW-M-DSLA
+POT2_HAEIN                          -EVPYV-QGEVAIGMIWN-GSAYL-AQKENQSLQFVYPKEGAIFWMDNYA
+POT1_HAEIN                          D-NP-ANSFIS---GE-VEVGQLWNGSV-RIAKKEKAPL-NM-VFPKEGP
+POTF_ECOLI                          SSQYINDL-ANG-DICVAIGW-AGDVWQASNRAKEAKNGVNVSFS-I-PK
+1sbp_                               IGDVLIAW-EN--EALLATNELGKDKFEIVTPSESI---LAEPTVS--VV
+CYSP_ECOLI                          T--TFAER--GLGDVLISFE-SEVNNIR-KQYEAQ-GFEV-VIPKTNILA
+SUBI_SYNP7                          TKGQADVLLN-YEN-ELIL-AQQK-G-EKVDYAIPPVN-INIQGPVAVVD
+SUBI_SYNY3                          ESTDVFYKQGQG-N-VL-L-NYENEVLLA-KQKGENQPYII-P-QDFNVS
+
+1mrp_                               -SGAAV-LKASKN-QAEAQKFVDFLASKKGQEA-LV--AARAEY------
+FBPA_NEIMA                          ALVTYSGAA-VLKS-SQNKD-EAKKF-VAF-LASKEGQRALTAVRAEY--
+FBPA_SERMA                          I-SGGGVLAS-SKHQQQ-AQA-FIKW-ITGKQGQ-E-ILRTNNAFEY---
+1atg_                               KS--TA-EK-ANAEQFMS-WM-KGPK-AVAIIKAA-GY-VLP--------
+1wod_                               AFYDYL-KGP-QAAEIFKR-YGF-TIK-----------------------
+MODA_AZOVI                          LTKGK-DN-PAAQALVDYLK-GPKATEVI-K--AYGYGLQ----------
+MODA_RHOCA                          -AY-L-DF-LKTPE-ALEIIR-K-YGYVTE--------------------
+1pot_                               IP-AN-AKNK-EGALK-LINFLLRPDVAKQVA-ETI-GYP-TP-------
+POT2_HAEIN                          IPT-TAKNVE--GA-HKFIDF-L-LR-PENA-KIVIE-RM-G-FS-MP--
+POT1_HAEIN                          VLWV-D-TLAIPATAKNSEGAHKLINYML-GK-KTAEK-LTLAIGYPTS-
+POTF_ECOLI                          -EGAM-AFFDVFAMPADAKNKDEAYQFLNYLLRPDVVAHI--SDHVFYA-
+1sbp_                               -DKVVE-KKDTKAVAE-AYLKYL-YSPEG-Q-EIAAKN-FYRPR------
+CYSP_ECOLI                          EFPVAWVDKN--VQANG-TEKAAKAYLNWLYSPQAQTIITDYYYR-VN--
+SUBI_SYNP7                          TYTDKHGTRKVSEAFVQ--FLFTPEAQAEFAKV-GFRPA-----------
+SUBI_SYNY3                          ISGPVAVVDTTVDKKGTRE-VRD-AFVQYLFT-PEAQQIFAE-TGFRPV-
+
+1mrp_                               --
+FBPA_NEIMA                          --
+FBPA_SERMA                          --
+1atg_                               --
+1wod_                               --
+MODA_AZOVI                          --
+MODA_RHOCA                          --
+1pot_                               --
+POT2_HAEIN                          --
+POT1_HAEIN                          --
+POTF_ECOLI                          NA
+1sbp_                               --
+CYSP_ECOLI                          --
+SUBI_SYNP7                          --
+SUBI_SYNY3                          --
+
+

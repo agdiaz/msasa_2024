@@ -75,7 +75,7 @@ class Coincidences(ObjectiveFunction):
             ObjectiveFunction.GAP_SYMBOL,
         )
 
-        return scores.sum() / len(column)
+        return scores.sum()
 
     def __str__(self) -> str:
         return "Coincidences"

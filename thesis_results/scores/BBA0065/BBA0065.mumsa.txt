@@ -1,0 +1,21 @@
+Input Alignment:                                    	Overlap Score:
+BBA0065.reference.fasta                           	1.000000
+BBA0065_alignment_muscle.fasta.sorted.fasta       	0.822006
+BBA0065_alignment_mafft.fasta                     	0.814270
+BBA0065_alignment_tCoffee.fasta                   	0.809057
+BBA0065_alignment_clustal.fasta                   	0.794041
+BBA0065_alignment_kalign.fasta                    	0.774565
+BBA0065.tfa.msasa.similarity_blosum62.free.0.aln  	0.045674
+BBA0065.tfa.msasa.similarity_blosum62.strict.0.aln	0.045483
+BBA0065.tfa.msasa.global.free.0.aln               	0.045305
+BBA0065.tfa.msasa.similarity_pam250.strict.0.aln  	0.045005
+BBA0065.tfa.msasa.similarity_gonnet92.free.0.aln  	0.043476
+BBA0065.tfa.msasa.similarity_gonnet92.strict.0.aln	0.042798
+BBA0065.tfa.msasa.similarity_pam250.free.0.aln    	0.041655
+BBA0065.tfa.msasa.local.strict.0.aln              	0.033671
+BBA0065.tfa.msasa.global.strict.0.aln             	0.033199
+BBA0065.tfa.msasa.coincidences.strict.0.aln       	0.021629
+BBA0065.tfa.msasa.coincidences.free.0.aln         	0.020526
+BBA0065.tfa.msasa.identity.free.0.aln             	0.015323
+BBA0065.tfa.msasa.identity.strict.0.aln           	0.014853
+BBA0065.tfa.msasa.local.free.0.aln               	0.044180

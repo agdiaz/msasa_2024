@@ -1,7 +1,7 @@
 msasa_predictions_results/
 report-*.html
 timeline-*.html
-thesis_results/
+# thesis_results/
 workflow.png
 timeline/
 reports/
@@ -10,6 +10,7 @@ reports/
 __pycache__/
 *.py[cod]
 *$py.class
+thesis_results/**/*.pdf
 
 # C extensions
 *.so

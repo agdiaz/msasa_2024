@@ -42,7 +42,6 @@ process computeMumsaOverlapScore {
         ${clustalAlignment} \
         ${mafftAlignment} \
         ${tCoffeeAlignment} \
-        ${tCoffeeAlignment} \
         ${kalignAlignment} \
         ${msasaCoincidencesAlignmentFree} \
         ${msasaCoincidencesAlignmentStrict} \
@@ -56,7 +55,7 @@ process computeMumsaOverlapScore {
         ${msasaSimilarityGonnet92AlignmentStrict} \
         ${msasaGlobalAlignmentFree} \
         ${msasaGlobalAlignmentStrict} \
-        ${msasaGlobalAlignmentFree} \
+        ${msasaLocalAlignmentFree} \
         ${msasaLocalAlignmentStrict} > ${referenceAlignment.simpleName}.mumsa.txt
     """
 }

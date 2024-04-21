@@ -1,0 +1,84 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+seq001                              ------------------------SAHLQW-MVVR-NCS-S-FLIKRNKQ
+seq002                              --------------------------MSAHLQWMVVRNCSSFLI-KRNKQ
+seq003                              -------------------------MSA-HLQWMVVRNCSSFL-IKRNKQ
+seq004                              --------------------------MSAHLQWMVVRNCS-SFLIKRNKQ
+seq005                              --------------------------SAHLQWMVV-RNCSSFLIKRNKQT
+seq006                              ------------------------MSAHLQW-MVVR-NCS-SFLIKRNKQ
+seq007                              --------------------------MSAHLQWMVVRNCSSFLIKRNKQ-
+seq008                              --------------------------SAHLQWMV-VRNCSSFLIKRNKQT
+seq009                              ------------------------MSAHLQW-M-VIRNNSSFLIKRNGQT
+seq010                              ---------MATVPGQL-IWEIV-KNNNCFLVKQF-GRGNSK-VQFSKET
+seq011                              ------M-AT-VPGQLIWE-IVKRNNCFL-VKQFG-RGN-AK-VQFSKES
+seq012                              --------MATIPDSLVW-E-LVKKNNSFLVK-QFGNGNAKV-QFSKEPN
+seq013                              ----------MSVSNDLIWQVI-RDN-NRFLVKRPEFGGIQFN-RE-PVN
+seq014                              --------MATSSHLNWLIIR--NNNAFLLKKRDVKKPFSTEPNNLASVS
+seq015                              MATSSHLNWLIIRNNNAFLLKKRDVKK-PFSTEPNNLASVSSYRYSGIV-
+seq016                              --------------MSDALVWQVIRNNSA-FLRTQRGI-G-K-RFS-TEK
+seq017                              ----MSSHLNW-MIIR-NNN-AFLVKKRN-IKKPFSK-EPN-N--V-TNL
+seq018                              ----------------------MSQDLVWSIIK-KNNAFLKSS--HGL-T
+seq019                              ------MTHSTDLQW-LLVRQNS-KF-LQKR-NGIRLSSDPFNNNANWTK
+
+seq001                              TYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVIKRRSGQRKP
+seq002                              TYSTEPNNLKARNSFRYNGLIHRKTV-GVEPAADG-KGVVVVIKRRSGQR
+seq003                              TYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVIKRRSGQRKP
+seq004                              TYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRKP
+seq005                              Y-STEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRKP
+seq006                              TYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRKP
+seq007                              TYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRKP
+seq008                              YS-TEPNNLKARNSFRYNGLIHRKTVGVEAWPDGKGVVVVMKRRSGQRKP
+seq009                              YS-TEPNNLKARNAFRFNGLIHRKTVGVEQAADGKGVVIILKKRAGHRKP
+seq010                              NNLTNV-HSY-K-HSGLANKKTVTIQAADKDQAVVLATTKTKKQNKPK-L
+seq011                              NNLVNINSYKHSGLANKKTVTIQAAGKDQGVVLGTTKTKRQN-KPKLSVN
+seq012                              N--LYNVHSYKHSGLA-NKKTVTVQPASGKETAVVLSTTKTEKQ-NKPAS
+seq013                              VSGKNAQRFSG-LCNDKAV-GVQANSPRGVVL-ITKT-N--PKNAQ-K-P
+seq014                              SYRYSGIVHKKTLG-VVPAADK-KGFTAVL-KKGK-YAQRP-AKNT-V-R
+seq015                              HKKTLGVVPAADKKGFTAVLKKGKYAQR-PAKNTVRVDFKAGPRRSLKKL
+seq016                              FNLKKV-NSPKYSGLAN-KH-AIDVSA-AAKGVV-VSTKNEKGRPAKAV-
+seq017                              NSYRY-NGLIQKKAVGVV-ENPDRKGFTVVYK-KAKATNKP-AKNAVRRQ
+seq018                              LSAEPG-NLRNKNSLKY-SGLARRTTIDVAAVNGKVVVSSKIVK-KAAFP
+seq019                              RHAGFLNTKAA-VVKTKGDR-ILVTTKDG-K-AGNKPKSMYKKAVMD-AG
+
+seq001                              ATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMA-AIRRASAILRTQK
+seq002                              KPATSYVRTTINKNARATL-SSIRHMIRKNKYRPDLRMAAIRRASAILRS
+seq003                              ATSYVRTTINRNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQKP
+seq004                              ATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMA-AIRRASAILRSQK
+seq005                              ATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIR-RA-S-AILRS
+seq006                              ATSYVRTTINKNARATLSSIRHMIRKN-KYRPDLRMAAIR-RASAILR-S
+seq007                              ATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK-
+seq008                              ATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMA-AIRRA-SAILRSQ
+seq009                              AKAYEKITINKNSRTTLNRLRNIIRKNKYRKDLRMAALRR-ASAI-LKSQ
+seq010                              SVNKSILKKEF-PRM-SKAVANQVVDNYYRPDLKKAALARLSAI-S-KGL
+seq011                              KSILKKEFSRMSKVVAN-QVVD-NYYRPDL-K-KA-ALARLSAISKGL--
+seq012                              LYHKSVMR-KE-FRKMAKAVK--NQVSDNYYR-PDLTKP-ALARLSAVYR
+seq013                              --AK-LFRKD-VIANASSRKTYKS-I-AGRIGRTGYRDDLVKVS-VA-R-
+seq014                              VDF-KAGPRRS--LKKL-KNLLIGSKYRKDLTQAA-LRRA-SAVLRSQKP
+seq015                              KNLLIGSKYRKDLT-QVIMAPSLETTVW-VLVMMIFFLM-LHNQDRRMIV
+seq016                              TTSTL-S-KTPVAS-VRRL-AKNAGFNK-FNKLAQRR-AAAIVRSQVKKA
+seq017                              FKAGAR-RSLYK-VKRLLKAN-H-YR-TDLSKATLRRASAIL-RSQ-RP-
+seq018                              AQSKKTTTFSTVNTRKTARFVKTLATQY-APELRAAALGRLHRVQSALRS
+seq019                              VEASVV--SKAV--AAVRPDLASIASRRARKMASTL-EHMKKVRAARKER
+
+seq001                              PVM-VKRK-RTRPTKSS----
+seq002                              QKPVMVKRKRTRPT-KSS---
+seq003                              VMVK-RKRTRPTKSS------
+seq004                              PV-VVKRKRTR-PTKSS----
+seq005                              QKPVVVKRKRTRPTKSS----
+seq006                              -QKPVV-VK-RKRTRPTKSS-
+seq007                              PVVVKRKRTR--PTKSS----
+seq008                              KPV-VVKRKRTRPTKSS----
+seq009                              KPVVVKKKRSRAT-KSA----
+seq010                              RVAKSGAKQRNRQA-------
+seq011                              RVAKSGPKRRNRQA-------
+seq012                              -SLQVAKSGV-KK-KNRQAN-
+seq013                              ASAILSSQR--PKK-TV-A--
+seq014                              APVKGKKA-EFAK-GKK-PE-
+seq015                              LINLSEALKAEAYRTSVLGLF
+seq016                              K-VQ--KTDA-----------
+seq017                              IKAKKPKAAVA-KTE------
+seq018                              A-KKA-AARKAKKN-------
+seq019                              -SSKI-T-FQRK-AVRP-KRH
+
+

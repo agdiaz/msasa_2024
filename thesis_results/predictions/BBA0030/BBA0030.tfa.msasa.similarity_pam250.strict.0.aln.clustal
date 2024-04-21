@@ -1,0 +1,84 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+seq001                              ----SAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq002                              ---MSAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq003                              ---MSAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq004                              ---MSAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq005                              ----SAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq006                              ---MSAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq007                              ---MSAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq008                              ----SAHLQWMVVRNCSSFLIKRNKQTYSTEPNNLKARNSFRYNGLIHRK
+seq009                              ---MSAHLQWMVIRNNSSFLIKRNGQTYSTEPNNLKARNAFRFNGLIHRK
+seq010                              ---MATVPGQLIWEIVKNNNCFLVKQFGRGNSKVQFSKETNNLTNVHSYK
+seq011                              ---MATVPGQLIWEIVKRNNCFLVKQFGRGNAKVQFSKESNNLVNINSYK
+seq012                              MATIPDSLVWELVKKNNSFLVKQFGNGNAKVQFSKEPNNLYNVHSYKHSG
+seq013                              MSVS-NDLIWQVIRDNNRFLVKRP-EFGGIQFNREPVNVSGKNAQRFSGL
+seq014                              -MATSSHLNWLIIRNNNAFLLKKRDVKKPFSTEPNNLASVSSYRYSGIVH
+seq015                              -MATSSHLNWLIIRNNNAFLLKKRDVKKPFSTEPNNLASVSSYRYSGIV-
+seq016                              ---MSDALVWQVIRNNSAFLRTQRGIGKRF-STEKFNLKKVNSPKYSGLA
+seq017                              ---MSSHLNWMIIRNNNAFLVKKRNIKKPFSKEPNNVTNLNSYRYNGLIQ
+seq018                              ---MSQDLVWSIIKKNNAFLKSSHGL--TLSAEPGNLRNKNSLKYSGLAR
+seq019                              -MTHSTDLQWLLVRQNSKFLQKRNGIRLSSDPFNNNANWTKRHAGFLNTK
+
+seq001                              TVGVEPAADGKGVVVVIKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq002                              TVGVEPAADGKGVVVVIKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq003                              TVGVEPAADGKGVVVVIKRRSGQRKPATSYVRTTINRNARATLSSIRHMI
+seq004                              TVGVEPAADGKGVVVVMKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq005                              TVGVEPAADGKGVVVVMKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq006                              TVGVEPAADGKGVVVVMKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq007                              TVGVEPAADGKGVVVVMKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq008                              TVGVEAWPDGKGVVVVMKRRSGQRKPATSYVRTTINKNARATLSSIRHMI
+seq009                              TVGVEQAADGKGVVIILKKRAGHRKPAKAYEKITINKNSRTTLNRLRNII
+seq010                              HSGLANKKTVTIQAADKDQAVVLATTKTKKQNKPKLSVNKSILKKEFPRM
+seq011                              HSGLANKKTVTIQAAGKDQGVVLGTTKTKRQNKPKLSVNKSILKKEFSRM
+seq012                              LANKKTVTVQP-A-SGKETAVVLSTTKTEKQNKPASLYHKSVMRKE-FRK
+seq013                              CNDKAVGVQANSPRGVVLITKTNPKNAQKPAKLFRKDVIANASSRKTYKS
+seq014                              KKTLG-VVPAADKKGFTAVLKKGKYAQ-RPAKNTVRVDFKAGPRRSLKKL
+seq015                              HKKTLGVVPAADK-KGFTAVLKKGKYAQRPAKNTVRVDFKAGPRRSLKKL
+seq016                              NKHAIDVSAAAKGVVVSTKNEKGRPAKAVTTSTLS-KTPVASVRRLAKNA
+seq017                              KKAVGVVENPDRKGFTVVYKKAKAT-NKPAKNAV-RRQFKAGARRSLYKV
+seq018                              RTTIDVAAVNG-KVVVSSKIVKKAAFPAQSKKTTTFSTVNTRKTARFVKT
+seq019                              AA-VVKTKGDRILVTTKD-GKAGNKPKSMYKK-AVMDAGVEASVVSKAVA
+
+seq001                              RKNKYRPDLRMAAIRRASAILRTQKPVMVKRKRTRPTKSS----------
+seq002                              RKNKYRPDL-RMAAIRRASAILRSQKPVMVKRKRTRPTKSS---------
+seq003                              RKNKYRPDLRMAAIRRASAILRSQKPVMVKRKRTRPTKSS----------
+seq004                              RKNKYRPDLRMAAIRRASAILRSQKPVVVKRKRTRPTKSS----------
+seq005                              RKNKYRPDLRMAAIRRASAILRSQKPVVVKRKRTRPTKSS----------
+seq006                              RKNKYRPDLRMAAIRRASAILRSQKPVVVKRKRTRPTKSS----------
+seq007                              RKNKYRPDLRMAAIRRASAILRSQKPVVVKRKRTRPTKSS----------
+seq008                              RKNKYRPDLRMAAIRRASAILRSQKPVVVKRKRTRPTKSS----------
+seq009                              RKNKYRKDLRMAALRRASAILKSQKPVVVKKKRSRATKSA----------
+seq010                              SKAVANQVVDNYYRPDLKKAALARLSAISKGLRVAKSGAKQRNRQA----
+seq011                              SKVVANQVVDNYYRPDLKKAALARLSAISKGLRVAKSGPKRRNRQA----
+seq012                              MAKAVKNQVSDNYYRPDLTKPALAR-LSAVYRSLQVAKSGVKKKNRQAN-
+seq013                              IAGRIGRTGYRDDLVK-VS-VARASAI-LSSQRPKKTVA-----------
+seq014                              -KNLLIGSKYRKDLTQAALRRASAVLRSQKPAPVKGKKAEFAKGKK-PE-
+seq015                              KNLLIGSKYRKDLTQVIMAPSLETTVWVLVMMIFFLMLHNQDRRMIVLIN
+seq016                              GFNKFNKLAQRRAAAIVRSQVKKAKVQKTDA-------------------
+seq017                              -KRLLKANHYRTDLSKATLRRASA-I-LRSQRPIKAKKPKAAVAKTE---
+seq018                              LATQYAPELRAAALGRLHR-VQSALRSAKKAAARKAKKN-----------
+seq019                              AVRPDLASIASRRARKMASTLEHMKK-VRAARKERSSKITFQRKAVRPKR
+
+seq001                              ------------------
+seq002                              ------------------
+seq003                              ------------------
+seq004                              ------------------
+seq005                              ------------------
+seq006                              ------------------
+seq007                              ------------------
+seq008                              ------------------
+seq009                              ------------------
+seq010                              ------------------
+seq011                              ------------------
+seq012                              ------------------
+seq013                              ------------------
+seq014                              ------------------
+seq015                              LSEALKAEAYRTSVLGLF
+seq016                              ------------------
+seq017                              ------------------
+seq018                              ------------------
+seq019                              H-----------------
+
+

@@ -1,0 +1,24 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+1fjl_A                              ---FSASQLDELERAFERTQYPDIYTREELAQRTNLTEARIQVWFQNRRA
+1ftz_                               ---YTRYQTLELEKEFHFNRYITRRRRIDIANALSLSERQIKIWFQNRRM
+1ftt_                               ---FSQAQVYELERRFKQQKYLSAPEREHLASMIHLTPTQVKIWFQNHRY
+1mnm_C                              FTKENVRILESWFAKNIENPYLDTKGLENLMKNTSLSRIQIKNWVSNRRR
+1akh_A                              --ISPQA-RAFLEEVFRRKQSLNSKEKEEVAKKCGITPLQVRVWFINKRM
+1bw5_                               --LNEKQLHTLRTCYAANPRPDALMKEQLVEMTGLSPRVIRVWFQN-KRC
+HM17_APIME                          ---FTTQQLLSLEKKFREKQYLTIAERAEFSSSLHLTETQVKIWFQNRRA
+HM05_CAEEL                          ---FTDEQLEKLEESFNTSGYLSGSTRAKLAESLGLSDNQVKVWFQNRRT
+BRX2_HUMAN                          ---FTELQLMGLEKKFQKQKYLSTPDRLDLAQSLGLTQLQVKTWYQNRRM
+
+1fjl_A                              RL-
+1ftz_                               KS-
+1ftt_                               KM-
+1mnm_C                              KE-
+1akh_A                              RS-
+1bw5_                               KD-
+HM17_APIME                          KA-
+HM05_CAEEL                          K-Q
+BRX2_HUMAN                          KW-
+
+

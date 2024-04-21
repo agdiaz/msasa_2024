@@ -1,0 +1,70 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+1aac_                               -----------------------------------IVVD-IAKMKYETP-
+1j5c_A                              ---------------------------ATVK-MG-SDSGALVFE-PSTVT
+PLAS_SYNP7                          --------------------------------------VAIKMGA--DN-
+PLAS_ANASO                          -----------------------------YTVKLGSDKGLLVFEPAKLTI
+1ag6_                               --------------------------------VEVLLGG-DDGS--LAFL
+1b3i_A                              ----------------------------VQIKMGT-DKYA-P-LYEPKA-
+1baw_A                              -------------------------FTVKMGA-DS--GLLQFEPANVTVH
+AZUP_RHILV                          -----------------------------------HQ-VQML-NKGTDGA
+PLAS_SCEOB                          ---------------------------ANVKLGA-DSGALVF-EPATVTI
+1cuo_A                              ------CET-T-V-TSGDTMTYSTRSIS-VPASCAEF-TVNFEH-KGHM-
+AZU1_METJ                           ---CSVDVEANDAMQYN-TKNIDVEK---SC-KEFTVNLKHTGSLPK-NV
+AZU2_ALCXX                          CEA-T-VESN-DAMQYNVKEIVVDKSCKQFT-MHLKH-VGKM-AKVA--M
+AZU1_ALCXX                          ----CSV--DIAGNDGMQFDKKEITVSKSCKQF-T-V--NLKH-PGK-LA
+AZUR_BORPE                          CSV-D-IAGT-DQMQFDKKAIEVS-KSCKQFTVNLKH-T-GKL-PRNVMG
+AZUR_METFL                          CE-VNVSAGDS--MAFNTRSIDI--PKSCKEFTV-NFAHTGTASK-AGMG
+1fwx_A                              --------------------------------------NKVRV-YMSSVA
+NOSZ_ALCEU                          --------------------------------RKVTVKITSQAPAFSLRE
+NOSZ_BRUME                          ----------------------------------NKVRVYMTSSAP-AFG
+NOSZ_BRAJA                          ------------------------------------NKVRVYMTSTAP-A
+NSZ1_PSEAE                          -----------------------------------NKVRVYMVSMAPSFG
+NOSZ_PSEFL                          ----------------------------------N-KVRVYMT--SMAPA
+
+1aac_                               --ELH-VK-VGDTVTWIN-REAMPHN-VHF-VAG-VLGEAALKGPMMKKE
+1j5c_A                              IKAGE--EVKWV-NNKLSPH-NIVFAADGV-DADTAAKLSHKGLAFA-A-
+PLAS_SYNP7                          G-M-L-AFEPSTIEIQAGDTVQWVNNKLAPHN-VVVEGQPELSHKDLA-F
+PLAS_ANASO                          KPGD-TVEFLNN-KVPPHNVVFDAALNPAKSAD-LAKSLSHKQLLMSPGQ
+1ag6_                               PGD-FSVASGE-EIVF-KNN-AGFPH-NVVF-DE-DEIPSGVDAAKISMS
+1b3i_A                              LSI-SAGDTVEFVM-NKV-GPHNVIFD--KVPAG--ESAP-ALSNTKLAI
+1baw_A                              PGDTV-KWVNN-K-LP-PHNILFDDKQVPGASKELADKLSHSQLMFSPG-
+AZUP_RHILV                          MVFEPGFLKIA-PGDTVTFIPTDKSHNVET-FKGLIPDGVPDFKS-KPNE
+PLAS_SCEOB                          -K-AG-D-SVTWTN-NAGFPHNIVFD-EDAVPAGVNADA-LSHDDYLNAP
+1cuo_A                              PKTGMGHNWVLAKS-AD-VGD-VAKEGAHAGADNNFVTPGDK-RVI-AFT
+AZU1_METJ                           -MGH-NLVITKTADFKAVMNDG-VAAGEAGNFVKAGDARVVAHTKLVGG-
+AZU2_ALCXX                          GHNL-VLTKD-ADK-QA-VATDGMGAGLAQDYV-KAGDTRVIAHTKVIGG
+AZU1_ALCXX                          KN-VMGHN-WVL-TKQADMQGAVNDGM-AAGLDNNYVKKDDARVIAHTK-
+AZUR_BORPE                          -HN-W-V-LTKTADMQAVEKD---GIAAGLDNQYLKAGDTRVLAHTKVLG
+AZUR_METFL                          -HNWVLARSADVN-DLAKAGVEAGIDKNFIPPNDPRVLAY-TPLVGG--G
+1fwx_A                              PSFSIESFTV-KEGDEVTVIVTNLDEID-DLTHGFTM-GNYGVAMEIGPQ
+NOSZ_ALCEU                          F-KLKKGDEVTLIL-TNLD-KI-EDLTHG-FAIPKYNVNFIVNPQE-TAS
+NOSZ_BRUME                          LTEFTVQQD-DEVTVYVTNIDEIEDLTHGFAIVN-YGVNMEVAPQATAS-
+NOSZ_BRAJA                          -FGLEQFQVK-QGDQV-TVYIT-NIDAVEDLTHGFC-IVNYGIQMEVAPM
+NSZ1_PSEAE                          LTEFKV-KQGDEVTVTITNLDEIEDVTHGFV-MVNHGV-CME--I-S-P-
+NOSZ_PSEFL                          YGLTEFTV-KQGNEVTVTITNIDQIEDV-S-HGFVM-TNHGASME-ISPQ
+
+1aac_                               QAYSLT-FTEAGTYDYHCTP-HPF-MRGKVVVE--------------
+1j5c_A                              GESFTST-FTEP--GTYTYYCEPHRGAGMVGKVVVD-----------
+PLAS_SYNP7                          SPGETFEA-T-FSE--PGTYTYYCEPHR-GAGMVGKIVVQ-------
+PLAS_ANASO                          S-TS-T---T-FPADAPAGEYTFY-CEPHRG-A-GMGGKITVA----
+1ag6_                               EEDLLN-A-PGETYKVTLTEKGTYKFYCSP--HQGAGMVGKVTVN--
+1b3i_A                              -AP-GSFYSVTLGTPGTYSFYCT-PHR-GAGMV-GTITVE-------
+1baw_A                              ESY--EITFS-SDFPAGTYTY-YCAPHRGAGMVGKI-TVE-------
+AZUP_RHILV                          QY-QVKFDIPGAYVLKCTPHVGMGM-VA-LIQVG-------------
+PLAS_SCEOB                          GESYTAK--FDTAGEYG-YFCEPHQGAGM--V-GKVIVQ--------
+1cuo_A                              PI-I-GGGEKTSVKFKVSALSKDEAYTYFCSYPGHFS-MMRGTLKLE
+AZU1_METJ                           GEKDS-VKVDVS-KLA-AGE-KYTFFC-SFPGHATMMRG---TVTVK
+AZU2_ALCXX                          GESDSVTFDVSK-IAAGENYAYFCSFPGH-WAMMKGTLKLG------
+AZU1_ALCXX                          VIGGGETDSVTFDVSKLA-AGEDYAYFCSFPGHFALMKGVLKL-V--
+AZUR_BORPE                          G--G-ESDSVTFDVAKLAAG-DDYTFFCSFPGHG-ALMKGTLKLV--
+AZUR_METFL                          EKTSVTFKPSILK-DGESYSFYCSFAFHSFMM-RGT-VKLV------
+1fwx_A                              MTS-SV-TFVAANP-GVYWYYCQWFCHALHME-MRGRMLVE------
+NOSZ_ALCEU                          VT-FVADKPG-VFWCYCT-HFCH-AL-HL-EMR-TRMIVE-------
+NOSZ_BRUME                          VTF-KASKPGVWWY-YCSWFCHAMHME-MQGR--MLVE---------
+NOSZ_BRAJA                          ATASV-SFS-AD-KAGVYWYYCSWFC-HA-MHMEM--KGRMFVE---
+NSZ1_PSEAE                          -QQTSSITFVADKPGVHW-YYCSWFCHALHMEMC-GRMLVE------
+NOSZ_PSEFL                          QTSSI-TFTADKAGLHWYYCSWFCHALHMEMVGRMLVE---------
+
+

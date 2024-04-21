@@ -1,0 +1,84 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+seq001                              -----------------------------SAHLQWMVVRNCSSFLIKRNK
+seq002                              ---------------------------MSAHLQWMVVRNCSS-FLIKRNK
+seq003                              ----------------------------MSAHLQWMVVRNCSSFLIKRNK
+seq004                              ----------------------------MSAHLQWMVVRNCSSFLIKRNK
+seq005                              ----------------------------SAHLQ-WMVVRNCSSFLIKRNK
+seq006                              ----------------------------MSAHLQWMVVRNCSSFLIKRNK
+seq007                              ----------------------------MSAHLQWMVVRNCSSFLIKRNK
+seq008                              ----------------------------SAHLQWMVVRNCSSFLIKRNKQ
+seq009                              ----------------------------MSAHLQWMVIRNNSSFLIKRNG
+seq010                              ---------------------MATVPGQLIWEIVKNNNCFLVKQFGRGNS
+seq011                              -------------------MATVPGQLIWEIVKRNNCFLVKQFGRGNAKV
+seq012                              -------------------MATIPDSLVWEL-VKKNNSFLVKQFGNGNAK
+seq013                              -------------------------------MSVSNDLIWQVIRDNNRFL
+seq014                              ---------------------MATSSHLNWLIIRNNNAFLLKKRDVKKPF
+seq015                              MATSSHLNWLIIRNNNAFLLKKRDVKKPFSTEPNNLASVSSYRYSGIVHK
+seq016                              -------------------------------------MSDALVWQVIRNN
+seq017                              --------------------------MSSHLNWMIIRNNNAFLVKKRNIK
+seq018                              --------------------------------MSQDLVWSIIKKNNAFLK
+seq019                              -----------------MTHSTDLQWLLV-RQNSKFLQKRNGIRLSSDPF
+
+seq001                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVIKRRSGQRK
+seq002                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVIKRRSGQRK
+seq003                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVIKRRSGQRK
+seq004                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRK
+seq005                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRK
+seq006                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRK
+seq007                              QTYSTEPNNLKARNSFRYNGLIHRKTVGVEPAADGKGVVVVMKRRSGQRK
+seq008                              TYSTEP-NNLKARNSFRYNGLIHRKTVGVEAWPDGKGVVVVMKRRSGQRK
+seq009                              QTYSTEPNNLKARNAFRFNGLIHRKTVGVEQAADGKGVVIILKKRAGHRK
+seq010                              KVQFSKETNNLTNVHSYKHSGLANKKTVTIQAADKDQAVVLATTKTKKQN
+seq011                              QFSKESNNLVN-INSYKHSGLANKKTVTIQAAGKDQGVVLGTTKTKRQNK
+seq012                              VQFSKEPNNLYNVHSYKHSGLANKKTVTVQPASGKETAVVLSTTKTEKQN
+seq013                              VKRPEFGGIQFNREPVNVSGKNAQRFSGLCNDKAVGVQANSPRGVVLITK
+seq014                              STEPNNLASVSSYRYSGIVHKKTLGVVPAADKKGFTAVLKKGKYAQRPAK
+seq015                              KTLGVVPAADKKGFTAVLKKGKYAQRPAKNTVRVDFKAGPRRSLKKLKNL
+seq016                              SAFLRTQRGIGKRFSTEKFNLKKVNSPKYSGLANKHA-IDVSAAAKGVVV
+seq017                              KPFSKEPNNVTNLNSYRYNGLIQKKAVGVVENPDRKGFTVVYKKAKATNK
+seq018                              SSHGLTLSAEPGNLRNKNSLKYSGLARRTTIDVAAVNGKVVVSSKIVKKA
+seq019                              NNNANWTKRHAGFLNTKAAVVKTKGDRILVTTKDGKAGNKPKSMYKKAVM
+
+seq001                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRTQK
+seq002                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq003                              PATSYVRTTINRNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq004                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq005                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq006                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq007                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq008                              PATSYVRTTINKNARATLSSIRHMIRKNKYRPDLRMAAIRRASAILRSQK
+seq009                              PAKAYEKITINKNSRTTLNRLRNIIRKNKYRKDLRMAALRRASAILKSQK
+seq010                              KPKLSVNKSILKKEFPRMSKA-VANQVVDNYYRPDLKKAALARLSAISKG
+seq011                              PKLSVNKSILKKEFSRMSKVVANQV-VDNYYRPDLKKAALARLSAISKGL
+seq012                              KPASLYHKSVMRKEFRKMAKAVKNQVSDNYYRPDLTKPALARLSAVYRSL
+seq013                              TN-PKNAQKPAKLFRKDVIAN-ASSRKTYKSIAGRIGRTGYRDDLVKVSV
+seq014                              NTVRVDFKAGPRRSLKKLKNLLIGSKYRKDLTQAALRRASAVLRSQKPAP
+seq015                              LIGSKYRKDLTQVIMAPSLETTVWVLVMMIFFLMLHNQDRRMIVLINLSE
+seq016                              STKNEKGRPAKAVTTSTLSKTPVASVRRLAKNAG-FNKFNKLAQRRAAAI
+seq017                              PAKNAVRRQFKAGARRSLYKVKRLLKANHYRTDLSKATLRRASAILRSQR
+seq018                              AFPAQSKKTTTFSTVNTRKTARFVKTLATQYAPELRAAALGRLHRVQSAL
+seq019                              DAGVE-ASVVSKAVAAVRPDLASIASRRARKMASTLEHMKKVRAARKERS
+
+seq001                              PVMVKRKRTRPTKSS--
+seq002                              PVMVKRKRTRPTKSS--
+seq003                              PVMVKRKRTRPTKSS--
+seq004                              PVVVKRKRTRPTKSS--
+seq005                              PVVVKRKRTRPTKSS--
+seq006                              PVVVKRKRTRPTKSS--
+seq007                              PVVVKRKRTRPTKSS--
+seq008                              PVVVKRKRTRPTKSS--
+seq009                              PVVVK-KKRSRATKSA-
+seq010                              LRVAKSGAKQRNRQA--
+seq011                              RVAKSGPKRRNRQA---
+seq012                              QVAKSGVKKKNRQAN--
+seq013                              ARASAILSSQRPKKTVA
+seq014                              VKGKKAEFAKGKKPE--
+seq015                              ALKAEAYRTSVLGLF--
+seq016                              VRSQVKKAKVQKTDA--
+seq017                              PIKAKKPKAAVAKTE--
+seq018                              RSAKKAAARKAKKN---
+seq019                              SKITFQRKAVRPKRH--
+
+

@@ -1,0 +1,134 @@
+CLUSTAL X (1.81) multiple sequence alignment
+
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          --------------------------------------------------
+1esp_                               --------------------------------------------------
+NPRS_BACST                          --------------------------------------------------
+PRT1_ERWCA                          --------------------------------------------------
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          --------------------------------------------------
+HAPT_VIBCH                          MKMIQRPLNWLVLAGAA-TGFPLYAAQMVTIDDASMVEQALAQQQYSMMP
+PRZN_RENSA                          --------------------------------------------------
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          ----------------------------------------------MK-N
+1esp_                               --------------------------------------------------
+NPRS_BACST                          ---------MKRKMKMKLVRFGLAAGLAAQV-FFLPYNALASTEHVTWNQ
+PRT1_ERWCA                          --------------------------------------------------
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          --------------------------MHHNYYLS-PLAVALALGMVSPAK
+HAPT_VIBCH                          AA-SGFKAVNTVQLPNGKVKVRYQQMY-NGVPVYGTVVVATESSKGISQV
+PRZN_RENSA                          -----MKKYYAVTGIALAVGMLCTTQLAGATQAADPSVGSLDSSNVVTEF
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          FSKFALTSIAALTVASPLVNTEVD-AKDKVSATQNIDAKVTQESQ-ATNA
+1esp_                               --------------------------------------------------
+NPRS_BACST                          QFQTPQFISGDLLKVNGTSPEELVYQYVEKNENKFKFHENAKDTLQLKEK
+PRT1_ERWCA                          --------------------------------------------------
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          AADPILLQNASFSEVKQK-FALSTQGVAVA-KDSLSFVSEHTDRNKVTHV
+HAPT_VIBCH                          YGQMAQQLEADLPTVTPDIESQQAIALAVSHFGEQHAGESLPVENESVQL
+PRZN_RENSA                          SAQGNVEQITFKSAIKSA-PMSSARSAQT-SAIIPGLKNLFVSAPGSDFS
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          LKELPKSENIKKHYKDYKVTDTEKDNKGFTHYTLQPKVGNTYAPDKEVKV
+1esp_                               --------------------------------------------------
+NPRS_BACST                          KNDNLGFTFMRFQQTYKGIPVFGAVVTAHVKDGTLTALSGTLIPNLDTKG
+PRT1_ERWCA                          --------------------------------------------------
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          RMQQKYVGFPVY-GGYAIMHS-MNTAKSLA-ATTQSTVEMNGVVYQGLQT
+HAPT_VIBCH                          MVRLDDNQQAQLVYLVDFFVASETPSRPFYFISAETGEVLDQWDGINHAQ
+PRZN_RENSA                          LNDSSNNYIKRFTQNIAGIPVLGSSITEVLDGQGAVTSAIGAVTSATKGA
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          HTNKEGKVVLVNGDTDA-KKVQPTNKVAISKESATDKAFEAIKIDRQKAK
+1esp_                               --------------------------------------------------
+NPRS_BACST                          SLKSGKKLSEKQARDIAEKDLVANVTKEVPEYEQGKDTEFVVYVNGDEAS
+PRT1_ERWCA                          --------------------------------------------------
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          ELGQPDASFVQN-ADKALQQFKAKYANQNVGDEKVIPMVYIDKDNQAHWA
+HAPT_VIBCH                          ATGTGPGGNQKTGRYEYGSNGLPGFTIDKTGTTCTMNNSAVKTVNLNGGT
+PRZN_RENSA                          -FPADLAAGQA-AALASATKIASAGKDASAISLVDQKAIWFDAVLIGKGA
+
+1bqb_A                              --------------------------------------------------
+SEPA_STAEP                          -NLKSDVIKTNKVEIDGEKNKYVYNIEIITTSPKISHWNVKIDAETGQVV
+1esp_                               --------------------------------------------VTGTNK
+NPRS_BACST                          LAYVVNLNFLTPEPGNWLYIIDAVDGKILNKFNQLDAAKPGDVKSITGTS
+PRT1_ERWCA                          ---MKSRPICSVIPPYILHRIIANGTDEQRHCAQQTLMHVQS-LMVSHHP
+1ezm_                               --------------------------------------------------
+PROA_LEGLO                          YKVSIRVNHLDKAPERPTAIIDARTQQPFVQWNDIKTERVSVKGSGFGGN
+HAPT_VIBCH                          SGSTAFSYACNNSTNYNSVKTVNGAYSPLNDAHFFGKVVFDMYQQWLNTS
+PRZN_RENSA                          T-GSVAVPAYQFSFTTGFAESRVLTVAANDGAILNDRTDRKDINRVVCDA
+
+1bqb_A                              --------AAATGTGKGVLGDTKDININSIDGGFSLEDLTHQGKLSAYNF
+SEPA_STAEP                          DKLNMIKEAATTGTGKGVLGDTKQININSVSGGYALQDLTQQGTLSAYNY
+1esp_                               VGTGKGVLGDTKSLNTTLSGSSYYLQDNTRGATIFTYDAKNRSTLPGTLW
+NPRS_BACST                          TVGVGRGVLGDQKNINTTYSTYYYLQDNTRGNGIFTYDAKYRTTLPGSLW
+PRT1_ERWCA                          RPEPHEKLPAGQANR-SIHDAEQQQQLPGKLVRAEGQPSNGDIAVDEAYS
+1ezm_                               --------AEA-GGPGGNQKIGKYTYGSDYGPLIVNDRCEMDDGN-VITV
+PROA_LEGLO                          KKMGYYEFGKDFPYLDLTRDANNATCYMENESVKVIDMKHKYSSVKAAMS
+HAPT_VIBCH                          PLTFQLTMRVHYGNNYENAFWDGRAMTFGDGYTRFYPLVDINVSAHEVSH
+PRZN_RENSA                          NSKVID-LEASNADALLKCGKTQANKPTRIEGQAASSVADVNS-VYNFLN
+
+1bqb_A                              NDQTGQATLITNEDENFVKDDQRAGVDANYYAKQTYDYYKNTFGRESYDN
+SEPA_STAEP                          DANTGQAYLMQDKDKNFVDDEQRAGVDANYYAKETYDYYKNTFGRESYDN
+1esp_                               ADADNVFNAAYDAAAVDAHYYAGKTYDYYKATFNRNSINDAGAPLKSTVH
+NPRS_BACST                          ADADNQFFASYDAPAVDAHYYAGVTYDYYKNVHNRLSYDGNNAAIRSSVH
+PRT1_ERWCA                          YLGVTYDFFWKIFQRNSLDAEGLPLAGTVHYGQDYQNAFWNGQQMVFGDG
+1ezm_                               DMNSSTDDSKTTPFRFACPTNTYKQVNGAYSPLNDAHFFGGVVFKLYRDW
+PROA_LEGLO                          FACSTTDSDIYSTGYREDNGALSPSNDALYAGYVIKHMYTDWYGVNVLSN
+HAPT_VIBCH                          GFTEQNSGLVYRDMSGGINEAFSDIAGEAAEYFMRGNVDWIVGADIFKSS
+PRZN_RENSA                          DTASFYGANTKANDLTALIGNDE-GDGLGKAMRAVVRICVTDSQNGEQC-
+
+1bqb_A                              HGSPIVSLTHVNHYGGQDNRNNAAWIGDKMIYGDGDGRTFTNLSGANDVV
+SEPA_STAEP                          QGSPIISIAHVNNFQGQDNRNNAAWIGDKMIYGDGDGRTFTALSGANDVV
+1esp_                               YGSNYNNAFWNGSQMVYGDGDGVTFTSLSGGIDVIGHSLTHAVTENSSNL
+NPRS_BACST                          YSQGYNNAFWNGSQMVYGDGDGQTFIPLSGGIDVVAHELTHAVTDYTAGL
+PRT1_ERWCA                          DGKIFNRFTIALDVVAHELTHGIT-ENEAGLIYFRQSGALNESLSDVFGS
+1ezm_                               FGTSPLTHKLYMKVHYGRSVENAYWDGTAMLFGDGATMFYPLVSLDVAAH
+PROA_LEGLO                          SNGSPMQLVMRVHYGDGYENAYWDGEQMTFGCGDRMMYPLVSLGVGAHEI
+HAPT_VIBCH                          GGLRYFDQPSRDGRSIDHASQYYSGIDVHHSSGVFNRAFYLLANKSGWNV
+PRZN_RENSA                          PFANAFWYNGQMTYGQGVTTDDITGHELTHGVTEKTNGLVYANESGAINE
+
+1bqb_A                              AHEITHGVTQQTANLEYKDQSGALNESFSDVFGYFVDDEDFLMGEDVYTP
+SEPA_STAEP                          AHEITHGVTQQTANLVYRSQSGALNESFSDVFGYFIDDEDFLMGEDVYTP
+1esp_                               IYQNESGALNEAISDIFGTLVEFYDNRNPDWEIGEDIYTPGKAGDALRSM
+NPRS_BACST                          IYQNESGAINEAISDIFGTLVEFYANKNPDWEIGEDVYTPGISGDSLRSM
+PRT1_ERWCA                          MVKQYHLGQTTEQADWLIGAELLADGIHGMGLRSMSHPGTAYDDELLGID
+1ezm_                               EVSHGFTEQNSGL-IYRGQSGGMNEAFSDMAGEAAEFYMRGKNDFLIGYD
+PROA_LEGLO                          SHGFTEQHSGLEYYGQSGGMNESFSDMAAQAAEHYSVGKSSWQIGGEIMK
+HAPT_VIBCH                          RKGFEVFAVANQLYWTPNSTFDQGGCGVVKAAQDLNYNTADVVAAFNTVG
+PRZN_RENSA                          SMSDVFGEFIDLSNGSSDDTAANRWAIGEGSSLGVIRSMKD-PGKYGEPA
+
+1bqb_A                              GKEGDALRSMSNPEQFGQPSHMKDYVYTEKDNGGVHTNSGIPNKAAYNVI
+SEPA_STAEP                          GVGGDALRSMSNPERFGQPSHMNDFVYTNSDNGGVHTNSGIPNKAAYNTI
+1esp_                               SDPTKYGDPDHYSKRYTGSSDNGGVHTNSGIINKQAYLLANGGTHYGVTV
+NPRS_BACST                          SDPAKYGDPDHYSKRYTGTQDNGGVHINSGIINKAAYLISQGGTHYGVSV
+PRT1_ERWCA                          PQPSHMNEYVNTRE-DNG-GVHLNSGIPNRAFYL-AAIALGGHSWEKAGR
+1ezm_                               IKKGSGALRYMDQPSRDGRSIDNASQYYNGIDVHHSSGVYNRAFYLLANS
+PROA_LEGLO                          ESSGYDALRYMDKPSRDGESIDTADEYYSGLDVHYSSGVYNHLFYILATK
+HAPT_VIBCH                          VNASCGTTPPPVGKVLEKGKPITGLSGSRGGEDFYTFTVTNS-GSVVVSI
+PRZN_RENSA                          IYKGSNWKPTATNPNDNNDQGGVHSNSGVGNKLAFLITDGQTFNGQTVTG
+
+1bqb_A                              QAIGKSKSEQIYYRALTEYLTSNSNFKDLKDALYQAAKDLYEQQTAEQVY
+SEPA_STAEP                          RSIGKQRSEQIYYRALTVYLTSNSDFQDAKASLQQAAFDLYGDGIAQQVG
+1esp_                               TGIGKDKLGAIYYRANTQYFTQSTTFSQARAGAVQAAADLYGANSAEVAA
+NPRS_BACST                          VGIGRDKLGKIFYRALTQYLTPTSNFSQLRAAAVQSATDLYGSTSQEVAS
+PRT1_ERWCA                          IWYDTLCDKTLPQNADFEIFARH-TIQHAAKRFNHTVADIVQQ-SWETVG
+1ezm_                               PGWDTRKAFEVFVDANRYYWTATSNYNSGACGVIRSAQNRNYSAADVTRA
+PROA_LEGLO                          PNWDTRKAFDVMVKANMDYWTPYSSFDEGGCGVLSAAKDLGFSLNDVKSS
+HAPT_VIBCH                          SG-GT-GDADLYVKAGSKPT-TSSWDCRPYRSGNAEQCSISAVVGTTYHV
+PRZN_RENSA                          IGIAKAAQLYWAAQRQLTANATYSSLGKALNSA-CSANVSNNVAGTTAAN
+
+1bqb_A                              EAWNEVGVE-------
+SEPA_STAEP                          QAWDSVGV--------
+1esp_                               VKQSFSAVGVN-----
+NPRS_BACST                          VKQAFDAVGVK-----
+PRT1_ERWCA                          VEVRQ-EFL-------
+1ezm_                               FSTVGVTCP-------
+PROA_LEGLO                          LQAVAINYSKCH----
+HAPT_VIBCH                          MLRGYSNYSGVTLRLD
+PRZN_RENSA                          CTQVANAIKAVGIK--
+
+
