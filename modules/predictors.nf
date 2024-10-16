@@ -1,13 +1,12 @@
 process alignCoincidences {
-    cpus 4
-    memory '6 GB'
-    time '20h'
-    debug true
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -22,8 +21,8 @@ process alignCoincidences {
         path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.coincidences.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -47,15 +46,15 @@ process alignCoincidences {
 }
 
 process alignIdentity {
-    cpus 4
-    memory '6 GB'
-    time '20h'
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
 
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -70,8 +69,8 @@ process alignIdentity {
         path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.identity.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -95,14 +94,14 @@ process alignIdentity {
 }
 
 process alignSimilarityBlosum62 {
-    cpus 4
-    memory '6 GB'
-    time '20h'
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -117,8 +116,8 @@ process alignSimilarityBlosum62 {
         path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.similarity_blosum62.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -141,14 +140,14 @@ process alignSimilarityBlosum62 {
 }
 
 process alignSimilarityPam250 {
-    cpus 4
-    memory '6 GB'
-    time '20h'
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -163,8 +162,8 @@ process alignSimilarityPam250 {
         path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.similarity_pam250.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -187,14 +186,14 @@ process alignSimilarityPam250 {
 }
 
 process alignGonnet92 {
-    cpus 4
-    memory '6 GB'
-    time '20h'
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -209,8 +208,8 @@ process alignGonnet92 {
         path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.similarity_gonnet92.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -233,14 +232,14 @@ process alignGonnet92 {
 }
 
 process alignGlobal {
-    cpus 4
-    memory '6 GB'
-    time '20h'
+    cpus 1
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -255,8 +254,8 @@ process alignGlobal {
         path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.global.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """
@@ -281,13 +280,13 @@ process alignGlobal {
 
 process alignLocal {
     cpus 4
-    memory '6 GB'
-    time '20h'
+    memory '4 GB'
+    time '5d'
 
     label 'msasa'
     tag "${fasta_file.simpleName}"
     publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.png", overwrite: true, mode: 'copy'
-    publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
+    // publishDir "${params.results_dir}/plots/${fasta_file.simpleName}", pattern: "*.pdf", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/predictions/${fasta_file.simpleName}", pattern: "*.aln.clustal", overwrite: true, mode: 'copy'
     publishDir "${params.results_dir}/logs/${fasta_file.simpleName}", pattern: "*.log", overwrite: true, mode: 'copy'
@@ -302,8 +301,8 @@ process alignLocal {
         path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log"), emit: log
         path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.png"), emit: plot
         path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.sns.png"), emit: plot_sns
-        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
-        path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
+        // path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.pdf"), emit: plot_pdf
+        // path("${fasta_file}.msasa.local.${strict ? "strict" : "free" }.*.log.sns.pdf"), emit: plot_sns_pdf
 
     script:
     """

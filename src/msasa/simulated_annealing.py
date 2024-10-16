@@ -73,7 +73,7 @@ class SimulatedAnnealing:
         except:
             pass
 
-    @lru_cache(maxsize=204800)
+    @lru_cache(maxsize=128)
     def cached_energy(self, current_sequences_bytes, num_sequences, seq_length) -> float:
         sequences = np.frombuffer(current_sequences_bytes, dtype=np.uint8).reshape((num_sequences, seq_length))
         current_score_columns = np.sort(sequences.transpose(), axis=1)

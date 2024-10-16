@@ -92,28 +92,34 @@ def assert_sequences(original_sequences, aligned_sequences):
 
 
 def main():
+    print("Parsing user parameters")
     args = parse_arguments()
-
+    print("Reading input FASTA")
     sequence_ids, sequences = io.load_fasta(args.fasta_file)
+    print("Making sequence builder")
     builder = Builder(args.match_score, args.mismatch_score, args.gap_score)
+    print("Making quality function")
     quality_function = builder.create_quality_instance(args.quality_function)
 
     results_list = []
-    simulated_annealing = SimulatedAnnealing(
-        sequences,
-        logger=None,
-        extend=args.extend,
-        temp=args.temperature,
-        cooling_rate=args.cooling_rate,
-        quality_function=quality_function,
-        min_temp=args.min_temperature,
-        no_changes_limit=args.max_no_changes,
-        changes=args.changes,
-        iteration_neighbors=args.iteration_neighbors,
-        strict_mode=args.strict_mode
-    )
 
+    print("Starting experiments loop")
     for experiment_index in range(args.experiments):
+        print(f"Processing experiment {experiment_index}")
+
+        simulated_annealing = SimulatedAnnealing(
+            sequences,
+            logger=None,
+            extend=args.extend,
+            temp=args.temperature,
+            cooling_rate=args.cooling_rate,
+            quality_function=quality_function,
+            min_temp=args.min_temperature,
+            no_changes_limit=args.max_no_changes,
+            changes=args.changes,
+            iteration_neighbors=args.iteration_neighbors,
+            strict_mode=args.strict_mode
+        )
         log_file = os.path.abspath(args.log_file.replace(".log", f".{experiment_index}.log"))
         print("Experiment #", experiment_index, log_file, args.strict_mode)
 
@@ -135,12 +141,26 @@ def main():
         start_time = time.time()
         aligned_sequences, final_temp, initial_score, final_score, final_iteration = simulated_annealing.anneal()
         end_time = time.time()
+        print(f"Experiment {experiment_index} finished in {str(timedelta(seconds=(end_time - start_time)))}")
 
         elapsed_time = end_time - start_time
         readable_time = str(timedelta(seconds=elapsed_time))
 
         saved_alignment_file = io.save_alignment(sequence_ids, aligned_sequences, args.aligned_fasta_file, experiment_index)
-        print("Output", saved_alignment_file)
+        print("Output alignment", saved_alignment_file)
+
+        print("Adding results to metadata dictionary")
+        print({
+            "experiment_index": experiment_index,
+            "initial_temp": f"{args.temperature:.7f}",
+            "final_temp": f"{final_temp:.7f}",
+            "initial_score": f"{initial_score:.7f}",
+            "final_score": f"{final_score:.7f}",
+            "final_iteration": final_iteration,
+            "output_file": saved_alignment_file,
+            "elapsed_time": elapsed_time,
+            "readable_time": readable_time
+        })
 
         results_list.append({
             "experiment_index": experiment_index,
@@ -153,13 +173,14 @@ def main():
             "elapsed_time": elapsed_time,
             "readable_time": readable_time
         })
-
+        print("Dictionary updated")
         original_sequences = io.parse_fasta(args.fasta_file)
         aligned_sequences = io.parse_fasta(saved_alignment_file)
-
+        print("Asserting sequences")
         assert_sequences(original_sequences, aligned_sequences)
 
         # Create plots
+        print("Making plots")
         plotter.plot_charts_from_log(log_file, plotter.plot_title(args), args.max_no_changes)
         plotter.plot_seaborn_charts_from_log(log_file, plotter.plot_title(args))
 
@@ -167,10 +188,16 @@ def main():
         alignment = AlignIO.read(saved_alignment_file, "fasta")
 
         # Write the alignment to an MSF file
+        print("Saving clustal")
         AlignIO.write(alignment, saved_alignment_file + ".clustal", "clustal")
+        print(f"Experiment {experiment_index} finished")
 
+    print("All experiments finished, saving results in JSON")
     with open(args.experiments_log_file, "w") as fp:
         json.dump(results_list, fp, indent=4)
 
+    print("Finishing the execution with success")
+
 if __name__ == "__main__":
+    print("MSASA CLI")
     main()

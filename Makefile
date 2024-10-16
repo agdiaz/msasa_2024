@@ -31,29 +31,30 @@ run-all-experiments-4:
 	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BOX212 -with-docker
 
 run-all:
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB11004 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB11013 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB30003 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB40010 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB11004 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB11013 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB30003 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB40010 -with-docker
 
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB40014 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0011 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0030 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0065 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BB40014 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0011 -with-docker
+	# NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0030 -with-docker
+	# Pending
+	NFX_OPTS="-Xms=1024m -Xmx=6g" nextflow run main.nf --input_dir ./datasets/BBA0065 -with-docker
+	# Pending
+	nextflow run main.nf --input_dir ./datasets/BBA0117 -with-docker -resume
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0142 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0192 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS12014 -with-docker
 
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0117 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0142 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBA0192 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS12014 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20002 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20007 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20009 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30001 -with-docker
 
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20002 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20007 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS20009 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30001 -with-docker
-
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30003 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30015 -with-docker
-	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30016 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30003 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30015 -with-docker
+	#NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30016 -with-docker
 	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS30017 -with-docker
 
 	NFX_OPTS="-Xms=512m -Xmx=4g" nextflow run main.nf --input_dir ./datasets/BBS50005 -with-docker

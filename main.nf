@@ -5,7 +5,7 @@ params.input_dir = "$baseDir/datasets/BB11004"  // default input directory
 params.msasa_script = "$baseDir/src/msasa_cli.py"
 params.mumsa_script = "$baseDir/src/mumsa_plot.py"
 params.results_dir = "$baseDir/thesis_results"
-params.experiments = 1
+params.experiments = 30
 
 include {
     computeMumsaOverlapScore;

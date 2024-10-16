@@ -22,7 +22,7 @@ class ObjectiveFunction(ABC):
     def compute_column(self, column) -> float:
         pass
 
-    @lru_cache(maxsize=819200)
+    @lru_cache(maxsize=1024)
     def get_column_energy(self, column_hash) -> float:
         column = np.frombuffer(column_hash, dtype=np.uint8)
 
@@ -31,7 +31,7 @@ class ObjectiveFunction(ABC):
     def divider(self, rows, columns) -> float:
         return 1.0
 
-    @lru_cache(maxsize=409600)
+    @lru_cache(maxsize=1024)
     def energy(self, columns_bytes, sequences, residues) -> float:
         results = np.sum([self.get_column_energy(columns_bytes[sequences*i:(sequences*i)+sequences]) for i in range(residues)])
 

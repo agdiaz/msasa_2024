@@ -225,7 +225,7 @@ def plot_charts_from_log(log_file_path, plot_title, max_no_change_events):
     plt.subplots_adjust(hspace=0.4, wspace=0.4, top=0.88)
 
     plt.savefig(log_file_path + ".png", dpi=300)
-    plt.savefig(log_file_path + ".pdf", format='pdf', bbox_inches='tight')
+    # plt.savefig(log_file_path + ".pdf", format='pdf', bbox_inches='tight')
     plt.close()
 
 def plot_seaborn_charts_from_log(log_file_path, plot_title):
@@ -329,5 +329,5 @@ def plot_seaborn_charts_from_log(log_file_path, plot_title):
 
     # Save the figure
     plt.savefig(log_file_path + ".sns.png", dpi=300)
-    plt.savefig(log_file_path + ".sns.pdf", format='pdf', bbox_inches='tight')
+    # plt.savefig(log_file_path + ".sns.pdf", format='pdf', bbox_inches='tight')
     plt.close()
