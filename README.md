@@ -10,6 +10,8 @@ Projecto desarrollado por Ing. Adrián Díaz & Dra. Gabriela Minetti dentro del 
 ## Acerca de
 Este proyecto contiene dos componentes principales: el código fuente de una implementación de SA adaptada para encontrar MSA de proteínas y un workflow escrito en Nextflow para comparar distintas herramientas de MSA existentes en el estado del arte.
 
+La presentación de defensa pública que tuvo lugar el 25 de octubre de 2024 en forma online está disponible [en YouTube](https://www.youtube.com/live/3P_dumuGX7A) así como las diapositivas que se encuentran adjuntas en este repositorio (`public_defence_slides.pdf`).
+
 ### Código fuente de MSASA
 El código se encuentra dentro de la carpeta `src`. Hay un archivo que contiene un script que puede ejecutarse mediante CLI.
 
